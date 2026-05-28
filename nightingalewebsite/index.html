@@ -1,0 +1,1694 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nightingale Hospital Staff Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="assets/logo.svg" alt="Nightingale logo" />
+          <div>
+            <div class="brand-name" data-i18n="brandName">Nightingale</div>
+            <div class="brand-tag" data-i18n="brandTagline">Hospital Staff Intelligence Console</div>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-item" type="button" data-page="login">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="4" y="10" width="16" height="10" rx="2" />
+                <path d="M7 10V7a5 5 0 0 1 10 0v3" />
+              </svg>
+            </span>
+            <span data-i18n="navLogin">Login</span>
+          </button>
+          <button class="nav-item active" type="button" data-page="dashboard">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="4" y="4" width="7" height="7" />
+                <rect x="13" y="4" width="7" height="7" />
+                <rect x="4" y="13" width="7" height="7" />
+                <rect x="13" y="13" width="7" height="7" />
+              </svg>
+            </span>
+            <span data-i18n="navDashboard">Main Dashboard</span>
+          </button>
+          <button class="nav-item" type="button" data-page="id-scan">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="6" width="18" height="12" rx="2" />
+                <path d="M7 10h6M7 14h4M15 10h3M15 14h3" />
+              </svg>
+            </span>
+            <span data-i18n="navIdScan">ID Scan</span>
+          </button>
+          <button class="nav-item" type="button" data-page="verification">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 6h11M4 12h11M4 18h11" />
+                <path d="M17 12l2 2 3-3" />
+              </svg>
+            </span>
+            <span data-i18n="navQueue">Verification Queue</span>
+          </button>
+          <button class="nav-item" type="button" data-page="profile">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3" />
+                <path d="M5 20c1.5-3 12.5-3 14 0" />
+              </svg>
+            </span>
+            <span data-i18n="navProfile">Patient Profile</span>
+          </button>
+          <button class="nav-item" type="button" data-page="department-summary">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12h4l2-4 3 8 3-8 2 4h4" />
+              </svg>
+            </span>
+            <span data-i18n="navDepartmentSummary">Department AI Summary</span>
+          </button>
+          <button class="nav-item" type="button" data-page="longitudinal">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" />
+                <path d="M12 8v4l3 2" />
+              </svg>
+            </span>
+            <span data-i18n="navTimeline">Longitudinal Timeline</span>
+          </button>
+          <button class="nav-item" type="button" data-page="icu-analysis">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 12h4l2-4 3 8 3-8 2 4h6" />
+              </svg>
+            </span>
+            <span data-i18n="navIcuAnalysis">ICU Ventilator Analysis</span>
+          </button>
+          <button class="nav-item" type="button" data-page="standards">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <ellipse cx="12" cy="5" rx="7" ry="3" />
+                <path d="M5 5v10c0 1.7 3.1 3 7 3s7-1.3 7-3V5" />
+                <path d="M5 10c0 1.7 3.1 3 7 3s7-1.3 7-3" />
+              </svg>
+            </span>
+            <span data-i18n="navStandards">Data Localization &amp; Standards</span>
+          </button>
+          <button class="nav-item" type="button" data-page="admin">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path
+                  d="M4.5 12a7.5 7.5 0 0 1 .2-1.8L2.5 8.5l2-3.5 2.6.9a7.6 7.6 0 0 1 3-1.8L10.8 2h2.4l.7 2.1a7.6 7.6 0 0 1 3 1.8l2.6-.9 2 3.5-2.2 1.7c.1.6.2 1.2.2 1.8s-.1 1.2-.2 1.8l2.2 1.7-2 3.5-2.6-.9a7.6 7.6 0 0 1-3 1.8l-.7 2.1h-2.4l-.7-2.1a7.6 7.6 0 0 1-3-1.8l-2.6.9-2-3.5 2.2-1.7c-.1-.6-.2-1.2-.2-1.8z"
+                />
+              </svg>
+            </span>
+            <span data-i18n="navAdmin">Admin Settings</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="badge" data-i18n="staffOnly">Staff-only</div>
+          <div class="status" data-i18n="statusBadge">Live Queue</div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="topbar-title">
+            <h1 data-i18n="platformTitle">Nightingale Hospital Staff Console</h1>
+            <p data-i18n="platformSubtitle">
+              Operational intelligence for registration, clinics, ICU, and admin teams.
+            </p>
+          </div>
+          <div class="topbar-actions">
+            <button class="ghost" id="langToggle" type="button" data-lang-toggle>EN / TH</button>
+            <button class="primary" type="button" data-page-target="id-scan" data-i18n="newScan">
+              New Scan
+            </button>
+          </div>
+        </header>
+
+        <section class="pages">
+          <section class="page active" data-page="dashboard">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="dashboardTitle">Main Dashboard</h2>
+                <p data-i18n="dashboardSubtitle">Operational overview for today's patient flow.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="shiftLive">Shift Live</span>
+                <span class="chip soft" data-i18n="updatedNow">Updated now</span>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-12 stats-grid" data-reveal style="--delay: 0.05s">
+                <div class="stat-card">
+                  <div class="stat-label" data-i18n="statsTotalPatients">Total patients today</div>
+                  <div class="stat-value">342</div>
+                  <div class="stat-meta" data-i18n="statsMetaLive">Live</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label" data-i18n="statsPendingQueue">Pending verification queue</div>
+                  <div class="stat-value">23</div>
+                  <div class="stat-meta" data-i18n="statsMetaQueue">In review</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label" data-i18n="statsDiabetes">Diabetes patients</div>
+                  <div class="stat-value">48</div>
+                  <div class="stat-meta" data-i18n="statsMetaDiabetes">Clinic active</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label" data-i18n="statsHypertension">Hypertension patients</div>
+                  <div class="stat-value">65</div>
+                  <div class="stat-meta" data-i18n="statsMetaHypertension">OPD focus</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label" data-i18n="statsIcuMonitored">ICU monitored patients</div>
+                  <div class="stat-value">17</div>
+                  <div class="stat-meta" data-i18n="statsMetaIcu">Ventilator watch</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label" data-i18n="statsHighRisk">High-risk patient alerts</div>
+                  <div class="stat-value">6</div>
+                  <div class="stat-meta" data-i18n="statsMetaAlert">Requires action</div>
+                </div>
+              </div>
+
+              <div class="panel span-7" data-reveal style="--delay: 0.1s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="highRiskTitle">High-risk Patient Alerts</h3>
+                    <p data-i18n="highRiskDesc">Monitor ICU and chronic escalation signals.</p>
+                  </div>
+                  <button class="ghost small" type="button" data-i18n="highRiskView">View all</button>
+                </div>
+                <ul class="alert-list">
+                  <li>
+                    <div>
+                      <div class="alert-title">Somchai R.</div>
+                      <div class="alert-detail" data-i18n="highRiskAlert1">
+                        SpO2 trending down, ventilator adjustments required.
+                      </div>
+                    </div>
+                    <span class="pill danger" data-i18n="alertLevelIcu">ICU</span>
+                  </li>
+                  <li>
+                    <div>
+                      <div class="alert-title">Warin T.</div>
+                      <div class="alert-detail" data-i18n="highRiskAlert2">
+                        Glucose spikes overnight, insulin review needed.
+                      </div>
+                    </div>
+                    <span class="pill warning" data-i18n="alertLevelWard">Ward</span>
+                  </li>
+                  <li>
+                    <div>
+                      <div class="alert-title">Naree P.</div>
+                      <div class="alert-detail" data-i18n="highRiskAlert3">
+                        Unverified ID scan with missing DOB.
+                      </div>
+                    </div>
+                    <span class="pill" data-i18n="alertLevelOpd">OPD</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="panel span-5" data-reveal style="--delay: 0.15s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="pendingQueueTitle">Pending Verification Queue</h3>
+                    <p data-i18n="pendingQueueDesc">Latest scans awaiting staff confirmation.</p>
+                  </div>
+                  <span class="badge" data-i18n="statusBadge">Live Queue</span>
+                </div>
+                <ul class="queue-list">
+                  <li>
+                    <div>
+                      <div class="queue-name">#Q-2143 • Kanok P.</div>
+                      <div class="queue-detail" data-i18n="queueItem1">OCR 88%, address incomplete.</div>
+                    </div>
+                    <span class="status-pill pending" data-i18n="statusPending">Pending</span>
+                  </li>
+                  <li>
+                    <div>
+                      <div class="queue-name">#Q-2139 • Pisut R.</div>
+                      <div class="queue-detail" data-i18n="queueItem2">Photo glare, name mismatch.</div>
+                    </div>
+                    <span class="status-pill review" data-i18n="statusNeedsReview">Needs Review</span>
+                  </li>
+                  <li>
+                    <div>
+                      <div class="queue-name">#Q-2134 • Mali S.</div>
+                      <div class="queue-detail" data-i18n="queueItem3">Duplicate with ICU profile.</div>
+                    </div>
+                    <span class="status-pill escalated" data-i18n="statusEscalated">Escalated</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="panel span-12" data-reveal style="--delay: 0.2s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="recentScansTitle">Recent Scanned ID Records</h3>
+                    <p data-i18n="recentScansDesc">Latest uploads across registration desks.</p>
+                  </div>
+                  <button class="ghost small" type="button" data-i18n="actionExport">Export</button>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th data-i18n="tableRecordId">Record ID</th>
+                        <th data-i18n="tableRecordPatient">Patient</th>
+                        <th data-i18n="tableRecordDepartment">Department</th>
+                        <th data-i18n="tableRecordTime">Scan Time</th>
+                        <th data-i18n="tableRecordStatus">Status</th>
+                        <th data-i18n="tableRecordAction">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>ID-8891</td>
+                        <td>Anan L.</td>
+                        <td>Registration</td>
+                        <td>09:12</td>
+                        <td>
+                          <span class="status-pill pending" data-i18n="recordStatusPending">Pending</span>
+                        </td>
+                        <td><button class="ghost small" type="button" data-i18n="actionView">View</button></td>
+                      </tr>
+                      <tr>
+                        <td>ID-8887</td>
+                        <td>Wichai N.</td>
+                        <td>ICU</td>
+                        <td>08:51</td>
+                        <td>
+                          <span class="status-pill verified" data-i18n="recordStatusVerified">Verified</span>
+                        </td>
+                        <td><button class="ghost small" type="button" data-i18n="actionView">View</button></td>
+                      </tr>
+                      <tr>
+                        <td>ID-8883</td>
+                        <td>Parn P.</td>
+                        <td>OPD</td>
+                        <td>08:37</td>
+                        <td>
+                          <span class="status-pill review" data-i18n="recordStatusReview">Needs Review</span>
+                        </td>
+                        <td>
+                          <button class="ghost small" type="button" data-i18n="actionResume">Resume</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>ID-8881</td>
+                        <td>Chanan K.</td>
+                        <td>Diabetes Clinic</td>
+                        <td>08:26</td>
+                        <td>
+                          <span class="status-pill verified" data-i18n="recordStatusVerified">Verified</span>
+                        </td>
+                        <td><button class="ghost small" type="button" data-i18n="actionView">View</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="login">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="loginTitle">Hospital Staff Login</h2>
+                <p data-i18n="loginSubtitle">Secure access for verified hospital staff.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="loginBadge">Secure access</span>
+                <button class="ghost small" type="button" data-lang-toggle data-i18n="loginLangToggle">
+                  EN / TH
+                </button>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-5" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="loginFormTitle">Staff sign-in</h3>
+                    <p data-i18n="loginFormDesc">Use your hospital credentials to continue.</p>
+                  </div>
+                </div>
+                <form class="form-stack">
+                  <label class="field">
+                    <span data-i18n="loginStaffId">Staff ID</span>
+                    <input type="text" data-i18n-placeholder="loginStaffIdPlaceholder" placeholder="STA-20491" />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="loginPassword">Password</span>
+                    <input
+                      type="password"
+                      data-i18n-placeholder="loginPasswordPlaceholder"
+                      placeholder="••••••••"
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="loginRole">Role</span>
+                    <select>
+                      <option data-i18n="loginRoleRegistration">Registration Staff</option>
+                      <option data-i18n="loginRoleDoctor">Doctor</option>
+                      <option data-i18n="loginRoleNurse">Nurse</option>
+                      <option data-i18n="loginRoleIcu">ICU Staff</option>
+                      <option data-i18n="loginRoleAdmin">Admin</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="loginStation">Station</span>
+                    <input
+                      type="text"
+                      data-i18n-placeholder="loginStationPlaceholder"
+                      placeholder="Registration Desk 2"
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="loginShift">Shift</span>
+                    <select>
+                      <option data-i18n="loginShiftMorning">Morning (07:00 - 15:00)</option>
+                      <option data-i18n="loginShiftEvening">Evening (15:00 - 23:00)</option>
+                      <option data-i18n="loginShiftNight">Night (23:00 - 07:00)</option>
+                    </select>
+                  </label>
+                  <label class="checkbox">
+                    <input type="checkbox" checked />
+                    <span data-i18n="loginRemember">Remember this device</span>
+                  </label>
+                  <div class="button-row">
+                    <button class="primary" type="button" data-i18n="loginPrimary">Sign In</button>
+                    <button class="ghost" type="button" data-i18n="loginSecondary">Request Access</button>
+                  </div>
+                </form>
+              </div>
+              <div class="panel span-7" data-reveal style="--delay: 0.1s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="loginSupportTitle">Security &amp; Shift Overview</h3>
+                    <p data-i18n="loginSupportDesc">Quick checks before accessing patient data.</p>
+                  </div>
+                </div>
+                <div class="checklist">
+                  <div class="check-item">
+                    <span class="status-dot success"></span>
+                    <div>
+                      <div class="check-title" data-i18n="loginCheck1Title">MFA enabled</div>
+                      <div class="check-detail" data-i18n="loginCheck1Detail">
+                        Token verified for this workstation.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="check-item">
+                    <span class="status-dot success"></span>
+                    <div>
+                      <div class="check-title" data-i18n="loginCheck2Title">Policy training</div>
+                      <div class="check-detail" data-i18n="loginCheck2Detail">
+                        Privacy briefing completed this month.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="check-item">
+                    <span class="status-dot warning"></span>
+                    <div>
+                      <div class="check-title" data-i18n="loginCheck3Title">Device status</div>
+                      <div class="check-detail" data-i18n="loginCheck3Detail">
+                        Antivirus update pending at 18:00.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="handover">
+                  <h4 data-i18n="loginHandoverTitle">Shift handover notes</h4>
+                  <p data-i18n="loginHandoverDesc">Highlighted tasks for incoming teams.</p>
+                  <ul>
+                    <li data-i18n="loginHandoverNote1">Verify ICU ID scans from Bed 12-15.</li>
+                    <li data-i18n="loginHandoverNote2">OPD backlog: 4 diabetes clinic follow-ups.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="id-scan">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="idScanTitle">Thai National ID Scanning</h2>
+                <p data-i18n="idScanSubtitle">Capture with camera or upload image, then review OCR extraction.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="staffOnly">Staff-only</span>
+                <span class="chip soft" data-i18n="statusBadge">Live Queue</span>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-6" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="scanCameraTitle">Camera capture / ถ่ายบัตรด้วยกล้อง</h3>
+                    <p data-i18n="scanCameraDesc">Use the device camera to capture Thai national ID.</p>
+                  </div>
+                  <span class="pill" data-i18n="scanReady">OCR Ready</span>
+                </div>
+                <div class="camera-preview">
+                  <div class="camera-frame">
+                    <div class="camera-hint" data-i18n="cameraHint">Place the ID card within the frame.</div>
+                  </div>
+                  <div class="camera-meta" data-i18n="cameraMeta">Front desk tablet • Back camera</div>
+                </div>
+                <div class="button-row">
+                  <button class="secondary" type="button" data-i18n="cameraBtn">Open Camera</button>
+                  <button class="primary" type="button" data-i18n="cameraCapture">Capture ID</button>
+                  <button class="ghost" type="button" data-i18n="cameraRetake">Retake photo</button>
+                </div>
+              </div>
+
+              <div class="panel span-6" data-reveal style="--delay: 0.1s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="scanUploadTitle">Upload ID image / อัปโหลดรูปบัตรประชาชน</h3>
+                    <p data-i18n="scanUploadDesc">Upload a clear photo or scan (JPG/PNG).</p>
+                  </div>
+                  <span class="pill" data-i18n="scanReady">OCR Ready</span>
+                </div>
+                <div class="upload-drop">
+                  <div class="upload-icon"></div>
+                  <p data-i18n="uploadHint">Drag &amp; drop or choose a file.</p>
+                  <label class="secondary upload-label" for="uploadInput" data-i18n="uploadBtn">
+                    Upload ID Image
+                  </label>
+                  <input id="uploadInput" class="upload-input" type="file" accept="image/*" />
+                </div>
+                <div class="button-row">
+                  <button class="ghost" type="button" data-i18n="uploadAnother">Upload another image</button>
+                </div>
+              </div>
+
+              <div class="panel span-12" data-reveal style="--delay: 0.15s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="ocrProcessingTitle">OCR processing results / ผลลัพธ์ OCR</h3>
+                    <p data-i18n="ocrProcessingDesc">Fields extracted from the ID card. Review and edit if needed.</p>
+                  </div>
+                  <span class="pill success" data-i18n="ocrProcessingStatus">Completed</span>
+                </div>
+                <div class="ocr-fields">
+                  <div class="ocr-field">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrThaiIdLabel">Thai national ID (เลขบัตรประชาชน)</span>
+                      <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
+                    </div>
+                    <strong>1101700234567</strong>
+                  </div>
+                  <div class="ocr-field">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrThaiNameLabel">Thai full name (ชื่อ-นามสกุลภาษาไทย)</span>
+                      <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
+                    </div>
+                    <strong>ปราณี กิตติกุล</strong>
+                  </div>
+                  <div class="ocr-field">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrEnglishNameLabel">English full name (ชื่อ-นามสกุลภาษาอังกฤษ)</span>
+                      <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
+                    </div>
+                    <strong>Pranee Kittikul</strong>
+                  </div>
+                  <div class="ocr-field">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrDobLabel">Date of birth (วันเกิด)</span>
+                      <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
+                    </div>
+                    <strong>1991-09-23</strong>
+                  </div>
+                  <div class="ocr-field">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrGenderLabel">Gender (เพศ)</span>
+                      <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
+                    </div>
+                    <strong data-i18n="genderFemale">Female</strong>
+                  </div>
+                  <div class="ocr-field">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrNationalityLabel">Nationality (สัญชาติ)</span>
+                      <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
+                    </div>
+                    <strong data-i18n="nationalityThai">Thai</strong>
+                  </div>
+                  <div class="ocr-field needs-review">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrAddressLabel">Address (ที่อยู่)</span>
+                      <span class="confidence-chip low" data-i18n="confidenceLow">Low / ต่ำ</span>
+                    </div>
+                    <strong>Bang Kapi, Bangkok</strong>
+                    <span class="review-hint" data-i18n="reviewHint">Please review this field.</span>
+                  </div>
+                  <div class="ocr-field">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrIssueDateLabel">Issue date (วันออกบัตร)</span>
+                      <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
+                    </div>
+                    <strong>2019-02-16</strong>
+                  </div>
+                  <div class="ocr-field needs-review">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrExpiryDateLabel">Expiry date (วันหมดอายุ)</span>
+                      <span class="confidence-chip low" data-i18n="confidenceLow">Low / ต่ำ</span>
+                    </div>
+                    <strong>2029-02-15</strong>
+                    <span class="review-hint" data-i18n="reviewHint">Please review this field.</span>
+                  </div>
+                  <div class="ocr-field photo">
+                    <div class="ocr-field-label">
+                      <span data-i18n="ocrPhotoLabel">Card photo (รูปถ่ายบนบัตร)</span>
+                      <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
+                    </div>
+                    <div class="photo-frame">
+                      <div class="photo-placeholder"></div>
+                      <div class="photo-meta" data-i18n="photoExtracted">Photo extracted from ID card</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="button-row">
+                  <button class="ghost" type="button" data-i18n="editDataBtn">Edit data</button>
+                  <button class="primary" type="button" data-i18n="sendQueue">
+                    Send to Verification Queue
+                  </button>
+                </div>
+                <div class="notice warning">
+                  <strong data-i18n="verificationRuleTitle">Important</strong>
+                  <span data-i18n="verificationRuleDesc">
+                    Do not save to the official patient profile. Always send extracted data to the
+                    verification queue first.
+                  </span>
+                </div>
+              </div>
+
+              <div class="panel span-12" data-reveal style="--delay: 0.2s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="registrationTitle">Auto-filled patient registration</h3>
+                    <p data-i18n="registrationDesc">All fields are editable by hospital staff.</p>
+                  </div>
+                </div>
+                <form class="form-stack" id="ocrRegistrationForm" novalidate>
+                  <div class="form-alert" role="alert">
+                    <strong data-i18n="regFormAlertTitle">Missing required fields</strong>
+                    <span data-i18n="regFormAlertDesc">
+                      Please review highlighted fields before sending to verification.
+                    </span>
+                  </div>
+                  <div class="form-note" data-i18n="regAutoFillNote">
+                    Auto-filled from OCR. Staff can edit every field.
+                  </div>
+
+                  <div class="form-section">
+                    <div class="section-head">
+                      <div>
+                        <div class="section-title" data-i18n="regSectionBasicTitle">
+                          Basic Personal Information / ข้อมูลส่วนบุคคล
+                        </div>
+                        <div class="section-desc" data-i18n="regSectionBasicDesc">
+                          Full name, DOB, gender, nationality, and profile photo.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-grid">
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regFullName">Full name / ชื่อเต็ม</span>
+                          <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
+                        </div>
+                        <input type="text" value="Pranee Kittikul" data-required />
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regThaiName">Thai name / ชื่อภาษาไทย</span>
+                          <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
+                        </div>
+                        <input type="text" value="ปราณี กิตติกุล" data-required />
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regEnglishName">English name / ชื่อภาษาอังกฤษ</span>
+                          <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
+                        </div>
+                        <input type="text" value="Pranee Kittikul" />
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regDob">Date of birth / วันเกิด</span>
+                          <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
+                        </div>
+                        <input type="text" value="1991-09-23" data-required />
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regGender">Gender / เพศ</span>
+                          <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
+                        </div>
+                        <select data-required>
+                          <option value="" selected disabled data-i18n="regSelectOption">Select</option>
+                          <option data-i18n="genderFemale">Female</option>
+                          <option data-i18n="genderMale">Male</option>
+                          <option data-i18n="genderOther">Other</option>
+                        </select>
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regNationality">Nationality / สัญชาติ</span>
+                          <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
+                        </div>
+                        <select data-required>
+                          <option value="" selected disabled data-i18n="regSelectOption">Select</option>
+                          <option data-i18n="nationalityThai">Thai</option>
+                          <option data-i18n="nationalityOther">Other</option>
+                        </select>
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field span-2">
+                        <div class="field-label-row">
+                          <span data-i18n="regProfilePhoto">Profile photo / รูปโปรไฟล์</span>
+                          <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
+                        </div>
+                        <div class="photo-input">
+                          <div class="photo-frame small">
+                            <div class="photo-placeholder"></div>
+                          </div>
+                          <label class="ghost small upload-label" for="profilePhoto" data-i18n="replacePhoto">
+                            Replace photo
+                          </label>
+                          <input id="profilePhoto" class="upload-input" type="file" accept="image/*" />
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-section">
+                    <div class="section-head">
+                      <div>
+                        <div class="section-title" data-i18n="regSectionIdentityTitle">
+                          Identity Verification / การยืนยันตัวตน
+                        </div>
+                        <div class="section-desc" data-i18n="regSectionIdentityDesc">
+                          Thai ID, ID card image, OCR score, and verification status.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-grid">
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regThaiIdNumber">Thai national ID / เลขบัตรประชาชน</span>
+                          <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
+                        </div>
+                        <input type="text" value="1101700234567" data-required />
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regIdCardImage">ID card image / รูปบัตรประชาชน</span>
+                        </div>
+                        <div class="file-row">
+                          <label class="secondary upload-label small" for="idCardImage" data-i18n="uploadBtn">
+                            Upload ID Image
+                          </label>
+                          <input
+                            id="idCardImage"
+                            class="upload-input"
+                            type="file"
+                            accept="image/*"
+                            data-required
+                          />
+                          <span class="file-hint" data-i18n="regIdCardHint">Captured image attached</span>
+                        </div>
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regOcrScore">OCR confidence score / คะแนน OCR</span>
+                        </div>
+                        <input type="text" value="92% (overall)" readonly />
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regVerificationStatus">Staff verification status / สถานะตรวจสอบ</span>
+                        </div>
+                        <select data-required>
+                          <option value="" selected disabled data-i18n="regSelectOption">Select</option>
+                          <option data-i18n="statusPending">Pending</option>
+                          <option data-i18n="statusNeedsReview">Needs Review</option>
+                          <option data-i18n="statusVerified">Verified</option>
+                        </select>
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-section">
+                    <div class="section-head">
+                      <div>
+                        <div class="section-title" data-i18n="regSectionContactTitle">
+                          Contact Information / ข้อมูลติดต่อ
+                        </div>
+                        <div class="section-desc" data-i18n="regSectionContactDesc">
+                          Phone, email, address, and emergency contacts.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-grid">
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regPhone">Phone number / เบอร์โทรศัพท์</span>
+                        </div>
+                        <input type="text" value="086-321-3342" data-required />
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regEmail">Email / อีเมล</span>
+                        </div>
+                        <input type="email" placeholder="name@example.com" data-i18n-placeholder="regEmailPlaceholder" />
+                      </label>
+                      <label class="field span-2">
+                        <div class="field-label-row">
+                          <span data-i18n="regAddress">Home address / ที่อยู่บ้าน</span>
+                          <span class="confidence-chip low" data-i18n="confidenceLow">Low / ต่ำ</span>
+                        </div>
+                        <input type="text" value="Bang Kapi, Bangkok" data-required />
+                        <span class="review-hint" data-i18n="reviewHint">Please review this field.</span>
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regEmergencyName">Emergency contact name / ผู้ติดต่อฉุกเฉิน</span>
+                        </div>
+                        <input type="text" value="Anan Kittikul" data-required />
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regEmergencyPhone">Emergency contact phone / เบอร์ติดต่อฉุกเฉิน</span>
+                        </div>
+                        <input type="text" value="089-555-2301" data-required />
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-section">
+                    <div class="section-head">
+                      <div>
+                        <div class="section-title" data-i18n="regSectionHospitalTitle">
+                          Hospital Information / ข้อมูลโรงพยาบาล
+                        </div>
+                        <div class="section-desc" data-i18n="regSectionHospitalDesc">
+                          HN, department, registration date, and staff verifier.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-grid">
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regHospitalNumber">Hospital number (HN) / เลข HN</span>
+                        </div>
+                        <input type="text" placeholder="HN-2026-01983" data-i18n-placeholder="regHospitalPlaceholder" />
+                      </label>
+                      <div class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regPatientType">New or existing patient / ผู้ป่วยใหม่หรือเดิม</span>
+                        </div>
+                        <div class="radio-group">
+                          <label class="radio-item">
+                            <input type="radio" name="patientType" value="new" data-required />
+                            <span data-i18n="regPatientTypeNew">New patient</span>
+                          </label>
+                          <label class="radio-item">
+                            <input type="radio" name="patientType" value="existing" />
+                            <span data-i18n="regPatientTypeExisting">Existing patient</span>
+                          </label>
+                        </div>
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </div>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regDepartment">Department assigned / แผนกที่รับผิดชอบ</span>
+                        </div>
+                        <select data-required>
+                          <option value="" selected disabled data-i18n="regSelectOption">Select</option>
+                          <option data-i18n="deptRegistration">Registration</option>
+                          <option data-i18n="deptOpd">OPD</option>
+                          <option data-i18n="deptDiabetesClinic">Diabetes Clinic</option>
+                          <option data-i18n="deptHypertensionClinic">Hypertension Clinic</option>
+                          <option data-i18n="deptIcu">ICU</option>
+                          <option data-i18n="deptWard">Ward</option>
+                        </select>
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regRegistrationDate">Registration date / วันที่ลงทะเบียน</span>
+                        </div>
+                        <input type="date" value="2026-05-28" data-required />
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                      <label class="field">
+                        <div class="field-label-row">
+                          <span data-i18n="regVerifiedBy">Staff who verified / ผู้ตรวจสอบ</span>
+                        </div>
+                        <input type="text" value="N. Warin" data-required />
+                        <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-section">
+                    <div class="section-head">
+                      <div>
+                        <div class="section-title" data-i18n="regSectionConsentTitle">Consent / ความยินยอม</div>
+                        <div class="section-desc" data-i18n="regSectionConsentDesc">
+                          Required before sending to verification queue.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="field consent-group">
+                      <label class="checkbox">
+                        <input type="checkbox" data-required />
+                        <span data-i18n="regConsentCollect">
+                          Consent to collect and store medical data / ยินยอมให้เก็บข้อมูลสุขภาพ
+                        </span>
+                      </label>
+                      <label class="checkbox">
+                        <input type="checkbox" data-required />
+                        <span data-i18n="regConsentShare">
+                          Consent to share data with authorized staff / ยินยอมให้แชร์ข้อมูลกับบุคลากรที่เกี่ยวข้อง
+                        </span>
+                      </label>
+                      <label class="checkbox">
+                        <input type="checkbox" data-required />
+                        <span data-i18n="regConsentPolicy">
+                          Privacy policy agreement / ยอมรับนโยบายความเป็นส่วนตัว
+                        </span>
+                      </label>
+                      <span class="field-error" data-i18n="regFieldRequired">Required</span>
+                    </div>
+                  </div>
+
+                  <div class="button-row">
+                    <button class="primary" type="submit" data-i18n="regSendQueue">
+                      Send to Verification Queue / ส่งไปยังคิวตรวจสอบ
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="verification">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="verificationTitle">Verification Queue</h2>
+                <p data-i18n="verificationSubtitle">Compare OCR data with editable fields.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="statusPending">Pending</span>
+                <span class="chip soft" data-i18n="statusNeedsReview">Needs Review</span>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-5" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="pendingListTitle">Pending Scanned IDs</h3>
+                    <p data-i18n="pendingListDesc">Sort by department and urgency.</p>
+                  </div>
+                  <button class="ghost small" type="button" data-i18n="queueFilter">Filter</button>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th data-i18n="tableQueueId">Queue ID</th>
+                        <th data-i18n="tablePatient">Patient</th>
+                        <th data-i18n="tableStatus">Status</th>
+                        <th data-i18n="tableAssigned">Assigned</th>
+                        <th data-i18n="tableAction">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#Q-2143</td>
+                        <td>Kanok P.</td>
+                        <td><span class="status-pill pending" data-i18n="statusPending">Pending</span></td>
+                        <td>Reg Desk 2</td>
+                        <td><button class="ghost small" type="button" data-i18n="actionReview">Review</button></td>
+                      </tr>
+                      <tr>
+                        <td>#Q-2139</td>
+                        <td>Pisut R.</td>
+                        <td><span class="status-pill review" data-i18n="statusNeedsReview">Needs Review</span></td>
+                        <td>ICU Front</td>
+                        <td><button class="ghost small" type="button" data-i18n="actionReview">Review</button></td>
+                      </tr>
+                      <tr>
+                        <td>#Q-2134</td>
+                        <td>Mali S.</td>
+                        <td><span class="status-pill escalated" data-i18n="statusEscalated">Escalated</span></td>
+                        <td>Ward A</td>
+                        <td><button class="ghost small" type="button" data-i18n="actionReview">Review</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="panel span-7" data-reveal style="--delay: 0.1s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="compareTitle">Compare OCR vs Editable Fields</h3>
+                    <p data-i18n="compareDesc">Verify fields before approval.</p>
+                  </div>
+                </div>
+                <div class="compare-grid">
+                  <div class="compare-col">
+                    <h4 data-i18n="compareExtractedTitle">Extracted OCR Data</h4>
+                    <ul class="detail-list">
+                      <li><span data-i18n="ocrFieldId">Thai ID</span><strong>1101700234567</strong></li>
+                      <li><span data-i18n="ocrFieldName">Name</span><strong>Pranee Kittikul</strong></li>
+                      <li><span data-i18n="ocrFieldDob">DOB</span><strong>1991-09-23</strong></li>
+                      <li><span data-i18n="ocrFieldAddress">Address</span><strong>Bang Kapi, Bangkok</strong></li>
+                    </ul>
+                  </div>
+                  <div class="compare-col">
+                    <h4 data-i18n="compareEditableTitle">Editable Fields</h4>
+                    <div class="form-grid">
+                      <label class="field">
+                        <span data-i18n="fieldThaiId">Thai ID</span>
+                        <input type="text" value="1101700234567" />
+                      </label>
+                      <label class="field">
+                        <span data-i18n="fieldFullName">Full Name</span>
+                        <input type="text" value="Pranee Kittikul" />
+                      </label>
+                      <label class="field">
+                        <span data-i18n="fieldDob">DOB</span>
+                        <input type="text" value="1991-09-23" />
+                      </label>
+                      <label class="field">
+                        <span data-i18n="fieldPhone">Phone</span>
+                        <input type="text" value="086-321-3342" />
+                      </label>
+                      <label class="field span-2">
+                        <span data-i18n="fieldAddress">Address</span>
+                        <input type="text" value="Bang Kapi, Bangkok" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="button-row">
+                  <button class="primary" type="button" data-i18n="approveBtn">Approve</button>
+                  <button class="ghost" type="button" data-i18n="rejectBtn">Reject</button>
+                  <button class="secondary" type="button" data-i18n="rescanBtn">Request Rescan</button>
+                </div>
+              </div>
+
+              <div class="panel span-12" data-reveal style="--delay: 0.15s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="matchTitle">Match with Existing Profile</h3>
+                    <p data-i18n="matchDesc">Match with existing patient profile or create new.</p>
+                  </div>
+                </div>
+                <div class="match-card">
+                  <div class="match-row">
+                    <div>
+                      <div class="match-label" data-i18n="matchScore">Match Confidence</div>
+                      <div class="match-value">94%</div>
+                    </div>
+                    <div class="match-badge" data-i18n="matchFound">Match Found</div>
+                  </div>
+                  <div class="match-row">
+                    <div>
+                      <div class="match-label" data-i18n="matchLastVisit">Last Visit</div>
+                      <div class="match-sub">2026-04-21 • OPD</div>
+                    </div>
+                  </div>
+                  <div class="button-row">
+                    <button class="primary" type="button" data-i18n="matchBtn">Match Profile</button>
+                    <button class="ghost" type="button" data-i18n="createBtn">Create Profile</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="profile">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="profileTitle">Patient Profile</h2>
+                <p data-i18n="profileSubtitle">Identity, demographics, and linked EMR summary.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="deptIcu">ICU</span>
+                <span class="chip soft">HN-2026-01983</span>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-4" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="identityTitle">Identity Information</h3>
+                    <p data-i18n="identityDesc">Verified Thai National ID.</p>
+                  </div>
+                </div>
+                <ul class="info-list">
+                  <li><span data-i18n="labelFullName">Full Name</span><strong>Pranee Kittikul</strong></li>
+                  <li><span data-i18n="labelThaiId">Thai ID</span><strong>1101700234567</strong></li>
+                  <li><span data-i18n="labelDob">DOB</span><strong>1991-09-23</strong></li>
+                  <li><span data-i18n="labelGender">Gender</span><strong data-i18n="genderFemale">Female</strong></li>
+                </ul>
+              </div>
+              <div class="panel span-4" data-reveal style="--delay: 0.1s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="demographicsTitle">Demographics</h3>
+                    <p data-i18n="demographicsDesc">Contact and residency details.</p>
+                  </div>
+                </div>
+                <ul class="info-list">
+                  <li><span data-i18n="labelAge">Age</span><strong>34</strong></li>
+                  <li><span data-i18n="labelPhone">Phone</span><strong>086-321-3342</strong></li>
+                  <li><span data-i18n="labelAddress">Address</span><strong>Bang Kapi, Bangkok</strong></li>
+                  <li><span data-i18n="labelInsurance">Insurance</span><strong>UCS</strong></li>
+                </ul>
+              </div>
+              <div class="panel span-4" data-reveal style="--delay: 0.15s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="hospitalNumberTitle">Hospital Number</h3>
+                    <p data-i18n="hospitalNumberDesc">Assigned department and care team.</p>
+                  </div>
+                </div>
+                <ul class="info-list">
+                  <li><span data-i18n="labelHospitalNumber">HN</span><strong>HN-2026-01983</strong></li>
+                  <li><span data-i18n="labelPrimaryDept">Primary Dept</span><strong data-i18n="deptIcu">ICU</strong></li>
+                  <li><span data-i18n="labelCareTeam">Care Team</span><strong>Ward A • Team 3</strong></li>
+                </ul>
+                <div class="tag-group">
+                  <span class="tag">EMR Core</span>
+                  <span class="tag">Labs</span>
+                  <span class="tag">Pharmacy</span>
+                </div>
+              </div>
+              <div class="panel span-7" data-reveal style="--delay: 0.2s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="medicalSummaryTitle">Medical Summary</h3>
+                    <p data-i18n="medicalSummaryDesc">Key diagnoses and monitoring focus.</p>
+                  </div>
+                </div>
+                <ul class="summary-list">
+                  <li data-i18n="medicalSummaryItem1">Type 2 diabetes, HbA1c 7.1% (last 30 days).</li>
+                  <li data-i18n="medicalSummaryItem2">Hypertension on amlodipine 5mg daily.</li>
+                  <li data-i18n="medicalSummaryItem3">ICU monitoring for respiratory support; SpO2 watch.</li>
+                </ul>
+              </div>
+              <div class="panel span-5" data-reveal style="--delay: 0.25s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="evidenceTitle">Evidence Traceback</h3>
+                    <p data-i18n="evidenceDesc">Linked sources for each summary.</p>
+                  </div>
+                </div>
+                <ul class="evidence-list">
+                  <li>
+                    <span data-i18n="evidenceItem1">Lab: HbA1c report (2026-05-03)</span>
+                    <button class="ghost small" type="button" data-i18n="actionOpen">Open</button>
+                  </li>
+                  <li>
+                    <span data-i18n="evidenceItem2">Medication list (2026-05-14)</span>
+                    <button class="ghost small" type="button" data-i18n="actionOpen">Open</button>
+                  </li>
+                  <li>
+                    <span data-i18n="evidenceItem3">ICU note: ventilation mode (2026-05-16)</span>
+                    <button class="ghost small" type="button" data-i18n="actionOpen">Open</button>
+                  </li>
+                  <li>
+                    <span data-i18n="evidenceItem4">Vitals trend (2026-05-18)</span>
+                    <button class="ghost small" type="button" data-i18n="actionOpen">Open</button>
+                  </li>
+                </ul>
+              </div>
+              <div class="panel span-12" data-reveal style="--delay: 0.3s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="profileTimelineTitle">Recent Timeline</h3>
+                    <p data-i18n="profileTimelineDesc">Latest care events across departments.</p>
+                  </div>
+                </div>
+                <ul class="timeline">
+                  <li>
+                    <div class="timeline-date">2026-05-20</div>
+                    <div class="timeline-content">
+                      <div class="timeline-title" data-i18n="profileTimelineItem1Title">
+                        ICU • Ventilator adjustment
+                      </div>
+                      <div class="timeline-detail" data-i18n="profileTimelineItem1Detail">
+                        Reduced PEEP, improved tidal volume.
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="timeline-date">2026-05-17</div>
+                    <div class="timeline-content">
+                      <div class="timeline-title" data-i18n="profileTimelineItem2Title">
+                        Lab • Arterial blood gas
+                      </div>
+                      <div class="timeline-detail" data-i18n="profileTimelineItem2Detail">
+                        pH 7.39, lactate normal.
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="timeline-date">2026-05-15</div>
+                    <div class="timeline-content">
+                      <div class="timeline-title" data-i18n="profileTimelineItem3Title">
+                        OPD • Diabetes consult
+                      </div>
+                      <div class="timeline-detail" data-i18n="profileTimelineItem3Detail">
+                        Medication adherence reinforced.
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="department-summary">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="deptSummaryTitle">Department AI Summary</h2>
+                <p data-i18n="deptSummarySubtitle">Generate department-specific summaries in EN/TH.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="staffOnly">Staff-only</span>
+                <span class="chip soft">AI v4.2</span>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-4" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="deptSelectLabel">Select department</h3>
+                    <p data-i18n="deptSummarySubtitle">Generate department-specific summaries in EN/TH.</p>
+                  </div>
+                </div>
+                <div class="form-stack">
+                  <label class="field">
+                    <span data-i18n="deptSelectLabel">Department</span>
+                    <select>
+                      <option data-i18n="deptRegistration">Registration</option>
+                      <option data-i18n="deptOpd">OPD</option>
+                      <option data-i18n="deptDiabetesClinic">Diabetes Clinic</option>
+                      <option data-i18n="deptHypertensionClinic">Hypertension Clinic</option>
+                      <option data-i18n="deptIcu">ICU</option>
+                      <option data-i18n="deptWard">Ward</option>
+                      <option data-i18n="deptAdmin">Admin</option>
+                    </select>
+                  </label>
+                  <button class="primary" type="button" data-i18n="deptGenerateBtn">
+                    Generate Summary
+                  </button>
+                </div>
+              </div>
+              <div class="panel span-8" data-reveal style="--delay: 0.1s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="summaryEnglishTitle">Summary (English)</h3>
+                    <p data-i18n="summaryThaiTitle">Summary (Thai)</p>
+                  </div>
+                </div>
+                <div class="summary-grid">
+                  <div class="summary-card">
+                    <h4 data-i18n="summaryEnglishTitle">Summary (English)</h4>
+                    <p data-i18n="summaryEnglishBody">
+                      ICU census stable. Two ventilated patients require PEEP adjustments. Pending ID
+                      verifications: 3 with high confidence, 1 rescan needed.
+                    </p>
+                  </div>
+                  <div class="summary-card">
+                    <h4 data-i18n="summaryThaiTitle">Summary (Thai)</h4>
+                    <p data-i18n="summaryThaiBody">
+                      จำนวนผู้ป่วย ICU คงที่ มีผู้ป่วยใช้เครื่องช่วยหายใจ 2 รายต้องปรับ PEEP
+                      คิวตรวจสอบบัตร 3 รายความมั่นใจสูง และ 1 รายต้องสแกนใหม่
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="panel span-12" data-reveal style="--delay: 0.15s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="summarySignalsTitle">Key signals</h3>
+                    <p data-i18n="summarySignalsDesc">Signals aggregated from EMR, labs, and ICU monitors.</p>
+                  </div>
+                </div>
+                <div class="tag-group">
+                  <span class="tag" data-i18n="summarySignal1">Ventilator alarms: 2</span>
+                  <span class="tag" data-i18n="summarySignal2">Pending verifications: 4</span>
+                  <span class="tag" data-i18n="summarySignal3">High-risk labs: 3</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="longitudinal">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="longTimelineTitle">Longitudinal Medical Timeline</h2>
+                <p data-i18n="longTimelineSubtitle">Patient events across rolling 60-day periods.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="staffOnly">Staff-only</span>
+                <span class="chip soft">60-day view</span>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-12" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="timelineTitle">Timeline Windows</h3>
+                    <p data-i18n="timelineDesc">Vitals, labs, diagnoses, medications, comorbidities.</p>
+                  </div>
+                </div>
+                <div class="period-grid">
+                  <div class="period-card">
+                    <div class="period-title" data-i18n="periodTitle1">Days 0 - 60</div>
+                    <ul class="detail-list">
+                      <li><span data-i18n="timelineVitals">Vitals</span><strong data-i18n="period1Vitals">BP stable, SpO2 96%</strong></li>
+                      <li><span data-i18n="timelineLabs">Labs</span><strong data-i18n="period1Labs">HbA1c 7.1%, LDL 112</strong></li>
+                      <li><span data-i18n="timelineDiagnoses">Diagnoses</span><strong data-i18n="period1Diagnoses">DM2, HTN</strong></li>
+                      <li><span data-i18n="timelineMedications">Medications</span><strong data-i18n="period1Medications">Metformin, Amlodipine</strong></li>
+                      <li><span data-i18n="timelineComorbidities">Comorbidities</span><strong data-i18n="period1Comorbidities">Obesity</strong></li>
+                    </ul>
+                  </div>
+                  <div class="period-card">
+                    <div class="period-title" data-i18n="periodTitle2">Days 61 - 120</div>
+                    <ul class="detail-list">
+                      <li><span data-i18n="timelineVitals">Vitals</span><strong data-i18n="period2Vitals">SpO2 94%, RR elevated</strong></li>
+                      <li><span data-i18n="timelineLabs">Labs</span><strong data-i18n="period2Labs">CRP 8 mg/L, WBC 11k</strong></li>
+                      <li><span data-i18n="timelineDiagnoses">Diagnoses</span><strong data-i18n="period2Diagnoses">Pneumonia</strong></li>
+                      <li><span data-i18n="timelineMedications">Medications</span><strong data-i18n="period2Medications">Ceftriaxone, O2</strong></li>
+                      <li><span data-i18n="timelineComorbidities">Comorbidities</span><strong data-i18n="period2Comorbidities">DM2, HTN</strong></li>
+                    </ul>
+                  </div>
+                  <div class="period-card">
+                    <div class="period-title" data-i18n="periodTitle3">Days 121 - 180</div>
+                    <ul class="detail-list">
+                      <li><span data-i18n="timelineVitals">Vitals</span><strong data-i18n="period3Vitals">Ventilator support, PEEP 8</strong></li>
+                      <li><span data-i18n="timelineLabs">Labs</span><strong data-i18n="period3Labs">ABG normal, lactate 1.2</strong></li>
+                      <li><span data-i18n="timelineDiagnoses">Diagnoses</span><strong data-i18n="period3Diagnoses">Respiratory failure</strong></li>
+                      <li><span data-i18n="timelineMedications">Medications</span><strong data-i18n="period3Medications">Sedation, insulin</strong></li>
+                      <li><span data-i18n="timelineComorbidities">Comorbidities</span><strong data-i18n="period3Comorbidities">DM2, HTN</strong></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="icu-analysis">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="icuTitle">ICU Ventilator Analysis</h2>
+                <p data-i18n="icuSubtitle">Analyze ventilator JSON/CSV and waveform evidence.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="deptIcu">ICU</span>
+                <span class="chip soft">Waveform v2</span>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-4" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="icuDataSourceTitle">Data Source</h3>
+                    <p data-i18n="icuDataSourceDesc">Upload or load ICU ventilator data.</p>
+                  </div>
+                </div>
+                <div class="button-row">
+                  <button class="secondary" type="button" data-i18n="icuUploadBtn">Upload JSON/CSV</button>
+                  <button class="ghost" type="button" data-i18n="icuLoadSampleBtn">Load Sample</button>
+                </div>
+                <ul class="detail-list">
+                  <li><span data-i18n="icuDataPatient">Patient</span><strong>HN-2026-01983</strong></li>
+                  <li><span data-i18n="icuDataDevice">Device</span><strong>Servo-i #A12</strong></li>
+                  <li><span data-i18n="icuDataTimeRange">Time Range</span><strong>06:00 - 08:00</strong></li>
+                </ul>
+              </div>
+
+              <div class="panel span-8" data-reveal style="--delay: 0.1s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="icuWaveTitle">Waveform Summary</h3>
+                    <p data-i18n="icuWaveDesc">Flow, pressure, and volume trends.</p>
+                  </div>
+                </div>
+                <div class="wave-grid">
+                  <div class="wave-card">
+                    <div class="wave-head">
+                      <span data-i18n="waveFlow">Flow</span>
+                      <span class="pill" data-i18n="waveFlowStatus">Stable</span>
+                    </div>
+                    <div class="sparkline"></div>
+                    <p data-i18n="waveNoteFlow">Minor flow limitation, improved after 07:20.</p>
+                  </div>
+                  <div class="wave-card">
+                    <div class="wave-head">
+                      <span data-i18n="wavePressure">Pressure</span>
+                      <span class="pill warning" data-i18n="wavePressureStatus">Watch</span>
+                    </div>
+                    <div class="sparkline"></div>
+                    <p data-i18n="waveNotePressure">Peak pressure elevated for 12 minutes.</p>
+                  </div>
+                  <div class="wave-card">
+                    <div class="wave-head">
+                      <span data-i18n="waveVolume">Volume</span>
+                      <span class="pill" data-i18n="waveVolumeStatus">Stable</span>
+                    </div>
+                    <div class="sparkline"></div>
+                    <p data-i18n="waveNoteVolume">Tidal volume within target range.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel span-7" data-reveal style="--delay: 0.15s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="icuAbnormalTitle">Abnormal Pattern Notes</h3>
+                    <p data-i18n="icuAbnormalDesc">Detected from waveform analysis.</p>
+                  </div>
+                </div>
+                <ul class="alert-list">
+                  <li>
+                    <div>
+                      <div class="alert-title" data-i18n="icuAbnormalItem1">Auto-PEEP risk detected.</div>
+                      <div class="alert-detail">Minute 22-27</div>
+                    </div>
+                    <span class="pill warning" data-i18n="alertLevelIcu">ICU</span>
+                  </li>
+                  <li>
+                    <div>
+                      <div class="alert-title" data-i18n="icuAbnormalItem2">Pressure spike above 35 cmH2O.</div>
+                      <div class="alert-detail">Minute 31</div>
+                    </div>
+                    <span class="pill danger" data-i18n="alertLevelIcu">ICU</span>
+                  </li>
+                  <li>
+                    <div>
+                      <div class="alert-title" data-i18n="icuAbnormalItem3">Flow drop during suction event.</div>
+                      <div class="alert-detail">Minute 44</div>
+                    </div>
+                    <span class="pill" data-i18n="alertLevelIcu">ICU</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="panel span-5" data-reveal style="--delay: 0.2s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="icuEvidenceTitle">Evidence from Original Data</h3>
+                    <p data-i18n="icuEvidenceDesc">Linked JSON/CSV excerpts.</p>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th data-i18n="icuEvidenceColumnTime">Time</th>
+                        <th data-i18n="icuEvidenceColumnSource">Source</th>
+                        <th data-i18n="icuEvidenceColumnSnippet">Snippet</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>07:22</td>
+                        <td>Flow CSV</td>
+                        <td>Flow=-12.4, PEEP=8</td>
+                      </tr>
+                      <tr>
+                        <td>07:31</td>
+                        <td>Pressure CSV</td>
+                        <td>PIP=36.2, RR=18</td>
+                      </tr>
+                      <tr>
+                        <td>07:44</td>
+                        <td>Volume CSV</td>
+                        <td>VT=390, Leak=8%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="standards">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="standardsTitle">Data Localization &amp; Standards</h2>
+                <p data-i18n="standardsSubtitle">Mapping ICD-10, HL7, and FHIR to local fields.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="staffOnly">Staff-only</span>
+                <span class="chip soft">FHIR R4</span>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-12" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="standardsConceptTitle">Standards Concept Map</h3>
+                    <p data-i18n="standardsConceptDesc">How local data maps into global standards.</p>
+                  </div>
+                </div>
+                <div class="interop-grid">
+                  <div class="interop-card">
+                    <h3 data-i18n="standardsIcdTitle">ICD-10</h3>
+                    <p data-i18n="standardsIcdDesc">Local diagnosis text mapped to ICD-10 codes.</p>
+                  </div>
+                  <div class="interop-card">
+                    <h3 data-i18n="standardsHl7Title">HL7</h3>
+                    <p data-i18n="standardsHl7Desc">ADT/ORM/ORU feeds normalized for EMR sync.</p>
+                  </div>
+                  <div class="interop-card">
+                    <h3 data-i18n="standardsFhirTitle">FHIR</h3>
+                    <p data-i18n="standardsFhirDesc">Patient, Observation, Medication resources.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="panel span-7" data-reveal style="--delay: 0.1s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="localMappingTitle">Local Field Mapping</h3>
+                    <p data-i18n="localMappingDesc">Hospital data dictionary to standards.</p>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th data-i18n="mapTableLocalField">Local Field</th>
+                        <th data-i18n="mapTableStandard">Standard Mapping</th>
+                        <th data-i18n="mapTableNotes">Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>local_dx_text</td>
+                        <td>ICD-10.code</td>
+                        <td>Text normalization + ICD lookup</td>
+                      </tr>
+                      <tr>
+                        <td>hn</td>
+                        <td>FHIR.Patient.identifier</td>
+                        <td>Hospital number mapping</td>
+                      </tr>
+                      <tr>
+                        <td>vital_bp</td>
+                        <td>FHIR.Observation</td>
+                        <td>LOINC 85354-9</td>
+                      </tr>
+                      <tr>
+                        <td>med_order</td>
+                        <td>FHIR.MedicationRequest</td>
+                        <td>Route + dose normalized</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="panel span-5" data-reveal style="--delay: 0.15s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="mappingExampleTitle">Example: Local → ICD-10</h3>
+                    <p data-i18n="mappingExampleDesc">Diagnosis text converted to standard code.</p>
+                  </div>
+                </div>
+                <ul class="detail-list">
+                  <li><span data-i18n="mappingExampleLocal">Local</span><strong>"เบาหวานชนิดที่ 2"</strong></li>
+                  <li><span data-i18n="mappingExampleIcd">ICD-10</span><strong>E11.9</strong></li>
+                </ul>
+              </div>
+              <div class="panel span-12" data-reveal style="--delay: 0.2s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="fhirExampleTitle">Example: Local EMR → FHIR</h3>
+                    <p data-i18n="fhirExampleDesc">Patient + Observation + Medication resources.</p>
+                  </div>
+                </div>
+                <pre class="code-block"><code>{
+  "resourceType": "Patient",
+  "identifier": [{ "system": "hospital-hn", "value": "HN-2026-01983" }],
+  "name": [{ "text": "Pranee Kittikul" }]
+}
+
+{
+  "resourceType": "Observation",
+  "code": { "text": "Blood Pressure" },
+  "valueString": "128/82"
+}
+
+{
+  "resourceType": "MedicationRequest",
+  "medicationCodeableConcept": { "text": "Metformin 500mg" }
+}</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="admin">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="adminTitle">Admin Settings</h2>
+                <p data-i18n="adminSubtitle">Manage departments, roles, languages, and mappings.</p>
+              </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="deptAdmin">Admin</span>
+                <span class="chip soft">Config v1</span>
+              </div>
+            </div>
+            <div class="page-grid">
+              <div class="panel span-4" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="adminDeptTitle">Manage Departments</h3>
+                    <p data-i18n="adminDeptDesc">Enable, rename, or reorder departments.</p>
+                  </div>
+                </div>
+                <ul class="detail-list">
+                  <li>Registration</li>
+                  <li>OPD</li>
+                  <li>Diabetes Clinic</li>
+                  <li>Hypertension Clinic</li>
+                  <li>ICU</li>
+                </ul>
+                <button class="ghost small" type="button" data-i18n="adminActionAddDept">Add Department</button>
+              </div>
+              <div class="panel span-4" data-reveal style="--delay: 0.1s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="adminRoleTitle">Manage User Roles</h3>
+                    <p data-i18n="adminRoleDesc">Configure access levels and permissions.</p>
+                  </div>
+                </div>
+                <ul class="detail-list">
+                  <li>Registration Staff</li>
+                  <li>Doctor</li>
+                  <li>Nurse</li>
+                  <li>ICU Staff</li>
+                  <li>Admin</li>
+                </ul>
+                <button class="ghost small" type="button" data-i18n="adminActionAddRole">Add Role</button>
+              </div>
+              <div class="panel span-4" data-reveal style="--delay: 0.15s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="adminLangTitle">Manage Language</h3>
+                    <p data-i18n="adminLangDesc">Default UI language and terminology.</p>
+                  </div>
+                </div>
+                <div class="form-stack">
+                  <label class="field">
+                    <span data-i18n="adminLangLabel">Default Language</span>
+                    <select>
+                      <option>English</option>
+                      <option>ไทย</option>
+                    </select>
+                  </label>
+                  <button class="primary" type="button" data-i18n="adminActionSaveLang">Save Language</button>
+                </div>
+              </div>
+              <div class="panel span-12" data-reveal style="--delay: 0.2s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="adminMappingTitle">Manage Hospital Data Mapping</h3>
+                    <p data-i18n="adminMappingDesc">Update local-to-standard mappings.</p>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th data-i18n="mapTableLocalField">Local Field</th>
+                        <th data-i18n="mapTableStandard">Standard Mapping</th>
+                        <th data-i18n="mapTableNotes">Notes</th>
+                        <th data-i18n="tableRecordAction">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>local_dx_text</td>
+                        <td>ICD-10.code</td>
+                        <td>Synonym dictionary active</td>
+                        <td><button class="ghost small" type="button" data-i18n="adminActionEdit">Edit</button></td>
+                      </tr>
+                      <tr>
+                        <td>vital_bp</td>
+                        <td>FHIR.Observation</td>
+                        <td>LOINC 85354-9</td>
+                        <td><button class="ghost small" type="button" data-i18n="adminActionEdit">Edit</button></td>
+                      </tr>
+                      <tr>
+                        <td>med_order</td>
+                        <td>FHIR.MedicationRequest</td>
+                        <td>Route normalization required</td>
+                        <td><button class="ghost small" type="button" data-i18n="adminActionEdit">Edit</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
