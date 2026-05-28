@@ -919,141 +919,167 @@
           </section>
 
           <section class="page" data-page="verification">
+
+            <!-- ── Safety Banner ─────────────────────────────────────── -->
+            <div class="vq-safety-banner" role="alert">
+              <div class="vq-safety-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2L3 7v5c0 5.2 3.8 10.1 9 11 5.2-.9 9-5.8 9-11V7L12 2z"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <circle cx="12" cy="16" r="0.6" fill="#b7791f" stroke="none"/>
+                </svg>
+              </div>
+              <div class="vq-safety-text">
+                <span class="vq-safety-label">⚠ Human Review Required / ต้องมีการตรวจสอบโดยบุคลากร</span>
+                <p class="vq-safety-en" data-i18n="vqSafetyEn">AI extracted data must be reviewed and approved by authorized hospital staff before becoming part of the official EMR.</p>
+                <p class="vq-safety-th" data-i18n="vqSafetyTh">ข้อมูลที่ AI/OCR ดึงออกมาต้องได้รับการตรวจสอบและอนุมัติจากบุคลากรโรงพยาบาลที่ได้รับอนุญาตก่อน จึงจะถือเป็นส่วนหนึ่งของเวชระเบียนอย่างเป็นทางการ</p>
+              </div>
+            </div>
+
+            <!-- ── Page Header ────────────────────────────────────────── -->
             <div class="page-header">
               <div>
                 <h2 data-i18n="verificationTitle">Verification Queue</h2>
-                <p data-i18n="verificationSubtitle">Compare OCR data with editable fields.</p>
+                <p data-i18n="vqSubtitle">Review OCR-extracted patient identity records before updating the official EMR.</p>
               </div>
-              <div class="chip-group">
-                <span class="chip" data-i18n="statusPending">Pending</span>
-                <span class="chip soft" data-i18n="statusNeedsReview">Needs Review</span>
-              </div>
+              <div class="chip-group" id="vqHeaderChips"></div>
             </div>
-            <div class="page-grid">
-              <div class="panel span-5" data-reveal style="--delay: 0.05s">
+
+            <!-- ── Stats Row ──────────────────────────────────────────── -->
+            <div class="vq-stats-row" id="vqStatsRow"></div>
+
+            <!-- ── Main Layout ────────────────────────────────────────── -->
+            <div class="vq-main-layout">
+
+              <!-- Left: Queue Table -->
+              <div class="panel vq-queue-panel">
                 <div class="panel-head">
                   <div>
-                    <h3 data-i18n="pendingListTitle">Pending Scanned IDs</h3>
-                    <p data-i18n="pendingListDesc">Sort by department and urgency.</p>
+                    <h3 data-i18n="vqQueueTitle">Patient Identity Records</h3>
+                    <p data-i18n="vqQueueDesc">Scans awaiting staff verification.</p>
                   </div>
-                  <button class="ghost small" type="button" data-i18n="queueFilter">Filter</button>
                 </div>
+                <div class="vq-filter-bar" id="vqFilterBar" role="group" aria-label="Filter by status"></div>
                 <div class="table-wrap">
-                  <table>
+                  <table class="vq-table">
                     <thead>
                       <tr>
-                        <th data-i18n="tableQueueId">Queue ID</th>
-                        <th data-i18n="tablePatient">Patient</th>
-                        <th data-i18n="tableStatus">Status</th>
-                        <th data-i18n="tableAssigned">Assigned</th>
-                        <th data-i18n="tableAction">Action</th>
+                        <th data-i18n="vqColPatient">Patient</th>
+                        <th data-i18n="vqColThaiId">Thai National ID</th>
+                        <th data-i18n="vqColScanTime">Scan Time</th>
+                        <th data-i18n="vqColConfidence">OCR %</th>
+                        <th data-i18n="vqColStatus">Status</th>
+                        <th data-i18n="vqColAssigned">Assigned</th>
+                        <th data-i18n="vqColAction">Action</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>#Q-2143</td>
-                        <td>Kanok P.</td>
-                        <td><span class="status-pill pending" data-i18n="statusPending">Pending</span></td>
-                        <td>Reg Desk 2</td>
-                        <td><button class="ghost small" type="button" data-i18n="actionReview">Review</button></td>
-                      </tr>
-                      <tr>
-                        <td>#Q-2139</td>
-                        <td>Pisut R.</td>
-                        <td><span class="status-pill review" data-i18n="statusNeedsReview">Needs Review</span></td>
-                        <td>ICU Front</td>
-                        <td><button class="ghost small" type="button" data-i18n="actionReview">Review</button></td>
-                      </tr>
-                      <tr>
-                        <td>#Q-2134</td>
-                        <td>Mali S.</td>
-                        <td><span class="status-pill escalated" data-i18n="statusEscalated">Escalated</span></td>
-                        <td>Ward A</td>
-                        <td><button class="ghost small" type="button" data-i18n="actionReview">Review</button></td>
-                      </tr>
-                    </tbody>
+                    <tbody id="vqTableBody"></tbody>
                   </table>
                 </div>
               </div>
 
-              <div class="panel span-7" data-reveal style="--delay: 0.1s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="compareTitle">Compare OCR vs Editable Fields</h3>
-                    <p data-i18n="compareDesc">Verify fields before approval.</p>
+              <!-- Right: Detail Panel -->
+              <div class="vq-detail-panel" id="vqDetailPanel">
+
+                <!-- Empty state -->
+                <div class="vq-detail-empty" id="vqDetailEmpty">
+                  <div class="vq-empty-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
                   </div>
+                  <p data-i18n="vqSelectPrompt">Select a record from the queue to begin review</p>
                 </div>
-                <div class="compare-grid">
-                  <div class="compare-col">
-                    <h4 data-i18n="compareExtractedTitle">Extracted OCR Data</h4>
-                    <ul class="detail-list">
-                      <li><span data-i18n="ocrFieldId">Thai ID</span><strong>1101700234567</strong></li>
-                      <li><span data-i18n="ocrFieldName">Name</span><strong>Pranee Kittikul</strong></li>
-                      <li><span data-i18n="ocrFieldDob">DOB</span><strong>1991-09-23</strong></li>
-                      <li><span data-i18n="ocrFieldAddress">Address</span><strong>Bang Kapi, Bangkok</strong></li>
-                    </ul>
-                  </div>
-                  <div class="compare-col">
-                    <h4 data-i18n="compareEditableTitle">Editable Fields</h4>
-                    <div class="form-grid">
-                      <label class="field">
-                        <span data-i18n="fieldThaiId">Thai ID</span>
-                        <input type="text" value="1101700234567" />
-                      </label>
-                      <label class="field">
-                        <span data-i18n="fieldFullName">Full Name</span>
-                        <input type="text" value="Pranee Kittikul" />
-                      </label>
-                      <label class="field">
-                        <span data-i18n="fieldDob">DOB</span>
-                        <input type="text" value="1991-09-23" />
-                      </label>
-                      <label class="field">
-                        <span data-i18n="fieldPhone">Phone</span>
-                        <input type="text" value="086-321-3342" />
-                      </label>
-                      <label class="field span-2">
-                        <span data-i18n="fieldAddress">Address</span>
-                        <input type="text" value="Bang Kapi, Bangkok" />
-                      </label>
+
+                <!-- Record review content -->
+                <div class="vq-detail-content" id="vqDetailContent" hidden>
+
+                  <!-- 1. ID Card Image -->
+                  <div class="panel vq-review-section">
+                    <div class="vq-section-header">
+                      <span class="vq-section-num" aria-hidden="true">1</span>
+                      <div>
+                        <h3 data-i18n="vqSection1">Original ID Card Image</h3>
+                        <p data-i18n="vqSection1Desc">Scanned image received from registration desk.</p>
+                      </div>
                     </div>
+                    <div id="vqIdCardWrap" class="vq-id-card-wrap"></div>
                   </div>
+
+                  <!-- 2. OCR Extracted Data -->
+                  <div class="panel vq-review-section">
+                    <div class="vq-section-header">
+                      <span class="vq-section-num" aria-hidden="true">2</span>
+                      <div>
+                        <h3 data-i18n="vqSection2">OCR Extracted Data</h3>
+                        <p data-i18n="vqSection2Desc">Automatically extracted — not yet verified by staff.</p>
+                      </div>
+                    </div>
+                    <div id="vqOcrBar"></div>
+                    <div id="vqOcrGrid" class="vq-ocr-grid"></div>
+                  </div>
+
+                  <!-- 3. Confirmation Form -->
+                  <div class="panel vq-review-section">
+                    <div class="vq-section-header">
+                      <span class="vq-section-num" aria-hidden="true">3</span>
+                      <div>
+                        <h3 data-i18n="vqSection3">Editable Confirmation Form</h3>
+                        <p data-i18n="vqSection3Desc">Correct any errors before approving.</p>
+                      </div>
+                    </div>
+                    <div class="vq-inline-alert" role="note">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                      <span data-i18n="vqEditHint">Edit any field. All changes are logged with your staff ID.</span>
+                    </div>
+                    <div id="vqConfirmForm" class="vq-confirm-form"></div>
+                  </div>
+
+                  <!-- 4. Patient Matches -->
+                  <div class="panel vq-review-section">
+                    <div class="vq-section-header">
+                      <span class="vq-section-num" aria-hidden="true">4</span>
+                      <div>
+                        <h3 data-i18n="vqSection4">Possible Patient Matches</h3>
+                        <p data-i18n="vqSection4Desc">Based on Thai ID, name, DOB, HN, and phone number.</p>
+                      </div>
+                    </div>
+                    <div id="vqMatchResults"></div>
+                  </div>
+
+                  <!-- 5. Approval Controls -->
+                  <div class="panel vq-review-section vq-approval-panel">
+                    <div class="vq-section-header">
+                      <span class="vq-section-num" aria-hidden="true">5</span>
+                      <div>
+                        <h3 data-i18n="vqSection5">Approval Controls</h3>
+                        <p data-i18n="vqSection5Desc">Your decision is final and logged to the audit trail.</p>
+                      </div>
+                    </div>
+                    <div id="vqApprovalGrid" class="vq-approval-grid"></div>
+                    <p class="vq-audit-note" data-i18n="vqAuditNote">Your decision will be recorded with your staff ID, station, and timestamp.</p>
+                  </div>
+
+                </div><!-- /vq-detail-content -->
+              </div><!-- /vq-detail-panel -->
+            </div><!-- /vq-main-layout -->
+
+            <!-- ── Confirmation Dialog ────────────────────────────────── -->
+            <div class="vq-dialog-overlay" id="vqDialogOverlay" role="dialog" aria-modal="true" aria-labelledby="vqDialogTitle" hidden>
+              <div class="vq-dialog">
+                <div class="vq-dialog-icon" id="vqDialogIcon" aria-hidden="true"></div>
+                <h3 id="vqDialogTitle"></h3>
+                <p id="vqDialogBody"></p>
+                <div class="vq-dialog-reason" id="vqDialogReasonWrap" hidden>
+                  <textarea id="vqDialogReason" rows="2" data-i18n-placeholder="vqReasonPlaceholder"></textarea>
                 </div>
                 <div class="button-row">
-                  <button class="primary" type="button" data-i18n="approveBtn">Approve</button>
-                  <button class="ghost" type="button" data-i18n="rejectBtn">Reject</button>
-                  <button class="secondary" type="button" data-i18n="rescanBtn">Request Rescan</button>
-                </div>
-              </div>
-
-              <div class="panel span-12" data-reveal style="--delay: 0.15s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="matchTitle">Match with Existing Profile</h3>
-                    <p data-i18n="matchDesc">Match with existing patient profile or create new.</p>
-                  </div>
-                </div>
-                <div class="match-card">
-                  <div class="match-row">
-                    <div>
-                      <div class="match-label" data-i18n="matchScore">Match Confidence</div>
-                      <div class="match-value">94%</div>
-                    </div>
-                    <div class="match-badge" data-i18n="matchFound">Match Found</div>
-                  </div>
-                  <div class="match-row">
-                    <div>
-                      <div class="match-label" data-i18n="matchLastVisit">Last Visit</div>
-                      <div class="match-sub">2026-04-21 • OPD</div>
-                    </div>
-                  </div>
-                  <div class="button-row">
-                    <button class="primary" type="button" data-i18n="matchBtn">Match Profile</button>
-                    <button class="ghost" type="button" data-i18n="createBtn">Create Profile</button>
-                  </div>
+                  <button class="primary" type="button" id="vqDialogConfirm"></button>
+                  <button class="ghost" type="button" id="vqDialogCancel" data-i18n="vqBtnCancel">Cancel</button>
                 </div>
               </div>
             </div>
+
           </section>
 
           <section class="page" data-page="profile">

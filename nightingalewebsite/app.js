@@ -403,7 +403,93 @@ const translations = {
     adminActionSaveLang: "Save Language",
     adminMappingTitle: "Manage Hospital Data Mapping",
     adminMappingDesc: "Update local-to-standard mappings.",
-    adminActionEdit: "Edit"
+    adminActionEdit: "Edit",
+    vqSubtitle: "Review OCR-extracted patient identity records before updating the official EMR.",
+    vqSafetyEn: "AI extracted data must be reviewed and approved by authorized hospital staff before becoming part of the official EMR.",
+    vqSafetyTh: "ข้อมูลที่ AI/OCR ดึงออกมาต้องได้รับการตรวจสอบและอนุมัติจากบุคลากรโรงพยาบาลที่ได้รับอนุญาตก่อน จึงจะถือเป็นส่วนหนึ่งของเวชระเบียนอย่างเป็นทางการ",
+    vqQueueTitle: "Patient Identity Records",
+    vqQueueDesc: "Scans awaiting staff verification.",
+    vqStatTotal: "Total Records",
+    vqStatPending: "Pending",
+    vqStatNeedsRescan: "Needs Rescan",
+    vqStatApproved: "Approved Today",
+    vqStatRejected: "Rejected",
+    vqFilterAll: "All",
+    vqFilterPending: "Pending",
+    vqFilterNeedsRescan: "Needs Rescan",
+    vqFilterApproved: "Approved",
+    vqFilterRejected: "Rejected",
+    vqColPatient: "Patient",
+    vqColThaiId: "Thai National ID",
+    vqColScanTime: "Scan Time",
+    vqColConfidence: "OCR %",
+    vqColStatus: "Status",
+    vqColAssigned: "Assigned",
+    vqColAction: "Action",
+    vqStatusPending: "Pending",
+    vqStatusApproved: "Approved",
+    vqStatusRejected: "Rejected",
+    vqStatusNeedsRescan: "Needs Rescan",
+    vqBtnReview: "Review",
+    vqSelectPrompt: "Select a record from the queue to begin review",
+    vqSection1: "Original ID Card Image",
+    vqSection1Desc: "Scanned image received from registration desk.",
+    vqSection2: "OCR Extracted Data",
+    vqSection2Desc: "Automatically extracted — not yet verified by staff.",
+    vqSection3: "Editable Confirmation Form",
+    vqSection3Desc: "Correct any errors before approving.",
+    vqSection4: "Possible Patient Matches",
+    vqSection4Desc: "Based on Thai ID, name, DOB, HN, and phone number.",
+    vqSection5: "Approval Controls",
+    vqSection5Desc: "Your decision is final and logged to the audit trail.",
+    vqEditHint: "Edit any field. All changes are logged with your staff ID.",
+    vqOcrConfLabel: "OCR Confidence",
+    vqOcrHigh: "High",
+    vqOcrMedium: "Medium",
+    vqOcrLow: "Low",
+    vqFieldThaiId: "Thai National ID",
+    vqFieldThaiName: "Thai Full Name",
+    vqFieldEnName: "English Full Name",
+    vqFieldDob: "Date of Birth",
+    vqFieldGender: "Gender",
+    vqFieldAddress: "Address",
+    vqFieldPhone: "Phone",
+    vqFieldDept: "Department",
+    vqFieldNotes: "Staff Notes",
+    vqMatchHn: "HN",
+    vqMatchLastVisit: "Last Visit",
+    vqMatchScore: "Match Score",
+    vqMatchFields: "Matched on",
+    vqMatchDept: "Dept",
+    vqBtnSelectMatch: "Select",
+    vqMatchSelected: "✓ Selected",
+    vqNoMatches: "No existing patient matches found. A new patient profile will be created upon approval.",
+    vqBtnApproveNew: "Approve & Create New Patient Profile",
+    vqBtnApproveMatch: "Approve & Link to Matched Profile",
+    vqBtnEditFields: "Edit Incorrect Fields",
+    vqBtnReject: "Reject Record",
+    vqBtnRescan: "Request Rescan",
+    vqAuditNote: "Your decision will be recorded with your staff ID, station, and timestamp.",
+    vqBtnCancel: "Cancel",
+    vqDialogApproveNewTitle: "Create New Patient Profile",
+    vqDialogApproveNewBody: "This will create a new official patient record in the EMR. This action cannot be undone.",
+    vqDialogApproveMatchTitle: "Link to Existing Profile",
+    vqDialogApproveMatchBody: "This will link the verified OCR data to the selected existing patient profile.",
+    vqDialogRejectTitle: "Reject This Record",
+    vqDialogRejectBody: "This record will be marked as rejected. The patient may need to re-register.",
+    vqDialogRescanTitle: "Request Rescan",
+    vqDialogRescanBody: "The patient will be directed to rescan their Thai ID card.",
+    vqDialogConfirm: "Confirm",
+    vqReasonPlaceholder: "Enter reason (optional)...",
+    vqToastApproveNew: "Patient profile created successfully.",
+    vqToastApproveMatch: "Record linked to existing profile.",
+    vqToastReject: "Record rejected and flagged.",
+    vqToastRescan: "Rescan requested.",
+    vqDescApproveNew: "Create a new official EMR record for this patient.",
+    vqDescApproveMatch: "Link to the selected existing patient profile.",
+    vqDescEditFields: "Scroll up to the form to correct any fields.",
+    vqDescReject: "Flag this record as invalid or unreadable.",
+    vqDescRescan: "Send back for a clearer ID card scan."
   },
   th: {
     pageTitle: "แดชบอร์ดบุคลากรโรงพยาบาล Nightingale",
@@ -808,7 +894,93 @@ const translations = {
     adminActionSaveLang: "บันทึกภาษา",
     adminMappingTitle: "จัดการการแมปข้อมูลโรงพยาบาล",
     adminMappingDesc: "อัปเดตการแมประหว่างข้อมูลท้องถิ่นและมาตรฐาน",
-    adminActionEdit: "แก้ไข"
+    adminActionEdit: "แก้ไข",
+    vqSubtitle: "ตรวจสอบข้อมูลตัวตนผู้ป่วยที่ AI/OCR ดึงออกมาก่อนอัปเดตเวชระเบียนอย่างเป็นทางการ",
+    vqSafetyEn: "AI extracted data must be reviewed and approved by authorized hospital staff before becoming part of the official EMR.",
+    vqSafetyTh: "ข้อมูลที่ AI/OCR ดึงออกมาต้องได้รับการตรวจสอบและอนุมัติจากบุคลากรโรงพยาบาลที่ได้รับอนุญาตก่อน จึงจะถือเป็นส่วนหนึ่งของเวชระเบียนอย่างเป็นทางการ",
+    vqQueueTitle: "รายการบัตรประจำตัวผู้ป่วย",
+    vqQueueDesc: "รายการที่รอการตรวจสอบจากเจ้าหน้าที่",
+    vqStatTotal: "รายการทั้งหมด",
+    vqStatPending: "รอดำเนินการ",
+    vqStatNeedsRescan: "ต้องสแกนใหม่",
+    vqStatApproved: "อนุมัติวันนี้",
+    vqStatRejected: "ปฏิเสธ",
+    vqFilterAll: "ทั้งหมด",
+    vqFilterPending: "รอดำเนินการ",
+    vqFilterNeedsRescan: "ต้องสแกนใหม่",
+    vqFilterApproved: "อนุมัติแล้ว",
+    vqFilterRejected: "ปฏิเสธ",
+    vqColPatient: "ผู้ป่วย",
+    vqColThaiId: "เลขบัตรประชาชน",
+    vqColScanTime: "เวลาสแกน",
+    vqColConfidence: "คะแนน OCR",
+    vqColStatus: "สถานะ",
+    vqColAssigned: "เจ้าหน้าที่",
+    vqColAction: "การทำงาน",
+    vqStatusPending: "รอดำเนินการ",
+    vqStatusApproved: "อนุมัติแล้ว",
+    vqStatusRejected: "ปฏิเสธ",
+    vqStatusNeedsRescan: "ต้องสแกนใหม่",
+    vqBtnReview: "ตรวจสอบ",
+    vqSelectPrompt: "เลือกรายการจากคิวเพื่อเริ่มตรวจสอบ",
+    vqSection1: "ภาพบัตรประชาชนต้นฉบับ",
+    vqSection1Desc: "ภาพสแกนที่ได้รับจากจุดลงทะเบียน",
+    vqSection2: "ข้อมูลที่ OCR ดึงออกมา",
+    vqSection2Desc: "ดึงข้อมูลโดยอัตโนมัติ — ยังไม่ผ่านการตรวจสอบจากเจ้าหน้าที่",
+    vqSection3: "แบบฟอร์มยืนยันที่แก้ไขได้",
+    vqSection3Desc: "แก้ไขข้อผิดพลาดก่อนอนุมัติ",
+    vqSection4: "รายชื่อผู้ป่วยที่อาจตรงกัน",
+    vqSection4Desc: "จับคู่จากเลขบัตร ชื่อ วันเกิด HN และโทรศัพท์",
+    vqSection5: "การควบคุมการอนุมัติ",
+    vqSection5Desc: "การตัดสินใจของคุณจะถูกบันทึกในประวัติการตรวจสอบ",
+    vqEditHint: "แก้ไขข้อมูลได้ ทุกการเปลี่ยนแปลงจะถูกบันทึกด้วยรหัสเจ้าหน้าที่ของคุณ",
+    vqOcrConfLabel: "คะแนนความมั่นใจ OCR",
+    vqOcrHigh: "สูง",
+    vqOcrMedium: "กลาง",
+    vqOcrLow: "ต่ำ",
+    vqFieldThaiId: "เลขบัตรประชาชน",
+    vqFieldThaiName: "ชื่อ-นามสกุลภาษาไทย",
+    vqFieldEnName: "ชื่อ-นามสกุลภาษาอังกฤษ",
+    vqFieldDob: "วันเกิด",
+    vqFieldGender: "เพศ",
+    vqFieldAddress: "ที่อยู่",
+    vqFieldPhone: "โทรศัพท์",
+    vqFieldDept: "แผนก",
+    vqFieldNotes: "บันทึกเจ้าหน้าที่",
+    vqMatchHn: "เลข HN",
+    vqMatchLastVisit: "เข้ารับบริการล่าสุด",
+    vqMatchScore: "คะแนนการจับคู่",
+    vqMatchFields: "จับคู่จาก",
+    vqMatchDept: "แผนก",
+    vqBtnSelectMatch: "เลือก",
+    vqMatchSelected: "✓ เลือกแล้ว",
+    vqNoMatches: "ไม่พบโปรไฟล์ผู้ป่วยที่ตรงกัน จะสร้างโปรไฟล์ใหม่เมื่ออนุมัติ",
+    vqBtnApproveNew: "อนุมัติและสร้างโปรไฟล์ผู้ป่วยใหม่",
+    vqBtnApproveMatch: "อนุมัติและเชื่อมโยงกับโปรไฟล์ที่จับคู่ได้",
+    vqBtnEditFields: "แก้ไขข้อมูลที่ไม่ถูกต้อง",
+    vqBtnReject: "ปฏิเสธรายการนี้",
+    vqBtnRescan: "ขอสแกนใหม่",
+    vqAuditNote: "การตัดสินใจของคุณจะถูกบันทึกพร้อมรหัสเจ้าหน้าที่ สถานี และเวลา",
+    vqBtnCancel: "ยกเลิก",
+    vqDialogApproveNewTitle: "สร้างโปรไฟล์ผู้ป่วยใหม่",
+    vqDialogApproveNewBody: "การดำเนินการนี้จะสร้างบันทึกผู้ป่วยอย่างเป็นทางการใหม่ใน EMR ไม่สามารถยกเลิกได้",
+    vqDialogApproveMatchTitle: "เชื่อมโยงกับโปรไฟล์ที่มีอยู่",
+    vqDialogApproveMatchBody: "การดำเนินการนี้จะเชื่อมโยงข้อมูลที่ตรวจสอบแล้วกับโปรไฟล์ผู้ป่วยที่มีอยู่",
+    vqDialogRejectTitle: "ปฏิเสธรายการนี้",
+    vqDialogRejectBody: "รายการนี้จะถูกทำเครื่องหมายว่าปฏิเสธ ผู้ป่วยอาจต้องลงทะเบียนใหม่",
+    vqDialogRescanTitle: "ขอสแกนใหม่",
+    vqDialogRescanBody: "ผู้ป่วยจะถูกขอให้สแกนบัตรประชาชนใหม่อีกครั้ง",
+    vqDialogConfirm: "ยืนยัน",
+    vqReasonPlaceholder: "ระบุเหตุผล (ไม่บังคับ)...",
+    vqToastApproveNew: "สร้างโปรไฟล์ผู้ป่วยสำเร็จ",
+    vqToastApproveMatch: "เชื่อมโยงรายการกับโปรไฟล์เดิมแล้ว",
+    vqToastReject: "ปฏิเสธและทำเครื่องหมายรายการแล้ว",
+    vqToastRescan: "ส่งคำขอสแกนใหม่แล้ว",
+    vqDescApproveNew: "สร้างบันทึกเวชระเบียนใหม่สำหรับผู้ป่วยรายนี้",
+    vqDescApproveMatch: "เชื่อมโยงกับโปรไฟล์ผู้ป่วยเดิมที่เลือก",
+    vqDescEditFields: "เลื่อนขึ้นไปที่แบบฟอร์มเพื่อแก้ไขข้อมูล",
+    vqDescReject: "ทำเครื่องหมายรายการนี้ว่าไม่ถูกต้องหรืออ่านไม่ได้",
+    vqDescRescan: "ส่งกลับเพื่อสแกนบัตรให้ชัดขึ้น"
   }
 };
 
@@ -874,6 +1046,7 @@ const toggleLanguage = () => {
   currentLang = currentLang === "en" ? "th" : "en";
   localStorage.setItem("nightingale-lang", currentLang);
   applyLanguage(currentLang);
+  window.dispatchEvent(new Event("nightingale-lang-change"));
 };
 
 const setupRegistrationForm = () => {
@@ -999,6 +1172,772 @@ const init = () => {
   document.body.classList.add("loaded");
 
   setupRegistrationForm();
+  setupVerificationQueue();
+};
+
+// ============================================================
+// VERIFICATION QUEUE
+// ============================================================
+
+// ── Mock Data ─────────────────────────────────────────────────
+const VQ_RECORDS = [
+  {
+    id: "Q-2143",
+    patientName: "Kanok Pornpan",
+    thaiName: "กนก พรพันธ์",
+    thaiId: "1 1017 00234 56 7",
+    scanTime: "2026-05-28 08:14",
+    ocrConfidence: 91,
+    status: "pending",
+    assignedTo: "Reg Desk 2",
+    department: "Registration",
+    dob: "1991-09-23",
+    gender: "Female",
+    address: "Bang Kapi, Bangkok 10240",
+    phone: "086-321-3342",
+    hn: null,
+    notes: "All fields extracted clearly. Photo quality good."
+  },
+  {
+    id: "Q-2139",
+    patientName: "Pisut Ruangsri",
+    thaiName: "พิสุทธิ์ เรืองศรี",
+    thaiId: "3 6701 00123 45 6",
+    scanTime: "2026-05-28 07:52",
+    ocrConfidence: 68,
+    status: "needs-rescan",
+    assignedTo: "ICU Front",
+    department: "ICU",
+    dob: "1978-03-15",
+    gender: "Male",
+    address: "Chatuchak, Bangkok 10900",
+    phone: "091-445-7821",
+    hn: "HN-2026-00892",
+    notes: "Photo glare detected. Name field confidence 68%. DOB unclear."
+  },
+  {
+    id: "Q-2134",
+    patientName: "Mali Saengda",
+    thaiName: "มาลี แสงดา",
+    thaiId: "1 3099 00456 78 9",
+    scanTime: "2026-05-28 07:31",
+    ocrConfidence: 85,
+    status: "pending",
+    assignedTo: "Ward A",
+    department: "Ward",
+    dob: "1965-11-07",
+    gender: "Female",
+    address: "Nong Khai Province 43000",
+    phone: "042-311-8820",
+    hn: null,
+    notes: "Possible duplicate detected against existing ICU profile."
+  },
+  {
+    id: "Q-2128",
+    patientName: "Somchai Thapkhan",
+    thaiName: "สมชาย ทับขัน",
+    thaiId: "1 1026 00789 01 2",
+    scanTime: "2026-05-28 06:55",
+    ocrConfidence: 96,
+    status: "approved",
+    assignedTo: "Reg Desk 1",
+    department: "OPD",
+    dob: "1982-06-30",
+    gender: "Male",
+    address: "Lat Phrao, Bangkok 10230",
+    phone: "089-776-3412",
+    hn: "HN-2026-01983",
+    notes: "Matched to existing OPD profile. HN confirmed."
+  },
+  {
+    id: "Q-2121",
+    patientName: "Wanida Kaewtip",
+    thaiName: "วนิดา แก้วทิพย์",
+    thaiId: "2 4501 00234 89 0",
+    scanTime: "2026-05-27 22:14",
+    ocrConfidence: 42,
+    status: "rejected",
+    assignedTo: "Night Staff",
+    department: "Emergency",
+    dob: "1999-02-14",
+    gender: "Female",
+    address: "Chiang Rai Province 57000",
+    phone: "053-714-2299",
+    hn: null,
+    notes: "Image too blurry. Key fields unreadable. ID number illegible."
+  },
+  {
+    id: "Q-2118",
+    patientName: "Arthit Boriban",
+    thaiName: "อาทิตย์ บอริบัน",
+    thaiId: "1 1999 00345 67 8",
+    scanTime: "2026-05-27 21:40",
+    ocrConfidence: 79,
+    status: "pending",
+    assignedTo: "Diabetes Clinic",
+    department: "Diabetes Clinic",
+    dob: "1970-08-19",
+    gender: "Male",
+    address: "Min Buri, Bangkok 10510",
+    phone: "085-229-0011",
+    hn: null,
+    notes: "DOB field confidence 76%. Address partially cut off at edge."
+  }
+];
+
+// ── Existing patient database for matching ────────────────────
+const VQ_EXISTING_PATIENTS = [
+  {
+    hn: "HN-2026-01983",
+    patientName: "Somchai Thapkhan",
+    thaiName: "สมชาย ทับขัน",
+    thaiId: "1 1026 00789 01 2",
+    dob: "1982-06-30",
+    phone: "089-776-3412",
+    department: "OPD",
+    lastVisit: "2026-05-14"
+  },
+  {
+    hn: "HN-2025-00781",
+    patientName: "Kanok Pornpan",
+    thaiName: "กนก พรพันธ์",
+    thaiId: "1 1017 00234 56 7",
+    dob: "1991-09-23",
+    phone: "086-100-9900",
+    department: "OPD",
+    lastVisit: "2026-03-08"
+  },
+  {
+    hn: "HN-2026-00892",
+    patientName: "Pisut Ruangsri",
+    thaiName: "พิสุทธิ์ เรืองศรี",
+    thaiId: "3 6701 00123 45 6",
+    dob: "1978-03-15",
+    phone: "091-445-7821",
+    department: "ICU",
+    lastVisit: "2026-05-20"
+  },
+  {
+    hn: "HN-2024-01234",
+    patientName: "Mali Sae-nga",
+    thaiName: "มาลี แสงงา",
+    thaiId: "1 3099 00456 79 0",
+    dob: "1965-11-07",
+    phone: "042-311-8820",
+    department: "Ward",
+    lastVisit: "2025-12-03"
+  }
+];
+
+// ── State ─────────────────────────────────────────────────────
+let vqCurrentFilter = "all";
+let vqSelectedRecordId = null;
+let vqSelectedMatchHn = null;
+let vqPendingAction = null;
+
+// ── Helpers ───────────────────────────────────────────────────
+const vqT = (key) => (translations[currentLang] || translations.en)[key] || key;
+
+const vqLevenshtein = (a, b) => {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, (_, i) => Array.from({ length: n + 1 }, (_, j) => (j === 0 ? i : 0)));
+  for (let j = 1; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+  return dp[m][n];
+};
+
+const vqStrSim = (a, b) => {
+  if (!a || !b) return 0;
+  a = a.toLowerCase().trim();
+  b = b.toLowerCase().trim();
+  if (a === b) return 1;
+  const longer = a.length > b.length ? a : b;
+  const shorter = a.length > b.length ? b : a;
+  return (longer.length - vqLevenshtein(longer, shorter)) / longer.length;
+};
+
+const vqNormalizeId = (id) => (id || "").replace(/[\s-]/g, "");
+
+const vqMatchPatients = (record) => {
+  return VQ_EXISTING_PATIENTS.map((ex) => {
+    let score = 0;
+    const matched = [];
+
+    // Thai ID exact match (50 pts) — strongest signal
+    if (vqNormalizeId(ex.thaiId) === vqNormalizeId(record.thaiId)) {
+      score += 50;
+      matched.push("Thai ID");
+    }
+
+    // Name similarity (20 pts)
+    const nameSim = vqStrSim(record.patientName, ex.patientName);
+    if (nameSim >= 0.85) { score += 20; matched.push("Full Name"); }
+    else if (nameSim >= 0.65) { score += 10; matched.push("Name (partial)"); }
+
+    // DOB exact (15 pts)
+    if (ex.dob && ex.dob === record.dob) { score += 15; matched.push("Date of Birth"); }
+
+    // Phone match (10 pts)
+    if (ex.phone && ex.phone === record.phone) { score += 10; matched.push("Phone"); }
+
+    // HN match (5 pts)
+    if (record.hn && ex.hn === record.hn) { score += 5; matched.push("HN"); }
+
+    return { ...ex, score: Math.min(score, 100), matched };
+  })
+    .filter((m) => m.score >= 10)
+    .sort((a, b) => b.score - a.score);
+};
+
+const vqConfLevel = (pct) => (pct >= 85 ? "high" : pct >= 70 ? "medium" : "low");
+
+const vqStatusPillHtml = (status) => {
+  const map = {
+    pending: ["pending", "vqStatusPending"],
+    approved: ["approved", "vqStatusApproved"],
+    rejected: ["rejected", "vqStatusRejected"],
+    "needs-rescan": ["needs-rescan", "vqStatusNeedsRescan"]
+  };
+  const [cls, key] = map[status] || ["pending", "vqStatusPending"];
+  return `<span class="status-pill ${cls}">${vqT(key)}</span>`;
+};
+
+const vqShowToast = (msg) => {
+  const existing = document.querySelector(".vq-toast");
+  if (existing) existing.remove();
+  const el = document.createElement("div");
+  el.className = "vq-toast";
+  el.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>${msg}`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+};
+
+// ── Render Stats Row ──────────────────────────────────────────
+const vqRenderStats = () => {
+  const row = document.getElementById("vqStatsRow");
+  if (!row) return;
+  const counts = { total: VQ_RECORDS.length, pending: 0, "needs-rescan": 0, approved: 0, rejected: 0 };
+  VQ_RECORDS.forEach((r) => { if (counts[r.status] !== undefined) counts[r.status]++; });
+
+  row.innerHTML = `
+    <div class="vq-stat">
+      <div class="vq-stat-label">${vqT("vqStatTotal")}</div>
+      <div class="vq-stat-value">${counts.total}</div>
+      <div class="vq-stat-sub gray">All records</div>
+    </div>
+    <div class="vq-stat">
+      <div class="vq-stat-label">${vqT("vqStatPending")}</div>
+      <div class="vq-stat-value">${counts.pending}</div>
+      <div class="vq-stat-sub blue">Awaiting review</div>
+    </div>
+    <div class="vq-stat">
+      <div class="vq-stat-label">${vqT("vqStatNeedsRescan")}</div>
+      <div class="vq-stat-value">${counts["needs-rescan"]}</div>
+      <div class="vq-stat-sub amber">Requires rescan</div>
+    </div>
+    <div class="vq-stat">
+      <div class="vq-stat-label">${vqT("vqStatApproved")}</div>
+      <div class="vq-stat-value">${counts.approved}</div>
+      <div class="vq-stat-sub green">Completed</div>
+    </div>
+    <div class="vq-stat">
+      <div class="vq-stat-label">${vqT("vqStatRejected")}</div>
+      <div class="vq-stat-value">${counts.rejected}</div>
+      <div class="vq-stat-sub coral">Flagged</div>
+    </div>`;
+
+  // Header chips
+  const chips = document.getElementById("vqHeaderChips");
+  if (chips) {
+    chips.innerHTML = `
+      <span class="chip">${counts.pending} ${vqT("vqStatPending")}</span>
+      <span class="chip soft">${counts["needs-rescan"]} ${vqT("vqStatNeedsRescan")}</span>`;
+  }
+};
+
+// ── Render Filter Bar ─────────────────────────────────────────
+const vqRenderFilters = () => {
+  const bar = document.getElementById("vqFilterBar");
+  if (!bar) return;
+  const filters = [
+    { key: "all", label: vqT("vqFilterAll") },
+    { key: "pending", label: vqT("vqFilterPending") },
+    { key: "needs-rescan", label: vqT("vqFilterNeedsRescan") },
+    { key: "approved", label: vqT("vqFilterApproved") },
+    { key: "rejected", label: vqT("vqFilterRejected") }
+  ];
+  bar.innerHTML = filters
+    .map((f) => `<button class="vq-filter-btn${vqCurrentFilter === f.key ? " active" : ""}" type="button" data-vq-filter="${f.key}">${f.label}</button>`)
+    .join("");
+  bar.querySelectorAll(".vq-filter-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      vqCurrentFilter = btn.dataset.vqFilter;
+      vqRenderFilters();
+      vqRenderTable();
+    });
+  });
+};
+
+// ── Render Queue Table ────────────────────────────────────────
+const vqRenderTable = () => {
+  const tbody = document.getElementById("vqTableBody");
+  if (!tbody) return;
+  const filtered = vqCurrentFilter === "all"
+    ? VQ_RECORDS
+    : VQ_RECORDS.filter((r) => r.status === vqCurrentFilter);
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:28px 0;">No records match this filter.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((r) => {
+    const lvl = vqConfLevel(r.ocrConfidence);
+    const isSelected = r.id === vqSelectedRecordId;
+    return `<tr class="${isSelected ? "selected" : ""}" data-vq-id="${r.id}">
+      <td class="vq-name-cell">
+        <strong>${r.patientName}</strong>
+        <span>${r.thaiName}</span>
+      </td>
+      <td style="font-family:monospace;font-size:0.8rem;">${r.thaiId}</td>
+      <td style="font-size:0.8rem;white-space:nowrap;">${r.scanTime}</td>
+      <td>
+        <div class="vq-conf-cell">
+          <div class="vq-mini-bar"><div class="vq-mini-fill ${lvl}" style="width:${r.ocrConfidence}%"></div></div>
+          <span style="font-size:0.8rem;font-weight:600;">${r.ocrConfidence}%</span>
+        </div>
+      </td>
+      <td>${vqStatusPillHtml(r.status)}</td>
+      <td style="font-size:0.8rem;">${r.assignedTo}</td>
+      <td><button class="ghost small" type="button" data-vq-open="${r.id}">${vqT("vqBtnReview")}</button></td>
+    </tr>`;
+  }).join("");
+
+  tbody.querySelectorAll("tr").forEach((row) => {
+    row.addEventListener("click", () => {
+      const id = row.dataset.vqId;
+      if (id) vqOpenRecord(id);
+    });
+  });
+};
+
+// ── Render ID Card SVG ────────────────────────────────────────
+const vqRenderIdCard = (record) => {
+  const lvl = vqConfLevel(record.ocrConfidence);
+  const confColor = lvl === "high" ? "#4ade80" : lvl === "medium" ? "#facc15" : "#f87171";
+  return `<svg class="vq-id-card-svg" viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Thai National ID Card for ${record.patientName}">
+    <!-- Card body -->
+    <rect width="560" height="340" rx="18" fill="#1B3A6E"/>
+    <!-- Thai flag stripe -->
+    <rect x="0" y="0" width="560" height="10" rx="18" fill="#A51931"/>
+    <rect x="0" y="0" width="560" height="6" fill="#A51931"/>
+    <rect x="0" y="6" width="560" height="5" fill="#F4F5F8"/>
+    <rect x="0" y="11" width="560" height="8" fill="#2D2A4A"/>
+    <rect x="0" y="19" width="560" height="5" fill="#F4F5F8"/>
+    <rect x="0" y="24" width="560" height="8" fill="#A51931"/>
+    <!-- Header text -->
+    <text x="280" y="62" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.92)" font-family="'Noto Sans Thai',Arial,sans-serif" font-weight="700" letter-spacing="1">บัตรประจำตัวประชาชน</text>
+    <text x="280" y="78" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.55)" font-family="Arial,sans-serif" letter-spacing="0.8">THAILAND NATIONAL IDENTIFICATION CARD</text>
+    <!-- Photo area -->
+    <rect x="24" y="92" width="118" height="150" rx="8" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <circle cx="83" cy="150" r="28" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+    <path d="M83 140 m-12 0 a12 12 0 0 1 24 0" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="83" cy="136" r="8" fill="rgba(255,255,255,0.14)"/>
+    <text x="83" y="222" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.35)" font-family="Arial">PHOTO</text>
+    <!-- Thai ID Number -->
+    <text x="156" y="108" font-size="9" fill="rgba(255,255,255,0.5)" font-family="Arial">เลขประจำตัวประชาชน / National Identification Number</text>
+    <text x="156" y="130" font-size="17" fill="white" font-family="'Courier New',monospace" font-weight="700" letter-spacing="2">${record.thaiId}</text>
+    <!-- Thai Name -->
+    <text x="156" y="155" font-size="9" fill="rgba(255,255,255,0.5)" font-family="Arial">ชื่อตัว-ชื่อสกุล</text>
+    <text x="156" y="172" font-size="14" fill="white" font-family="'Noto Sans Thai',Arial,sans-serif">${record.thaiName}</text>
+    <!-- English Name -->
+    <text x="156" y="193" font-size="9" fill="rgba(255,255,255,0.5)" font-family="Arial">Name</text>
+    <text x="156" y="208" font-size="13" fill="rgba(255,255,255,0.9)" font-family="Arial">${record.patientName}</text>
+    <!-- DOB -->
+    <text x="156" y="228" font-size="9" fill="rgba(255,255,255,0.5)" font-family="Arial">เกิดวันที่ / Date of Birth</text>
+    <text x="156" y="243" font-size="13" fill="rgba(255,255,255,0.9)" font-family="Arial">${record.dob}</text>
+    <!-- Divider -->
+    <line x1="24" y1="265" x2="536" y2="265" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <!-- Footer info -->
+    <text x="30" y="283" font-size="8.5" fill="rgba(255,255,255,0.35)" font-family="Arial">Record: ${record.id} • Dept: ${record.department} • Scanned: ${record.scanTime}</text>
+    <!-- OCR confidence badge -->
+    <rect x="396" y="273" width="140" height="30" rx="8" fill="rgba(0,0,0,0.35)"/>
+    <text x="408" y="285" font-size="8" fill="rgba(255,255,255,0.45)" font-family="Arial">OCR Confidence</text>
+    <text x="408" y="298" font-size="13" fill="${confColor}" font-family="Arial" font-weight="700">${record.ocrConfidence}%</text>
+    <!-- Barcode representation -->
+    <rect x="390" y="310" width="146" height="20" rx="4" fill="rgba(255,255,255,0.06)"/>
+    <text x="463" y="324" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.25)" font-family="Arial" letter-spacing="1">| | | | | | | | | | | | | | |</text>
+  </svg>`;
+};
+
+// ── Render OCR Data Grid ──────────────────────────────────────
+const vqRenderOcrData = (record) => {
+  const lvl = vqConfLevel(record.ocrConfidence);
+  const flagClass = lvl === "low" ? "flag-low" : lvl === "medium" ? "flag-medium" : "";
+  const fields = [
+    { label: vqT("vqFieldThaiId"), value: record.thaiId, flag: "" },
+    { label: vqT("vqFieldDob"), value: record.dob, flag: record.ocrConfidence < 75 ? "flag-medium" : "" },
+    { label: vqT("vqFieldThaiName"), value: record.thaiName, flag: flagClass, full: false },
+    { label: vqT("vqFieldEnName"), value: record.patientName, flag: "", full: false },
+    { label: vqT("vqFieldGender"), value: record.gender, flag: "" },
+    { label: vqT("vqFieldDept"), value: record.department, flag: "" },
+    { label: vqT("vqFieldPhone"), value: record.phone, flag: "" },
+    { label: vqT("vqFieldAddress"), value: record.address, flag: "", full: true }
+  ];
+  return fields.map((f) =>
+    `<div class="vq-ocr-item${f.full ? " full" : ""} ${f.flag}">
+      <span class="vq-ocr-item-label">${f.label}</span>
+      <span class="vq-ocr-item-value">${f.value || "—"}</span>
+    </div>`
+  ).join("");
+};
+
+// ── Render Confirmation Form ──────────────────────────────────
+const vqRenderConfirmForm = (record) => {
+  const field = (id, label, value, type = "text", fullWidth = false) =>
+    `<label class="${fullWidth ? "vq-field-full" : ""}">
+      <span>${label}</span>
+      <input type="${type}" id="vqF_${id}" value="${value || ""}" />
+    </label>`;
+
+  return `
+    ${field("thaiId", vqT("vqFieldThaiId"), record.thaiId)}
+    ${field("dob", vqT("vqFieldDob"), record.dob, "date")}
+    ${field("thaiName", vqT("vqFieldThaiName"), record.thaiName)}
+    ${field("enName", vqT("vqFieldEnName"), record.patientName)}
+    <label>
+      <span>${vqT("vqFieldGender")}</span>
+      <select id="vqF_gender">
+        <option value="Female" ${record.gender === "Female" ? "selected" : ""}>Female / หญิง</option>
+        <option value="Male" ${record.gender === "Male" ? "selected" : ""}>Male / ชาย</option>
+        <option value="Other" ${record.gender === "Other" ? "selected" : ""}>Other / อื่นๆ</option>
+      </select>
+    </label>
+    ${field("phone", vqT("vqFieldPhone"), record.phone, "tel")}
+    ${field("address", vqT("vqFieldAddress"), record.address, "text", true)}
+    <label class="vq-field-full">
+      <span>${vqT("vqFieldNotes")}</span>
+      <input type="text" id="vqF_notes" value="${record.notes || ""}" />
+    </label>`;
+};
+
+// ── Render Patient Matches ────────────────────────────────────
+const vqRenderMatches = (record) => {
+  const matches = vqMatchPatients(record);
+  if (!matches.length) {
+    return `<div class="vq-no-matches">${vqT("vqNoMatches")}</div>`;
+  }
+  return `<div class="vq-match-list">${matches.map((m) => {
+    const lvl = m.score >= 75 ? "high" : m.score >= 40 ? "medium" : "low";
+    const isSelected = vqSelectedMatchHn === m.hn;
+    return `<div class="vq-match-card${isSelected ? " selected" : ""}" data-vq-match-hn="${m.hn}">
+      <div class="vq-match-top">
+        <div>
+          <div class="vq-match-name">${m.patientName}</div>
+          <div class="vq-match-thai-name">${m.thaiName}</div>
+        </div>
+        <span class="vq-match-score-badge ${lvl}">${m.score}% ${vqT("vqMatchScore")}</span>
+      </div>
+      <div class="vq-match-meta">
+        <div class="vq-match-meta-item">
+          <span class="vq-match-meta-label">${vqT("vqMatchHn")}</span>
+          <span class="vq-match-meta-val">${m.hn}</span>
+        </div>
+        <div class="vq-match-meta-item">
+          <span class="vq-match-meta-label">${vqT("vqMatchLastVisit")}</span>
+          <span class="vq-match-meta-val">${m.lastVisit}</span>
+        </div>
+        <div class="vq-match-meta-item">
+          <span class="vq-match-meta-label">${vqT("vqMatchDept")}</span>
+          <span class="vq-match-meta-val">${m.department}</span>
+        </div>
+      </div>
+      <div class="vq-match-fields-row">
+        <span style="font-size:0.7rem;color:var(--gray-400);margin-right:4px;">${vqT("vqMatchFields")}:</span>
+        ${m.matched.map((f) => `<span class="vq-match-field-tag">${f}</span>`).join("")}
+      </div>
+      <div class="vq-match-actions">
+        <button class="ghost small" type="button" data-vq-select-match="${m.hn}">
+          ${isSelected ? vqT("vqMatchSelected") : vqT("vqBtnSelectMatch")}
+        </button>
+      </div>
+    </div>`;
+  }).join("")}</div>`;
+};
+
+// ── Render Approval Controls ──────────────────────────────────
+const vqRenderApprovalGrid = (record) => {
+  const hasMatch = !!vqSelectedMatchHn;
+  const icon = (paths) => `<svg viewBox="0 0 24 24">${paths}</svg>`;
+  const icons = {
+    approveNew:   icon(`<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>`),
+    approveMatch: icon(`<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/>`),
+    edit:         icon(`<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>`),
+    reject:       icon(`<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>`),
+    rescan:       icon(`<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/>`)
+  };
+
+  return `
+    <button class="vq-approval-action approve-new" type="button" data-vq-action="approve-new">
+      <div class="vq-action-icon">${icons.approveNew}</div>
+      <div class="vq-action-title">${vqT("vqBtnApproveNew")}</div>
+      <div class="vq-action-desc">${vqT("vqDescApproveNew")}</div>
+    </button>
+    <button class="vq-approval-action approve-match" type="button" data-vq-action="approve-match" ${!hasMatch ? "disabled" : ""}>
+      <div class="vq-action-icon">${icons.approveMatch}</div>
+      <div class="vq-action-title">${vqT("vqBtnApproveMatch")}</div>
+      <div class="vq-action-desc">${hasMatch ? `HN: ${vqSelectedMatchHn}` : vqT("vqDescApproveMatch")}</div>
+    </button>
+    <button class="vq-approval-action edit-fields" type="button" data-vq-action="edit-fields">
+      <div class="vq-action-icon">${icons.edit}</div>
+      <div class="vq-action-title">${vqT("vqBtnEditFields")}</div>
+      <div class="vq-action-desc">${vqT("vqDescEditFields")}</div>
+    </button>
+    <button class="vq-approval-action rescan" type="button" data-vq-action="rescan">
+      <div class="vq-action-icon">${icons.rescan}</div>
+      <div class="vq-action-title">${vqT("vqBtnRescan")}</div>
+      <div class="vq-action-desc">${vqT("vqDescRescan")}</div>
+    </button>
+    <button class="vq-approval-action reject full-width" type="button" data-vq-action="reject">
+      <div class="vq-action-icon">${icons.reject}</div>
+      <div class="vq-action-title">${vqT("vqBtnReject")}</div>
+      <div class="vq-action-desc">${vqT("vqDescReject")}</div>
+    </button>`;
+};
+
+// ── Open Record ───────────────────────────────────────────────
+const vqOpenRecord = (id) => {
+  const record = VQ_RECORDS.find((r) => r.id === id);
+  if (!record) return;
+
+  vqSelectedRecordId = id;
+  vqSelectedMatchHn = null;
+
+  // Highlight selected row
+  document.querySelectorAll("#vqTableBody tr").forEach((row) => {
+    row.classList.toggle("selected", row.dataset.vqId === id);
+  });
+
+  // Show detail panel
+  document.getElementById("vqDetailEmpty").hidden = true;
+  document.getElementById("vqDetailContent").hidden = false;
+
+  // 1. ID Card
+  const cardWrap = document.getElementById("vqIdCardWrap");
+  if (cardWrap) cardWrap.innerHTML = vqRenderIdCard(record);
+
+  // 2. OCR Bar + Grid
+  const lvl = vqConfLevel(record.ocrConfidence);
+  const lvlLabel = vqT(lvl === "high" ? "vqOcrHigh" : lvl === "medium" ? "vqOcrMedium" : "vqOcrLow");
+  const ocrBar = document.getElementById("vqOcrBar");
+  if (ocrBar) {
+    ocrBar.innerHTML = `<div class="vq-conf-bar-wrap">
+      <span class="vq-conf-label">${vqT("vqOcrConfLabel")}</span>
+      <div class="vq-conf-bar"><div class="vq-conf-fill ${lvl}" style="width:${record.ocrConfidence}%"></div></div>
+      <span class="vq-conf-pct ${lvl}">${record.ocrConfidence}%</span>
+      <span class="vq-conf-badge ${lvl}">${lvlLabel}</span>
+    </div>`;
+  }
+  const ocrGrid = document.getElementById("vqOcrGrid");
+  if (ocrGrid) ocrGrid.innerHTML = vqRenderOcrData(record);
+
+  // 3. Confirmation Form
+  const confirmForm = document.getElementById("vqConfirmForm");
+  if (confirmForm) confirmForm.innerHTML = vqRenderConfirmForm(record);
+
+  // 4. Patient Matches
+  vqRefreshMatches(record);
+
+  // 5. Approval Grid
+  vqRefreshApprovalGrid(record);
+
+  // Scroll detail panel to top
+  const detail = document.getElementById("vqDetailPanel");
+  if (detail) detail.scrollTop = 0;
+};
+
+const vqRefreshMatches = (record) => {
+  const matchResults = document.getElementById("vqMatchResults");
+  if (!matchResults) return;
+  matchResults.innerHTML = vqRenderMatches(record);
+
+  matchResults.querySelectorAll("[data-vq-select-match]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const hn = btn.dataset.vqSelectMatch;
+      vqSelectedMatchHn = vqSelectedMatchHn === hn ? null : hn;
+      vqRefreshMatches(record);
+      vqRefreshApprovalGrid(record);
+    });
+  });
+};
+
+const vqRefreshApprovalGrid = (record) => {
+  const grid = document.getElementById("vqApprovalGrid");
+  if (!grid) return;
+  grid.innerHTML = vqRenderApprovalGrid(record);
+
+  grid.querySelectorAll("[data-vq-action]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const action = btn.dataset.vqAction;
+      if (action === "edit-fields") {
+        // Scroll to confirmation form
+        const sec3 = document.querySelector("#vqDetailContent .vq-review-section:nth-child(3)");
+        if (sec3) sec3.scrollIntoView({ behavior: "smooth", block: "start" });
+        const firstInput = document.querySelector("#vqConfirmForm input, #vqConfirmForm select");
+        if (firstInput) setTimeout(() => firstInput.focus(), 400);
+        return;
+      }
+      vqShowDialog(action, record);
+    });
+  });
+};
+
+// ── Confirmation Dialog ───────────────────────────────────────
+const vqSetupDialog = () => {
+  const overlay = document.getElementById("vqDialogOverlay");
+  const cancelBtn = document.getElementById("vqDialogCancel");
+  if (!overlay || !cancelBtn) return;
+
+  cancelBtn.addEventListener("click", () => {
+    overlay.hidden = true;
+    vqPendingAction = null;
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      overlay.hidden = true;
+      vqPendingAction = null;
+    }
+  });
+
+  document.getElementById("vqDialogConfirm").addEventListener("click", () => {
+    if (!vqPendingAction) return;
+    const { action, record } = vqPendingAction;
+    overlay.hidden = true;
+
+    // Update record status in mock data
+    const idx = VQ_RECORDS.findIndex((r) => r.id === record.id);
+    if (idx !== -1) {
+      if (action === "approve-new" || action === "approve-match") {
+        VQ_RECORDS[idx].status = "approved";
+      } else if (action === "reject") {
+        VQ_RECORDS[idx].status = "rejected";
+      } else if (action === "rescan") {
+        VQ_RECORDS[idx].status = "needs-rescan";
+      }
+    }
+
+    // Toast
+    const toastMap = {
+      "approve-new":   "vqToastApproveNew",
+      "approve-match": "vqToastApproveMatch",
+      "reject":        "vqToastReject",
+      "rescan":        "vqToastRescan"
+    };
+    vqShowToast(vqT(toastMap[action] || "vqToastApproveNew"));
+
+    // Re-render queue and stats
+    vqRenderStats();
+    vqRenderTable();
+
+    // Close detail if approved/rejected
+    if (action !== "rescan") {
+      document.getElementById("vqDetailEmpty").hidden = false;
+      document.getElementById("vqDetailContent").hidden = true;
+      vqSelectedRecordId = null;
+    }
+
+    vqPendingAction = null;
+  });
+};
+
+const vqShowDialog = (action, record) => {
+  const overlay = document.getElementById("vqDialogOverlay");
+  const iconEl = document.getElementById("vqDialogIcon");
+  const titleEl = document.getElementById("vqDialogTitle");
+  const bodyEl = document.getElementById("vqDialogBody");
+  const confirmBtn = document.getElementById("vqDialogConfirm");
+  const reasonWrap = document.getElementById("vqDialogReasonWrap");
+  const cancelBtn = document.getElementById("vqDialogCancel");
+
+  if (!overlay) return;
+
+  const configs = {
+    "approve-new": {
+      iconClass: "approve-new",
+      title: vqT("vqDialogApproveNewTitle"),
+      body: vqT("vqDialogApproveNewBody"),
+      iconPaths: `<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>`,
+      iconStroke: "#1f9d8f",
+      showReason: false
+    },
+    "approve-match": {
+      iconClass: "approve-match",
+      title: vqT("vqDialogApproveMatchTitle"),
+      body: `${vqT("vqDialogApproveMatchBody")} (HN: ${vqSelectedMatchHn || "—"})`,
+      iconPaths: `<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/>`,
+      iconStroke: "var(--blue)",
+      showReason: false
+    },
+    "reject": {
+      iconClass: "reject",
+      title: vqT("vqDialogRejectTitle"),
+      body: vqT("vqDialogRejectBody"),
+      iconPaths: `<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>`,
+      iconStroke: "#ef6f6c",
+      showReason: true
+    },
+    "rescan": {
+      iconClass: "rescan",
+      title: vqT("vqDialogRescanTitle"),
+      body: vqT("vqDialogRescanBody"),
+      iconPaths: `<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/>`,
+      iconStroke: "#b7791f",
+      showReason: true
+    }
+  };
+
+  const cfg = configs[action];
+  if (!cfg) return;
+
+  iconEl.className = `vq-dialog-icon ${cfg.iconClass}`;
+  iconEl.innerHTML = `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="${cfg.iconStroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${cfg.iconPaths}</svg>`;
+  titleEl.textContent = cfg.title;
+  bodyEl.textContent = cfg.body;
+  confirmBtn.textContent = vqT("vqDialogConfirm");
+  cancelBtn.textContent = vqT("vqBtnCancel");
+  reasonWrap.hidden = !cfg.showReason;
+
+  const reasonInput = document.getElementById("vqDialogReason");
+  if (reasonInput) {
+    reasonInput.placeholder = vqT("vqReasonPlaceholder");
+    reasonInput.value = "";
+  }
+
+  vqPendingAction = { action, record };
+  overlay.hidden = false;
+
+  // Focus confirm button
+  setTimeout(() => confirmBtn.focus(), 100);
+};
+
+// ── Setup ─────────────────────────────────────────────────────
+const setupVerificationQueue = () => {
+  vqRenderStats();
+  vqRenderFilters();
+  vqRenderTable();
+  vqSetupDialog();
+
+  // Re-render on language change
+  window.addEventListener("nightingale-lang-change", () => {
+    vqRenderStats();
+    vqRenderFilters();
+    vqRenderTable();
+    if (vqSelectedRecordId) vqOpenRecord(vqSelectedRecordId);
+  });
 };
 
 document.addEventListener("DOMContentLoaded", init);
