@@ -1174,6 +1174,7 @@ const init = () => {
   setupRegistrationForm();
   setupVerificationQueue();
   setupEmrIntelligence();
+  if (typeof setupAISummary === "function") setupAISummary();
 };
 
 // ============================================================

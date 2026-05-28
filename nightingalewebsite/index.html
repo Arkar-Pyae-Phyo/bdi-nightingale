@@ -1226,80 +1226,159 @@
           </section>
 
           <section class="page" data-page="department-summary">
+
+            <!-- Page Header -->
             <div class="page-header">
               <div>
-                <h2 data-i18n="deptSummaryTitle">Department AI Summary</h2>
-                <p data-i18n="deptSummarySubtitle">Generate department-specific summaries in EN/TH.</p>
+                <h2>Department AI Summary</h2>
+                <p>Gemini-powered contextual summaries for hospital staff — EN &amp; TH</p>
               </div>
               <div class="chip-group">
                 <span class="chip" data-i18n="staffOnly">Staff-only</span>
-                <span class="chip soft">AI v4.2</span>
+                <span class="chip soft" id="aiModelBadge">Gemini 2.5 Pro</span>
+                <button class="ai-settings-btn" id="aiSettingsToggle" type="button">⚙ API Settings</button>
               </div>
             </div>
-            <div class="page-grid">
-              <div class="panel span-4" data-reveal style="--delay: 0.05s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="deptSelectLabel">Select department</h3>
-                    <p data-i18n="deptSummarySubtitle">Generate department-specific summaries in EN/TH.</p>
-                  </div>
+
+            <!-- API Settings Panel (collapsible) -->
+            <div class="ai-settings-panel" id="aiSettingsPanel" hidden>
+              <div class="ai-settings-inner">
+                <div class="ai-settings-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  Gemini API Configuration
                 </div>
-                <div class="form-stack">
-                  <label class="field">
-                    <span data-i18n="deptSelectLabel">Department</span>
-                    <select>
-                      <option data-i18n="deptRegistration">Registration</option>
-                      <option data-i18n="deptOpd">OPD</option>
-                      <option data-i18n="deptDiabetesClinic">Diabetes Clinic</option>
-                      <option data-i18n="deptHypertensionClinic">Hypertension Clinic</option>
-                      <option data-i18n="deptIcu">ICU</option>
-                      <option data-i18n="deptWard">Ward</option>
-                      <option data-i18n="deptAdmin">Admin</option>
-                    </select>
-                  </label>
-                  <button class="primary" type="button" data-i18n="deptGenerateBtn">
-                    Generate Summary
-                  </button>
+                <p class="ai-settings-hint">Changes are saved for this browser session. To make permanent changes, edit <code>gemini-config.js</code> directly.</p>
+                <div class="ai-settings-row">
+                  <label class="ai-settings-label">API Key</label>
+                  <input type="password" id="aiApiKeyInput" class="ai-settings-input" placeholder="Paste new key to replace current key…" autocomplete="off" />
                 </div>
-              </div>
-              <div class="panel span-8" data-reveal style="--delay: 0.1s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="summaryEnglishTitle">Summary (English)</h3>
-                    <p data-i18n="summaryThaiTitle">Summary (Thai)</p>
-                  </div>
+                <div class="ai-settings-row">
+                  <label class="ai-settings-label">Model ID</label>
+                  <input type="text" id="aiModelInput" class="ai-settings-input" placeholder="e.g. gemini-2.5-pro" />
                 </div>
-                <div class="summary-grid">
-                  <div class="summary-card">
-                    <h4 data-i18n="summaryEnglishTitle">Summary (English)</h4>
-                    <p data-i18n="summaryEnglishBody">
-                      ICU census stable. Two ventilated patients require PEEP adjustments. Pending ID
-                      verifications: 3 with high confidence, 1 rescan needed.
-                    </p>
-                  </div>
-                  <div class="summary-card">
-                    <h4 data-i18n="summaryThaiTitle">Summary (Thai)</h4>
-                    <p data-i18n="summaryThaiBody">
-                      จำนวนผู้ป่วย ICU คงที่ มีผู้ป่วยใช้เครื่องช่วยหายใจ 2 รายต้องปรับ PEEP
-                      คิวตรวจสอบบัตร 3 รายความมั่นใจสูง และ 1 รายต้องสแกนใหม่
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="panel span-12" data-reveal style="--delay: 0.15s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="summarySignalsTitle">Key signals</h3>
-                    <p data-i18n="summarySignalsDesc">Signals aggregated from EMR, labs, and ICU monitors.</p>
-                  </div>
-                </div>
-                <div class="tag-group">
-                  <span class="tag" data-i18n="summarySignal1">Ventilator alarms: 2</span>
-                  <span class="tag" data-i18n="summarySignal2">Pending verifications: 4</span>
-                  <span class="tag" data-i18n="summarySignal3">High-risk labs: 3</span>
+                <div class="ai-settings-actions">
+                  <button class="primary" id="aiSettingsSave" type="button">Save Changes</button>
+                  <button class="secondary" id="aiSettingsReset" type="button">Reset to Default</button>
                 </div>
               </div>
             </div>
+
+            <!-- Selector Bar -->
+            <div class="emr-selector-bar" id="aiSelectorBar">
+              <div class="emr-selector-label">Department</div>
+              <select id="aiDeptSelect" class="emr-select" style="min-width:220px">
+                <option value="">— Select department —</option>
+                <option value="registration">🪪 Registration Department</option>
+                <option value="opd">🩺 OPD / General Clinic</option>
+                <option value="diabetes">🩸 Diabetes Clinic</option>
+                <option value="hypertension">❤️ Hypertension Clinic</option>
+                <option value="icu">📈 ICU Department</option>
+                <option value="ward">🛏️ Ward Department</option>
+                <option value="admin">📊 Admin Department</option>
+              </select>
+              <div id="aiPatientWrap" style="display:none;align-items:center;gap:8px;">
+                <div class="emr-selector-label">Patient</div>
+                <select id="aiPatientSelect" class="emr-select" style="min-width:240px">
+                  <option value="">— All patients (aggregate) —</option>
+                </select>
+              </div>
+              <button class="primary" id="aiGenerateBtn" type="button" style="margin-left:auto;display:flex;align-items:center;gap:8px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                Generate Summary
+              </button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="aiLoadingState" hidden class="ai-loading-state">
+              <div class="ai-spinner">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+              </div>
+              <p>Generating summary with Gemini…</p>
+              <p class="ai-loading-sub">Processing EMR data and building department context</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="aiErrorState" hidden class="ai-error-state"></div>
+
+            <!-- Empty State -->
+            <div id="aiEmptyState" class="emr-empty-state">
+              <div class="emr-empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+              <p>Select a department, then click <strong>Generate Summary</strong>.</p>
+              <p class="emr-empty-sub">Gemini will analyse the relevant EMR data and produce bilingual summaries for staff review.</p>
+              <div class="ai-dept-preview">
+                <div class="ai-dept-chip">🪪 Registration</div>
+                <div class="ai-dept-chip">🩺 OPD</div>
+                <div class="ai-dept-chip">🩸 Diabetes</div>
+                <div class="ai-dept-chip">❤️ Hypertension</div>
+                <div class="ai-dept-chip">📈 ICU</div>
+                <div class="ai-dept-chip">🛏️ Ward</div>
+                <div class="ai-dept-chip">📊 Admin</div>
+              </div>
+            </div>
+
+            <!-- Output Area -->
+            <div id="aiOutputArea" hidden>
+
+              <!-- Staff Review Required Banner -->
+              <div class="ai-staff-banner">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div>
+                  <strong>Staff Review Required</strong>
+                  <span id="aiBannerDept"></span>
+                  <span> · This AI summary supports medical staff review only. It is not a clinical diagnosis or medical advice. Consult the attending physician for all clinical decisions.</span>
+                </div>
+              </div>
+
+              <!-- English + Thai Summary -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-6" data-reveal style="--delay:0.05s">
+                  <div class="panel-head">
+                    <div><h3>Summary (English)</h3><p>AI-generated from EMR and registration data</p></div>
+                    <span class="chip soft">EN</span>
+                  </div>
+                  <div id="aiSummaryEN" class="ai-summary-body"></div>
+                </div>
+                <div class="panel span-6" data-reveal style="--delay:0.1s">
+                  <div class="panel-head">
+                    <div><h3>บทสรุป (ภาษาไทย)</h3><p>สร้างจากข้อมูล EMR และทะเบียนผู้ป่วย</p></div>
+                    <span class="chip soft">TH</span>
+                  </div>
+                  <div id="aiSummaryTH" class="ai-summary-body"></div>
+                </div>
+              </div>
+
+              <!-- Key Findings -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-12" data-reveal style="--delay:0.15s">
+                  <div class="panel-head">
+                    <div><h3>Key Findings / การค้นพบที่สำคัญ</h3><p>Bilingual key observations from the summary</p></div>
+                  </div>
+                  <div id="aiKeyFindings" class="ai-findings-grid"></div>
+                </div>
+              </div>
+
+              <!-- Evidence + Review Items -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-6" data-reveal style="--delay:0.2s">
+                  <div class="panel-head"><div><h3>Evidence Used</h3><p>Data sources referenced in this summary</p></div></div>
+                  <div id="aiEvidence" class="ai-evidence-list"></div>
+                </div>
+                <div class="panel span-6" data-reveal style="--delay:0.25s">
+                  <div class="panel-head"><div><h3>Staff Review Required Items</h3><p>Items flagged for human review</p></div></div>
+                  <div id="aiReviewItems" class="ai-review-list"></div>
+                </div>
+              </div>
+
+              <!-- Disclaimer + Timestamp -->
+              <div class="emr-disclaimer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>AI summaries are generated by the Gemini language model using EMR data from Srinagarind Hospital (KKU). Results support staff-only review and must not be used as standalone clinical guidance. Always verify with attending physician.</span>
+              </div>
+              <div id="aiTimestamp" class="ai-timestamp"></div>
+            </div>
+
           </section>
 
           <section class="page" data-page="longitudinal">
@@ -1702,6 +1781,8 @@
     </div>
 
     <script src="data-emr.js"></script>
+    <script src="gemini-config.js"></script>
+    <script src="ai-summary.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
