@@ -1173,6 +1173,7 @@ const init = () => {
 
   setupRegistrationForm();
   setupVerificationQueue();
+  setupEmrIntelligence();
 };
 
 // ============================================================
@@ -1938,6 +1939,629 @@ const setupVerificationQueue = () => {
     vqRenderTable();
     if (vqSelectedRecordId) vqOpenRecord(vqSelectedRecordId);
   });
+};
+
+// ============================================================
+// EMR INTELLIGENCE — Longitudinal Timeline + ICU Analysis
+// ============================================================
+
+// ── Medication label map ──────────────────────────────────────
+const EMR_MED_LABELS = {
+  metformin_500mg:             "Metformin 500 mg",
+  metformin_1000mg:            "Metformin 1000 mg",
+  insulin_basal:               "Insulin (Basal)",
+  dapagliflozin_10mg:          "Dapagliflozin 10 mg",
+  sitagliptin_100mg:           "Sitagliptin 100 mg",
+  semaglutide:                 "Semaglutide",
+  amlodipine_5mg:              "Amlodipine 5 mg",
+  CCB_amlodipine:              "CCB – Amlodipine",
+  rosuvastatin_10mg:           "Rosuvastatin 10 mg",
+  rosuvastatin_20mg:           "Rosuvastatin 20 mg",
+  ARB_valsartan:               "ARB – Valsartan",
+  ARB_losartan_50mg:           "ARB – Losartan 50 mg",
+  ARB_losartan_100mg:          "ARB – Losartan 100 mg",
+  ACEI_enalapril_5mg:          "ACEI – Enalapril 5 mg",
+  ACEI_enalapril_10mg:         "ACEI – Enalapril 10 mg",
+  ACEI_perindopril_4mg:        "ACEI – Perindopril 4 mg",
+  ACEI_perindopril_8mg:        "ACEI – Perindopril 8 mg",
+  CCB_amlodipine_5mg:          "CCB – Amlodipine 5 mg",
+  CCB_amlodipine_10mg:         "CCB – Amlodipine 10 mg",
+  beta_blocker_bisoprolol_5mg: "β-Blocker – Bisoprolol 5 mg",
+  diuretics_hydrochlorothiazide_12_5mg: "Diuretic – HCTZ 12.5 mg",
+  diuretics_hydrochlorothiazide_12: "Diuretic – HCTZ 12.5 mg",
+  "diuretics_hydrochlorothiazide_12.5mg": "Diuretic – HCTZ 12.5 mg",
+  diuretics_hydrochlorothiazide_25mg: "Diuretic – HCTZ 25 mg"
+};
+
+const emrMedLabel = (key) => EMR_MED_LABELS[key] || key.replace(/_/g, " ");
+
+const EMR_COMORB_LABELS = {
+  ht: "Hypertension",   dm: "Diabetes",       cad: "CAD",
+  hf: "Heart Failure",  stroke: "Stroke",      ckd: "CKD",
+  arrhythmias: "Arrhythmia", atrial_fibrillation: "Atrial Fibrillation"
+};
+
+// ── Longitudinal Timeline ─────────────────────────────────────
+
+let ltCurrentPatientId = null;
+let ltCurrentType = "dm"; // 'dm' | 'ht'
+
+const ltBuildPatientOptions = () => {
+  const sel = document.getElementById("ltPatientSelect");
+  if (!sel) return;
+  // Add VQ-linked patients
+  const groups = [
+    { label: "Verified Patients (VQ)", items: VQ_RECORDS.filter((r) => r.status === "approved" || r.status === "pending").map((r) => ({ value: r.id, text: `${r.patientName} – ${r.id}` })) },
+    { label: "Diabetes EMR Records",   items: EMR_DIABETES_PATIENTS.map((p) => ({ value: "DM:" + p.id, text: `${p.name} – ${p.id}` })) },
+    { label: "Hypertension EMR Records", items: EMR_HT_PATIENTS.map((p) => ({ value: "HT:" + p.id, text: `${p.name} – ${p.id}` })) }
+  ];
+  groups.forEach((g) => {
+    const og = document.createElement("optgroup");
+    og.label = g.label;
+    g.items.forEach((it) => {
+      const opt = document.createElement("option");
+      opt.value = it.value;
+      opt.textContent = it.text;
+      og.appendChild(opt);
+    });
+    sel.appendChild(og);
+  });
+};
+
+const ltSelectPatient = (selectVal) => {
+  const tabs   = document.getElementById("ltTypeTabs");
+  const noData = document.getElementById("ltNoDataNote");
+  const empty  = document.getElementById("ltEmptyState");
+  const content= document.getElementById("ltContent");
+
+  if (!selectVal) {
+    tabs.hidden = true;
+    noData.hidden = true;
+    empty.hidden = false;
+    content.hidden = true;
+    return;
+  }
+
+  let dmPt = null, htPt = null;
+
+  // Direct EMR references
+  if (selectVal.startsWith("DM:")) {
+    dmPt = EMR_DIABETES_PATIENTS.find((p) => p.id === selectVal.slice(3));
+  } else if (selectVal.startsWith("HT:")) {
+    htPt = EMR_HT_PATIENTS.find((p) => p.id === selectVal.slice(3));
+  } else {
+    // VQ link
+    const linked = emrGetLinkedData(selectVal);
+    dmPt = linked.dm;
+    htPt = linked.ht;
+  }
+
+  const hasDm = !!dmPt, hasHt = !!htPt;
+
+  if (!hasDm && !hasHt) {
+    noData.hidden = false;
+    tabs.hidden = true;
+    empty.hidden = false;
+    content.hidden = true;
+    return;
+  }
+
+  noData.hidden = true;
+  empty.hidden = true;
+  content.hidden = false;
+
+  // Show/hide type tabs
+  const tabDm = document.getElementById("ltTabDm");
+  const tabHt = document.getElementById("ltTabHt");
+  tabs.hidden = false;
+  tabDm.disabled = !hasDm;
+  tabHt.disabled = !hasHt;
+
+  // Default to whichever type is available
+  ltCurrentType = hasDm ? "dm" : "ht";
+  tabDm.classList.toggle("active", ltCurrentType === "dm");
+  tabHt.classList.toggle("active", ltCurrentType === "ht");
+
+  ltRenderForType(dmPt, htPt);
+};
+
+const ltRenderForType = (dmPt, htPt) => {
+  const pt = ltCurrentType === "dm" ? dmPt : htPt;
+  if (!pt) return;
+
+  ltRenderPatientHeader(pt);
+  ltRenderTrendCharts(pt);
+  ltRenderPeriodGrid(pt);
+  ltRenderMedsHistory(pt);
+  ltRenderComorbidities(pt);
+};
+
+const ltRenderPatientHeader = (pt) => {
+  const el = document.getElementById("ltPatientHeader");
+  if (!el) return;
+  const isDm = ltCurrentType === "dm";
+  const onset = isDm ? pt.dmOnset : pt.htOnset;
+  const typeLabel = isDm
+    ? `Type ${pt.type1 ? "1" : pt.type2 ? "2" : "?"} Diabetes`
+    : "Hypertension";
+
+  el.innerHTML = `
+    <div>
+      <div class="emr-pt-name">${pt.name}</div>
+      <div class="emr-pt-thai">${pt.thaiName}</div>
+      <span class="emr-pt-badge ${isDm ? "dm" : "ht"}">${typeLabel}</span>
+    </div>
+    <div class="emr-pt-meta">
+      <div class="emr-pt-meta-item">Age <strong>${pt.age}</strong></div>
+      <div class="emr-pt-meta-item">Sex <strong>${pt.sex}</strong></div>
+      <div class="emr-pt-meta-item">HN <strong>${pt.hn}</strong></div>
+      <div class="emr-pt-meta-item">Onset <strong>${onset}</strong></div>
+      <div class="emr-pt-meta-item">Identified by <strong>${pt.identifyBy}</strong></div>
+      <div class="emr-pt-meta-item">Source <strong>${pt.source}</strong></div>
+      ${pt.linkedVqId ? `<div class="emr-pt-meta-item">VQ Record <strong>${pt.linkedVqId}</strong></div>` : ""}
+    </div>`;
+};
+
+const ltRenderTrendCharts = (pt) => {
+  const vitalsEl = document.getElementById("ltVitalsTrendChart");
+  const labsEl   = document.getElementById("ltLabsTrendChart");
+  if (!vitalsEl || !labsEl) return;
+  const isDm = ltCurrentType === "dm";
+
+  const vitalsTitle = document.getElementById("ltVitalsTrendTitle");
+  const labsTitle   = document.getElementById("ltLabsTrendTitle");
+  if (vitalsTitle) vitalsTitle.textContent = isDm ? "BP / Vitals Trend (per period)" : "Blood Pressure Trend (per period)";
+  if (labsTitle)   labsTitle.textContent   = isDm ? "HbA1c / FPG Trend (per period)" : "Lab Values Trend (per period)";
+
+  // Vitals: SBP across periods
+  const maxSbp = 180;
+  vitalsEl.innerHTML = pt.periods.map((per) => {
+    const sbpClass = emrRangeClass("sbp", per.vitals.sbp);
+    const dbpClass = emrRangeClass("dbp", per.vitals.dbp);
+    return `<div class="emr-trend-row">
+      <span class="emr-trend-label">${per.p === -1 ? "Pre" : per.p === 0 ? "Onset" : `P${per.p}`}</span>
+      <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+        <div class="emr-trend-row" style="margin:0">
+          <span style="width:32px;font-size:0.68rem;color:var(--gray-400)">SBP</span>
+          <div class="emr-trend-bar-wrap"><div class="emr-trend-bar ${sbpClass || "emr-blue"}" style="width:${Math.min(per.vitals.sbp/maxSbp*100,100).toFixed(0)}%"></div></div>
+          <span class="emr-trend-val ${sbpClass}">${per.vitals.sbp}</span>
+        </div>
+        <div class="emr-trend-row" style="margin:0">
+          <span style="width:32px;font-size:0.68rem;color:var(--gray-400)">DBP</span>
+          <div class="emr-trend-bar-wrap"><div class="emr-trend-bar ${dbpClass || "emr-blue"}" style="width:${Math.min(per.vitals.dbp/100*100,100).toFixed(0)}%"></div></div>
+          <span class="emr-trend-val ${dbpClass}">${per.vitals.dbp}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+
+  // Labs: HbA1c for DM, LDL for HT
+  if (isDm) {
+    labsEl.innerHTML = pt.periods.map((per) => {
+      const hba1c = per.labs.hba1c;
+      const fpg   = per.labs.fpg;
+      const hba1cClass = emrRangeClass("hba1c", hba1c);
+      const fpgClass   = emrRangeClass("fpg",   fpg);
+      return `<div class="emr-trend-row">
+        <span class="emr-trend-label">${per.p === -1 ? "Pre" : per.p === 0 ? "Onset" : `P${per.p}`}</span>
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+          <div class="emr-trend-row" style="margin:0">
+            <span style="width:40px;font-size:0.68rem;color:var(--gray-400)">HbA1c</span>
+            <div class="emr-trend-bar-wrap"><div class="emr-trend-bar ${hba1cClass || "emr-blue"}" style="width:${hba1c ? Math.min(hba1c/12*100,100).toFixed(0) : 0}%"></div></div>
+            <span class="emr-trend-val ${hba1cClass}">${hba1c != null ? hba1c + "%" : "—"}</span>
+          </div>
+          <div class="emr-trend-row" style="margin:0">
+            <span style="width:40px;font-size:0.68rem;color:var(--gray-400)">FPG</span>
+            <div class="emr-trend-bar-wrap"><div class="emr-trend-bar ${fpgClass || "emr-blue"}" style="width:${Math.min(fpg/15*100,100).toFixed(0)}%"></div></div>
+            <span class="emr-trend-val ${fpgClass}">${fpg} mmol/L</span>
+          </div>
+        </div>
+      </div>`;
+    }).join("");
+  } else {
+    labsEl.innerHTML = pt.periods.map((per) => {
+      const ldl = per.labs.ldl;
+      const ldlClass = emrRangeClass("ldl", ldl);
+      return `<div class="emr-trend-row">
+        <span class="emr-trend-label">${per.p === -1 ? "Pre" : per.p === 0 ? "Onset" : `P${per.p}`}</span>
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+          <div class="emr-trend-row" style="margin:0">
+            <span style="width:30px;font-size:0.68rem;color:var(--gray-400)">LDL</span>
+            <div class="emr-trend-bar-wrap"><div class="emr-trend-bar ${ldlClass || "emr-blue"}" style="width:${Math.min(ldl/200*100,100).toFixed(0)}%"></div></div>
+            <span class="emr-trend-val ${ldlClass}">${ldl} mg/dL</span>
+          </div>
+          ${per.labs.proBNP != null ? `<div class="emr-trend-row" style="margin:0">
+            <span style="width:30px;font-size:0.68rem;color:var(--gray-400)">BNP</span>
+            <div class="emr-trend-bar-wrap"><div class="emr-trend-bar emr-blue" style="width:${Math.min(per.labs.proBNP/200*100,100).toFixed(0)}%"></div></div>
+            <span class="emr-trend-val">${per.labs.proBNP} pg/mL</span>
+          </div>` : ""}
+        </div>
+      </div>`;
+    }).join("");
+  }
+};
+
+const ltPeriodClass = (p) => (p < 0 ? "pre" : p === 0 ? "onset" : "post");
+const ltPeriodBadge = (p) => (p < 0 ? "Pre" : p === 0 ? "Onset" : `Post P${p}`);
+
+const ltRenderPeriodGrid = (pt) => {
+  const el = document.getElementById("ltPeriodGrid");
+  if (!el) return;
+  const isDm = ltCurrentType === "dm";
+
+  el.innerHTML = pt.periods.map((per) => {
+    const cls   = ltPeriodClass(per.p);
+    const badge = ltPeriodBadge(per.p);
+
+    // Key vitals
+    const sbpCls = emrRangeClass("sbp", per.vitals.sbp);
+    const bmiCls = emrRangeClass("bmi", per.vitals.bmi);
+
+    // Key labs
+    const labRows = isDm
+      ? [
+          { label: "FPG",     val: per.labs.fpg != null ? per.labs.fpg + " mmol/L" : "—", cls: emrRangeClass("fpg", per.labs.fpg) },
+          { label: "HbA1c",   val: per.labs.hba1c != null ? per.labs.hba1c + "%" : "—", cls: emrRangeClass("hba1c", per.labs.hba1c) },
+          { label: "C-pep",   val: per.labs.cpeptide != null ? per.labs.cpeptide + " nmol/L" : "—", cls: "" }
+        ]
+      : [
+          { label: "LDL",     val: per.labs.ldl + " mg/dL", cls: emrRangeClass("ldl", per.labs.ldl) },
+          { label: "Cr",      val: per.labs.creatinine + " µmol/L", cls: "" },
+          { label: "BNP",     val: per.labs.proBNP != null ? per.labs.proBNP + " pg/mL" : "—", cls: "" }
+        ];
+
+    const comorbActive = Object.entries(per.comorbidities).filter(([, v]) => v === 1).map(([k]) => EMR_COMORB_LABELS[k] || k);
+
+    return `<div class="emr-period-card ${cls}">
+      <span class="emr-period-badge ${cls}">${badge}</span>
+      <div class="emr-period-title">${per.label}</div>
+      <div class="emr-period-dates">${per.dateRange}</div>
+      <div class="emr-period-row"><span class="emr-period-row-label">SBP/DBP</span><span class="emr-period-row-val ${sbpCls}">${per.vitals.sbp}/${per.vitals.dbp} mmHg</span></div>
+      <div class="emr-period-row"><span class="emr-period-row-label">HR / BMI</span><span class="emr-period-row-val">${per.vitals.hr} bpm / ${per.vitals.bmi} <span class="emr-period-row-val ${bmiCls}" style="font-size:inherit"></span></span></div>
+      <div class="emr-period-row"><span class="emr-period-row-label">SpO₂</span><span class="emr-period-row-val">${per.vitals.o2sat}%</span></div>
+      ${labRows.map((r) => `<div class="emr-period-row"><span class="emr-period-row-label">${r.label}</span><span class="emr-period-row-val ${r.cls}">${r.val}</span></div>`).join("")}
+      ${comorbActive.length ? `<div class="emr-period-row" style="flex-wrap:wrap;gap:3px;"><span class="emr-period-row-label" style="width:100%">Comorbidities</span>${comorbActive.map((c) => `<span class="emr-comorb-tag" style="font-size:0.68rem;padding:1px 7px">${c}</span>`).join("")}</div>` : ""}
+    </div>`;
+  }).join("");
+};
+
+const ltRenderMedsHistory = (pt) => {
+  const el = document.getElementById("ltMedsHistory");
+  if (!el) return;
+  el.innerHTML = pt.periods.map((per) => {
+    const meds = per.medications || [];
+    return `<div class="emr-meds-period">
+      <div class="emr-meds-period-title">${per.label}</div>
+      <div class="emr-meds-list">
+        ${meds.length ? meds.map((m) => `<span class="emr-med-tag">${emrMedLabel(m)}</span>`).join("") : `<span class="emr-no-meds">No medications recorded</span>`}
+      </div>
+    </div>`;
+  }).join("");
+};
+
+const ltRenderComorbidities = (pt) => {
+  const el = document.getElementById("ltComorbidities");
+  if (!el) return;
+  el.innerHTML = pt.periods.map((per) => {
+    const active = Object.entries(per.comorbidities).filter(([, v]) => v === 1).map(([k]) => EMR_COMORB_LABELS[k] || k);
+    return `<div class="emr-comorb-period">
+      <div class="emr-comorb-period-title">${per.label}</div>
+      <div class="emr-comorb-list">
+        ${active.length ? active.map((c) => `<span class="emr-comorb-tag">${c}</span>`).join("") : `<span class="emr-no-comorbs">No active comorbidities</span>`}
+      </div>
+    </div>`;
+  }).join("");
+};
+
+const setupLongitudinalTimeline = () => {
+  ltBuildPatientOptions();
+
+  // Store references for type-switch re-render
+  let _dmPt = null, _htPt = null;
+
+  document.getElementById("ltPatientSelect").addEventListener("change", (e) => {
+    const val = e.target.value;
+    // Pre-resolve both types
+    if (val.startsWith("DM:")) {
+      _dmPt = EMR_DIABETES_PATIENTS.find((p) => p.id === val.slice(3));
+      _htPt = null;
+    } else if (val.startsWith("HT:")) {
+      _htPt = EMR_HT_PATIENTS.find((p) => p.id === val.slice(3));
+      _dmPt = null;
+    } else if (val) {
+      const linked = emrGetLinkedData(val);
+      _dmPt = linked.dm;
+      _htPt = linked.ht;
+    } else {
+      _dmPt = null; _htPt = null;
+    }
+    ltSelectPatient(val);
+  });
+
+  document.getElementById("ltTypeTabs").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-lt-type]");
+    if (!btn || btn.disabled) return;
+    ltCurrentType = btn.dataset.ltType;
+    document.querySelectorAll(".emr-type-tab").forEach((t) => t.classList.toggle("active", t.dataset.ltType === ltCurrentType));
+    ltRenderForType(_dmPt, _htPt);
+  });
+};
+
+// ── ICU Ventilator Analysis ───────────────────────────────────
+
+let icuCurrentPatientId = null;
+let icuCurrentDay       = null;
+
+const icuBuildPatientOptions = () => {
+  const sel = document.getElementById("icuPatientSelect");
+  if (!sel || typeof EMR_ICU_PATIENTS === "undefined") return;
+  EMR_ICU_PATIENTS.forEach((pt) => {
+    const opt = document.createElement("option");
+    opt.value = pt.id;
+    opt.textContent = `${pt.displayId} – ${pt.primaryDx.split("(")[0].trim()} – Age ${pt.age}`;
+    sel.appendChild(opt);
+  });
+};
+
+const icuSelectPatient = (patientId) => {
+  const empty   = document.getElementById("icuEmptyState");
+  const content = document.getElementById("icuContent");
+  const daySel  = document.getElementById("icuDaySelectorWrap");
+
+  if (!patientId) {
+    empty.hidden = false;
+    content.hidden = true;
+    daySel.hidden = true;
+    return;
+  }
+
+  const pt = EMR_ICU_PATIENTS.find((p) => p.id === patientId);
+  if (!pt) return;
+
+  icuCurrentPatientId = patientId;
+  empty.hidden = true;
+  content.hidden = false;
+
+  // Render patient info
+  icuRenderPatientInfo(pt);
+
+  // Render stay timeline
+  icuRenderStayTimeline(pt);
+
+  // Build day selector
+  const daySelect = document.getElementById("icuDaySelect");
+  if (daySelect) {
+    daySelect.innerHTML = pt.days.map((d) =>
+      `<option value="${d.day}">Day ${d.day}${d.captures.length ? " (" + d.captures.length + " captures)" : " (no captures)"}</option>`
+    ).join("");
+    daySel.hidden = false;
+    icuCurrentDay = pt.days[0].day;
+    daySelect.value = icuCurrentDay;
+    daySelect.onchange = (e) => {
+      icuCurrentDay = parseInt(e.target.value);
+      icuRenderDay(pt, icuCurrentDay);
+    };
+  }
+
+  icuRenderDay(pt, pt.days[0].day);
+};
+
+const icuRenderPatientInfo = (pt) => {
+  const el = document.getElementById("icuPatientInfo");
+  if (!el) return;
+  el.innerHTML = `<div class="icu-info-list">
+    <div class="icu-info-row"><span class="icu-info-label">Patient ID</span><span class="icu-info-val">${pt.displayId}</span></div>
+    <div class="icu-info-row"><span class="icu-info-label">HN</span><span class="icu-info-val">${pt.hn}</span></div>
+    <div class="icu-info-row"><span class="icu-info-label">Age / Sex</span><span class="icu-info-val">${pt.age} years – ${pt.sexLabel}</span></div>
+    <div class="icu-info-row"><span class="icu-info-label">BW / HT</span><span class="icu-info-val">${pt.bw} kg / ${pt.ht} cm</span></div>
+    <div class="icu-info-row"><span class="icu-info-label">BMI</span><span class="icu-info-val ${emrRangeClass("bmi", pt.bmi)}">${pt.bmi} kg/m²</span></div>
+    <div class="icu-info-row"><span class="icu-info-label">Ventilator</span><span class="icu-info-val">#${pt.ventilatorId}</span></div>
+    <div class="icu-info-row"><span class="icu-info-label">ICU Days</span><span class="icu-info-val">${pt.icuDays} days</span></div>
+    <div class="icu-info-row"><span class="icu-info-label">Admit Date</span><span class="icu-info-val">${pt.admitDate}</span></div>
+    <div class="icu-info-row"><span class="icu-info-label">Primary Dx</span><span class="icu-info-val" style="text-align:right">${pt.primaryDx}</span></div>
+    <div class="icu-info-row"><span class="icu-info-label">Secondary Dx</span><span class="icu-info-val" style="text-align:right;font-size:0.76rem;">${pt.secondaryDx}</span></div>
+  </div>`;
+};
+
+const icuRenderStayTimeline = (pt) => {
+  const el = document.getElementById("icuStayTimeline");
+  if (!el) return;
+  el.innerHTML = pt.days.map((d) => {
+    const hasData = d.captures.length > 0;
+    const isActive = d.day === (icuCurrentDay ?? pt.days[0].day);
+    return `<div class="icu-day-pill ${hasData ? "has-data" : ""} ${isActive ? "active" : ""}" data-icu-day="${d.day}">
+      Day ${d.day}
+      <span class="icu-day-pill-sub">${hasData ? d.captures.length + " captures" : "No captures"}</span>
+    </div>`;
+  }).join("");
+
+  el.querySelectorAll("[data-icu-day]").forEach((pill) => {
+    pill.addEventListener("click", () => {
+      const day = parseInt(pill.dataset.icuDay);
+      icuCurrentDay = day;
+      document.getElementById("icuDaySelect").value = day;
+      el.querySelectorAll(".icu-day-pill").forEach((p) => p.classList.toggle("active", parseInt(p.dataset.icuDay) === day));
+      const pt = EMR_ICU_PATIENTS.find((p) => p.id === icuCurrentPatientId);
+      if (pt) icuRenderDay(pt, day);
+    });
+  });
+};
+
+const icuBuildSparkline = (values, color = "#3b82f6") => {
+  if (!values || !values.length) return "";
+  const w = 200, h = 32;
+  const mn = Math.min(...values), mx = Math.max(...values);
+  const range = mx - mn || 1;
+  const pts = values.map((v, i) => {
+    const x = (i / (values.length - 1)) * w;
+    const y = h - ((v - mn) / range) * (h - 4) - 2;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  return `<svg class="icu-sparkline-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+  </svg>`;
+};
+
+const icuRenderDay = (pt, dayNum) => {
+  const dayData = pt.days.find((d) => d.day === dayNum);
+  if (!dayData) return;
+
+  // Update stay timeline active
+  document.querySelectorAll(".icu-day-pill").forEach((p) => {
+    p.classList.toggle("active", parseInt(p.dataset.icuDay) === dayNum);
+  });
+
+  // Dx/Op section
+  const dxOpEl = document.getElementById("icuDxOp");
+  if (dxOpEl) {
+    dxOpEl.innerHTML = `
+      <div>
+        <div class="icu-dx-section-title">Primary Diagnosis</div>
+        <div class="icu-dx-value">${pt.primaryDx}<br><small style="color:var(--gray-400);font-size:0.76rem">Day ${dayNum}: ${dayData.dx}</small></div>
+      </div>
+      <div>
+        <div class="icu-dx-section-title">Secondary Diagnosis</div>
+        <div class="icu-dx-value">${pt.secondaryDx}</div>
+      </div>
+      <div>
+        <div class="icu-dx-section-title">Operations / Procedures</div>
+        <div class="icu-dx-value">${dayData.op || "Not specified"}</div>
+      </div>`;
+  }
+
+  // Capture log
+  const captureLog = document.getElementById("icuCaptureLog");
+  if (captureLog) {
+    if (!dayData.captures.length) {
+      captureLog.innerHTML = `<div class="icu-no-captures">No captures recorded for Day ${dayNum}.</div>`;
+    } else {
+      captureLog.innerHTML = dayData.captures.map((cap) => {
+        const hasData = cap.rows && cap.rows.length > 0;
+        return `<div class="icu-capture-row">
+          <span class="icu-capture-time">${cap.time}</span>
+          <span class="icu-capture-file">${cap.file}</span>
+          <span class="icu-capture-status ${hasData ? "has-data" : "no-data"}">${hasData ? "Data loaded" : "CSV pending"}</span>
+        </div>`;
+      }).join("");
+    }
+  }
+
+  // Waveform cards and assessment
+  const capturesWithData = dayData.captures.filter((c) => c.rows && c.rows.length > 0);
+  const waveCards = document.getElementById("icuWaveCards");
+  const noWaveNote = document.getElementById("icuNoWaveNote");
+  const captureBadge = document.getElementById("icuCaptureBadge");
+  const assessEl = document.getElementById("icuAssessment");
+
+  if (captureBadge) {
+    captureBadge.textContent = `Day ${dayNum} — ${dayData.captures.length} captures${capturesWithData.length ? `, ${capturesWithData.length} with waveform data` : ""}`;
+  }
+
+  if (!capturesWithData.length) {
+    if (waveCards) waveCards.innerHTML = "";
+    if (noWaveNote) noWaveNote.hidden = false;
+    if (assessEl) assessEl.innerHTML = `<div class="icu-no-assess">No waveform data available for this day.</div>`;
+    return;
+  }
+
+  if (noWaveNote) noWaveNote.hidden = true;
+
+  // Aggregate stats across all loaded captures for this day
+  const allRows = capturesWithData.flatMap((c) => c.rows);
+  const stats = emrWaveStats(allRows);
+
+  // Build signal cards
+  const signals = [
+    {
+      key: "flow",
+      label: "Flow",
+      unit: "L/min",
+      color: "#3b82f6",
+      refHigh: [0, 0],
+      note: () => {
+        if (stats.flow.min < -40) return { cls: "warn", msg: "Significant expiratory flow detected — check for active exhalation or flow limitation." };
+        if (stats.flow.max > 90)  return { cls: "warn", msg: "Peak inspiratory flow >90 L/min — review tidal volume and flow waveform shape." };
+        return { cls: "ok", msg: "Flow range within expected ventilator delivery patterns." };
+      }
+    },
+    {
+      key: "pressure",
+      label: "Pressure",
+      unit: "cmH₂O",
+      color: "#ef6f6c",
+      note: () => {
+        if (stats.pressure.max > 40) return { cls: "alert", msg: `Peak airway pressure ${stats.pressure.max} cmH₂O — exceeds 40 cmH₂O threshold. Risk of barotrauma. Review tidal volume and compliance.` };
+        if (stats.pressure.max > 30) return { cls: "warn", msg: `Peak pressure ${stats.pressure.max} cmH₂O — approaching high-pressure limit. Monitor closely.` };
+        return { cls: "ok", msg: `Peak pressure ${stats.pressure.max} cmH₂O — within safe range.` };
+      }
+    },
+    {
+      key: "volume",
+      label: "Volume",
+      unit: "mL",
+      color: "#1f9d8f",
+      note: () => {
+        const tidalVol = stats.volume.max - stats.volume.min;
+        if (tidalVol < 300) return { cls: "warn", msg: `Estimated tidal volume ~${Math.round(tidalVol)} mL — may be below target range (6-8 mL/kg IBW).` };
+        if (tidalVol > 700) return { cls: "warn", msg: `Estimated tidal volume ~${Math.round(tidalVol)} mL — above 700 mL, review lung-protective ventilation settings.` };
+        return { cls: "ok", msg: `Estimated tidal volume ~${Math.round(tidalVol)} mL — within typical range.` };
+      }
+    }
+  ];
+
+  if (waveCards) {
+    waveCards.innerHTML = signals.map((sig) => {
+      const s = stats[sig.key];
+      const note = sig.note();
+      const sparkValues = capturesWithData[0].rows.slice(0, 60).map((r) => r[sig.key]);
+      const maxClass = emrRangeClass("peakPressure", sig.key === "pressure" ? s.max : null);
+      return `<div class="icu-wave-card ${note.cls}">
+        <div class="icu-wave-signal">${sig.label}</div>
+        <div class="icu-wave-stat-grid">
+          <div class="icu-stat-item"><div class="icu-stat-label">Mean</div><div class="icu-stat-val">${s.mean}</div></div>
+          <div class="icu-stat-item"><div class="icu-stat-label">Max</div><div class="icu-stat-val ${sig.key === "pressure" ? maxClass : ""}">${s.max}</div></div>
+          <div class="icu-stat-item"><div class="icu-stat-label">Min</div><div class="icu-stat-val">${s.min}</div></div>
+          <div class="icu-stat-item"><div class="icu-stat-label">Std Dev</div><div class="icu-stat-val">${s.std}</div></div>
+        </div>
+        <div class="icu-wave-unit">Unit: ${sig.unit} &nbsp;·&nbsp; ${allRows.length} samples across ${capturesWithData.length} capture(s)</div>
+        <div class="icu-wave-sparkline">${icuBuildSparkline(sparkValues, sig.color)}</div>
+        <div class="icu-wave-note ${note.cls}">${note.msg}</div>
+      </div>`;
+    }).join("");
+  }
+
+  // Clinical assessment
+  if (assessEl) {
+    const assessments = signals.map((sig) => ({ ...sig.note(), signal: sig.label }));
+    const icons = {
+      ok:    `<svg class="icu-assess-icon" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      warn:  `<svg class="icu-assess-icon" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+      alert: `<svg class="icu-assess-icon" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`
+    };
+    assessEl.innerHTML = assessments.map((a) =>
+      `<div class="icu-assess-item ${a.cls}">
+        ${icons[a.cls] || icons.ok}
+        <div>
+          <div class="icu-assess-title">${a.signal}</div>
+          <div class="icu-assess-body">${a.msg}</div>
+        </div>
+      </div>`
+    ).join("") + `<div class="icu-assess-item ok" style="font-size:0.73rem;opacity:0.7;border:none;background:none;padding:6px 0 0;">${icons.ok}<div><div class="icu-assess-title" style="font-size:0.73rem">Source Verified</div><div class="icu-assess-body">Waveform data from SmartICU CSV exports. Statistics computed from ${allRows.length} samples at 25 Hz.</div></div></div>`;
+  }
+};
+
+const setupIcuAnalysis = () => {
+  if (typeof EMR_ICU_PATIENTS === "undefined") return;
+  icuBuildPatientOptions();
+
+  document.getElementById("icuPatientSelect").addEventListener("change", (e) => {
+    icuSelectPatient(e.target.value);
+  });
+};
+
+const setupEmrIntelligence = () => {
+  if (typeof EMR_DIABETES_PATIENTS !== "undefined") setupLongitudinalTimeline();
+  if (typeof EMR_ICU_PATIENTS !== "undefined")      setupIcuAnalysis();
 };
 
 document.addEventListener("DOMContentLoaded", init);

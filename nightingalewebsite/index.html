@@ -1303,192 +1303,178 @@
           </section>
 
           <section class="page" data-page="longitudinal">
+            <!-- Page Header -->
             <div class="page-header">
               <div>
                 <h2 data-i18n="longTimelineTitle">Longitudinal Medical Timeline</h2>
-                <p data-i18n="longTimelineSubtitle">Patient events across rolling 60-day periods.</p>
+                <p data-i18n="longTimelineSubtitle">Patient events across rolling 60-day periods — Diabetes &amp; Hypertension EMR.</p>
               </div>
               <div class="chip-group">
                 <span class="chip" data-i18n="staffOnly">Staff-only</span>
-                <span class="chip soft">60-day view</span>
+                <span class="chip soft">60-day periods</span>
+                <span class="chip soft emr-source-chip">Srinagarind Hospital KKU</span>
               </div>
             </div>
-            <div class="page-grid">
-              <div class="panel span-12" data-reveal style="--delay: 0.05s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="timelineTitle">Timeline Windows</h3>
-                    <p data-i18n="timelineDesc">Vitals, labs, diagnoses, medications, comorbidities.</p>
-                  </div>
+
+            <!-- Patient Selector -->
+            <div class="emr-selector-bar" id="ltSelectorBar">
+              <div class="emr-selector-label" data-i18n="ltSelectPatient">Select Patient</div>
+              <select id="ltPatientSelect" class="emr-select">
+                <option value="">— Select patient —</option>
+              </select>
+              <div class="emr-type-tabs" id="ltTypeTabs" hidden>
+                <button class="emr-type-tab active" data-lt-type="dm" id="ltTabDm">Diabetes</button>
+                <button class="emr-type-tab" data-lt-type="ht" id="ltTabHt">Hypertension</button>
+              </div>
+              <div id="ltNoDataNote" hidden class="emr-no-data-note">No EMR data linked for this patient.</div>
+            </div>
+
+            <!-- Empty state -->
+            <div id="ltEmptyState" class="emr-empty-state">
+              <div class="emr-empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <p>Select a patient to view their longitudinal medical timeline.</p>
+              <p class="emr-empty-sub">Diabetes and hypertension 60-day period analysis — Srinagarind Hospital KKU</p>
+            </div>
+
+            <!-- Timeline Content (populated by JS) -->
+            <div id="ltContent" hidden>
+              <!-- Patient Summary Header -->
+              <div id="ltPatientHeader" class="emr-patient-header"></div>
+
+              <!-- Trend Charts Row -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-6" data-reveal style="--delay:0.05s">
+                  <div class="panel-head"><div><h3 id="ltVitalsTrendTitle">BP / Vitals Trend</h3><p>Per-period systolic and diastolic tracking.</p></div></div>
+                  <div id="ltVitalsTrendChart" class="emr-trend-chart"></div>
                 </div>
-                <div class="period-grid">
-                  <div class="period-card">
-                    <div class="period-title" data-i18n="periodTitle1">Days 0 - 60</div>
-                    <ul class="detail-list">
-                      <li><span data-i18n="timelineVitals">Vitals</span><strong data-i18n="period1Vitals">BP stable, SpO2 96%</strong></li>
-                      <li><span data-i18n="timelineLabs">Labs</span><strong data-i18n="period1Labs">HbA1c 7.1%, LDL 112</strong></li>
-                      <li><span data-i18n="timelineDiagnoses">Diagnoses</span><strong data-i18n="period1Diagnoses">DM2, HTN</strong></li>
-                      <li><span data-i18n="timelineMedications">Medications</span><strong data-i18n="period1Medications">Metformin, Amlodipine</strong></li>
-                      <li><span data-i18n="timelineComorbidities">Comorbidities</span><strong data-i18n="period1Comorbidities">Obesity</strong></li>
-                    </ul>
-                  </div>
-                  <div class="period-card">
-                    <div class="period-title" data-i18n="periodTitle2">Days 61 - 120</div>
-                    <ul class="detail-list">
-                      <li><span data-i18n="timelineVitals">Vitals</span><strong data-i18n="period2Vitals">SpO2 94%, RR elevated</strong></li>
-                      <li><span data-i18n="timelineLabs">Labs</span><strong data-i18n="period2Labs">CRP 8 mg/L, WBC 11k</strong></li>
-                      <li><span data-i18n="timelineDiagnoses">Diagnoses</span><strong data-i18n="period2Diagnoses">Pneumonia</strong></li>
-                      <li><span data-i18n="timelineMedications">Medications</span><strong data-i18n="period2Medications">Ceftriaxone, O2</strong></li>
-                      <li><span data-i18n="timelineComorbidities">Comorbidities</span><strong data-i18n="period2Comorbidities">DM2, HTN</strong></li>
-                    </ul>
-                  </div>
-                  <div class="period-card">
-                    <div class="period-title" data-i18n="periodTitle3">Days 121 - 180</div>
-                    <ul class="detail-list">
-                      <li><span data-i18n="timelineVitals">Vitals</span><strong data-i18n="period3Vitals">Ventilator support, PEEP 8</strong></li>
-                      <li><span data-i18n="timelineLabs">Labs</span><strong data-i18n="period3Labs">ABG normal, lactate 1.2</strong></li>
-                      <li><span data-i18n="timelineDiagnoses">Diagnoses</span><strong data-i18n="period3Diagnoses">Respiratory failure</strong></li>
-                      <li><span data-i18n="timelineMedications">Medications</span><strong data-i18n="period3Medications">Sedation, insulin</strong></li>
-                      <li><span data-i18n="timelineComorbidities">Comorbidities</span><strong data-i18n="period3Comorbidities">DM2, HTN</strong></li>
-                    </ul>
-                  </div>
+                <div class="panel span-6" data-reveal style="--delay:0.1s">
+                  <div class="panel-head"><div><h3 id="ltLabsTrendTitle">Key Labs Trend</h3><p>HbA1c / FPG / LDL per period.</p></div></div>
+                  <div id="ltLabsTrendChart" class="emr-trend-chart"></div>
                 </div>
+              </div>
+
+              <!-- Period Cards Grid -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-12" data-reveal style="--delay:0.15s">
+                  <div class="panel-head">
+                    <div><h3>Period-by-Period Summary</h3><p>60-day windows around diagnosis onset.</p></div>
+                    <div class="emr-period-legend">
+                      <span class="emr-legend-dot onset"></span>Onset
+                      <span class="emr-legend-dot pre"></span>Pre
+                      <span class="emr-legend-dot post"></span>Post
+                    </div>
+                  </div>
+                  <div id="ltPeriodGrid" class="emr-period-grid"></div>
+                </div>
+              </div>
+
+              <!-- Medications + Comorbidities row -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-6" data-reveal style="--delay:0.2s">
+                  <div class="panel-head"><div><h3>Medication History</h3><p>Medications across all recorded periods.</p></div></div>
+                  <div id="ltMedsHistory" class="emr-meds-history"></div>
+                </div>
+                <div class="panel span-6" data-reveal style="--delay:0.25s">
+                  <div class="panel-head"><div><h3>Comorbidities &amp; Diagnosis History</h3><p>Active comorbidities by period.</p></div></div>
+                  <div id="ltComorbidities" class="emr-comorbidities"></div>
+                </div>
+              </div>
+
+              <!-- Disclaimer -->
+              <div class="emr-disclaimer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>This summary is for hospital staff review only. Data reflects EMR records from Srinagarind Hospital (KKU). Do not use as a standalone clinical diagnosis.</span>
               </div>
             </div>
           </section>
 
           <section class="page" data-page="icu-analysis">
+            <!-- Page Header -->
             <div class="page-header">
               <div>
                 <h2 data-i18n="icuTitle">ICU Ventilator Analysis</h2>
-                <p data-i18n="icuSubtitle">Analyze ventilator JSON/CSV and waveform evidence.</p>
+                <p data-i18n="icuSubtitle">Waveform signals (Flow, Pressure, Volume) from SmartICU ventilator dataset — Srinagarind Hospital KKU.</p>
               </div>
               <div class="chip-group">
                 <span class="chip" data-i18n="deptIcu">ICU</span>
-                <span class="chip soft">Waveform v2</span>
+                <span class="chip soft">25 Hz waveform</span>
+                <span class="chip soft emr-source-chip">SmartICU Dataset</span>
               </div>
             </div>
-            <div class="page-grid">
-              <div class="panel span-4" data-reveal style="--delay: 0.05s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="icuDataSourceTitle">Data Source</h3>
-                    <p data-i18n="icuDataSourceDesc">Upload or load ICU ventilator data.</p>
-                  </div>
-                </div>
-                <div class="button-row">
-                  <button class="secondary" type="button" data-i18n="icuUploadBtn">Upload JSON/CSV</button>
-                  <button class="ghost" type="button" data-i18n="icuLoadSampleBtn">Load Sample</button>
-                </div>
-                <ul class="detail-list">
-                  <li><span data-i18n="icuDataPatient">Patient</span><strong>HN-2026-01983</strong></li>
-                  <li><span data-i18n="icuDataDevice">Device</span><strong>Servo-i #A12</strong></li>
-                  <li><span data-i18n="icuDataTimeRange">Time Range</span><strong>06:00 - 08:00</strong></li>
-                </ul>
-              </div>
 
-              <div class="panel span-8" data-reveal style="--delay: 0.1s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="icuWaveTitle">Waveform Summary</h3>
-                    <p data-i18n="icuWaveDesc">Flow, pressure, and volume trends.</p>
-                  </div>
+            <!-- Patient Selector -->
+            <div class="emr-selector-bar" id="icuSelectorBar">
+              <div class="emr-selector-label">Select ICU Patient</div>
+              <select id="icuPatientSelect" class="emr-select">
+                <option value="">— Select ICU patient —</option>
+              </select>
+              <div id="icuDaySelectorWrap" hidden style="display:flex;align-items:center;gap:8px;">
+                <div class="emr-selector-label">Day</div>
+                <select id="icuDaySelect" class="emr-select" style="width:auto;min-width:100px;"></select>
+              </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="icuEmptyState" class="emr-empty-state">
+              <div class="emr-empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <p>Select an ICU patient to view ventilator waveform analysis.</p>
+              <p class="emr-empty-sub">SmartICU dataset — Flow, Pressure, Volume signals at 25 Hz — Srinagarind Hospital KKU</p>
+            </div>
+
+            <!-- ICU Content -->
+            <div id="icuContent" hidden>
+              <!-- Patient Info + Day Summary -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-4" data-reveal style="--delay:0.05s" id="icuPatientInfoPanel">
+                  <div class="panel-head"><div><h3>Patient Demographics</h3><p>From SmartICU JSON dataset.</p></div></div>
+                  <div id="icuPatientInfo"></div>
                 </div>
-                <div class="wave-grid">
-                  <div class="wave-card">
-                    <div class="wave-head">
-                      <span data-i18n="waveFlow">Flow</span>
-                      <span class="pill" data-i18n="waveFlowStatus">Stable</span>
-                    </div>
-                    <div class="sparkline"></div>
-                    <p data-i18n="waveNoteFlow">Minor flow limitation, improved after 07:20.</p>
-                  </div>
-                  <div class="wave-card">
-                    <div class="wave-head">
-                      <span data-i18n="wavePressure">Pressure</span>
-                      <span class="pill warning" data-i18n="wavePressureStatus">Watch</span>
-                    </div>
-                    <div class="sparkline"></div>
-                    <p data-i18n="waveNotePressure">Peak pressure elevated for 12 minutes.</p>
-                  </div>
-                  <div class="wave-card">
-                    <div class="wave-head">
-                      <span data-i18n="waveVolume">Volume</span>
-                      <span class="pill" data-i18n="waveVolumeStatus">Stable</span>
-                    </div>
-                    <div class="sparkline"></div>
-                    <p data-i18n="waveNoteVolume">Tidal volume within target range.</p>
-                  </div>
+                <div class="panel span-8" data-reveal style="--delay:0.1s">
+                  <div class="panel-head"><div><h3>ICU Stay Timeline</h3><p>Recorded days and capture count.</p></div></div>
+                  <div id="icuStayTimeline" class="icu-stay-timeline"></div>
                 </div>
               </div>
 
-              <div class="panel span-7" data-reveal style="--delay: 0.15s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="icuAbnormalTitle">Abnormal Pattern Notes</h3>
-                    <p data-i18n="icuAbnormalDesc">Detected from waveform analysis.</p>
+              <!-- Waveform Signal Summary -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-12" data-reveal style="--delay:0.15s">
+                  <div class="panel-head">
+                    <div><h3>Waveform Signal Summary</h3><p>Statistical overview of Flow, Pressure, and Volume per capture. Source: CSV waveform exports.</p></div>
+                    <div id="icuCaptureBadge" class="chip soft" style="white-space:nowrap;"></div>
                   </div>
+                  <div id="icuWaveCards" class="icu-wave-cards"></div>
+                  <div id="icuNoWaveNote" hidden class="emr-no-data-note" style="margin:16px 0;">No waveform CSV data available for captures on this day.</div>
                 </div>
-                <ul class="alert-list">
-                  <li>
-                    <div>
-                      <div class="alert-title" data-i18n="icuAbnormalItem1">Auto-PEEP risk detected.</div>
-                      <div class="alert-detail">Minute 22-27</div>
-                    </div>
-                    <span class="pill warning" data-i18n="alertLevelIcu">ICU</span>
-                  </li>
-                  <li>
-                    <div>
-                      <div class="alert-title" data-i18n="icuAbnormalItem2">Pressure spike above 35 cmH2O.</div>
-                      <div class="alert-detail">Minute 31</div>
-                    </div>
-                    <span class="pill danger" data-i18n="alertLevelIcu">ICU</span>
-                  </li>
-                  <li>
-                    <div>
-                      <div class="alert-title" data-i18n="icuAbnormalItem3">Flow drop during suction event.</div>
-                      <div class="alert-detail">Minute 44</div>
-                    </div>
-                    <span class="pill" data-i18n="alertLevelIcu">ICU</span>
-                  </li>
-                </ul>
               </div>
 
-              <div class="panel span-5" data-reveal style="--delay: 0.2s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="icuEvidenceTitle">Evidence from Original Data</h3>
-                    <p data-i18n="icuEvidenceDesc">Linked JSON/CSV excerpts.</p>
-                  </div>
+              <!-- Captures Table + Clinical Assessment -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-6" data-reveal style="--delay:0.2s">
+                  <div class="panel-head"><div><h3>Capture Log</h3><p>Hourly ventilator recordings for selected day.</p></div></div>
+                  <div id="icuCaptureLog" class="icu-capture-log"></div>
                 </div>
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th data-i18n="icuEvidenceColumnTime">Time</th>
-                        <th data-i18n="icuEvidenceColumnSource">Source</th>
-                        <th data-i18n="icuEvidenceColumnSnippet">Snippet</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>07:22</td>
-                        <td>Flow CSV</td>
-                        <td>Flow=-12.4, PEEP=8</td>
-                      </tr>
-                      <tr>
-                        <td>07:31</td>
-                        <td>Pressure CSV</td>
-                        <td>PIP=36.2, RR=18</td>
-                      </tr>
-                      <tr>
-                        <td>07:44</td>
-                        <td>Volume CSV</td>
-                        <td>VT=390, Leak=8%</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="panel span-6" data-reveal style="--delay:0.25s">
+                  <div class="panel-head"><div><h3>Clinical Signal Assessment</h3><p>Pattern notes from waveform statistics. For staff review only — not a clinical diagnosis.</p></div></div>
+                  <div id="icuAssessment" class="icu-assessment"></div>
                 </div>
+              </div>
+
+              <!-- Diagnosis + Operation Info -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-12" data-reveal style="--delay:0.3s">
+                  <div class="panel-head"><div><h3>Diagnosis &amp; Operation Record</h3><p>As documented in the ICU JSON file for selected day.</p></div></div>
+                  <div id="icuDxOp" class="icu-dx-op"></div>
+                </div>
+              </div>
+
+              <!-- Disclaimer -->
+              <div class="emr-disclaimer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>Waveform statistics are computed from raw CSV exports (SmartICU dataset, Srinagarind Hospital KKU). Signal analysis supports staff review only — not a standalone clinical diagnosis. Consult the attending physician for all clinical decisions.</span>
               </div>
             </div>
           </section>
@@ -1715,6 +1701,7 @@
       </main>
     </div>
 
+    <script src="data-emr.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

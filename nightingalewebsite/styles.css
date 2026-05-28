@@ -2151,3 +2151,592 @@ body.loaded [data-reveal] {
     grid-column: span 1;
   }
 }
+
+/* ============================================================
+   EMR Intelligence – Longitudinal Timeline + ICU Analysis
+   ============================================================ */
+
+/* Selector Bar */
+.emr-selector-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.emr-selector-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gray-400);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.emr-select {
+  padding: 7px 32px 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Sora", "Noto Sans Thai", sans-serif;
+  font-size: 0.85rem;
+  min-width: 220px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+}
+.emr-select:focus { outline: none; border-color: var(--blue); }
+
+/* Type Tabs (DM / HT) */
+.emr-type-tabs { display: flex; gap: 4px; }
+.emr-type-tab {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--gray-400);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.emr-type-tab.active,
+.emr-type-tab:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+/* Empty State */
+.emr-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 64px 24px;
+  color: var(--gray-400);
+  text-align: center;
+}
+.emr-empty-icon svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--blue-soft);
+  opacity: 0.6;
+}
+.emr-empty-state p { margin: 0; font-size: 0.9rem; }
+.emr-empty-sub { font-size: 0.78rem; opacity: 0.7; }
+
+/* No data note */
+.emr-no-data-note {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(251,191,36,0.08);
+  border: 1px solid rgba(251,191,36,0.25);
+  color: var(--amber);
+  font-size: 0.82rem;
+}
+
+/* Patient Header */
+.emr-patient-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 18px 20px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.emr-pt-name { font-size: 1.1rem; font-weight: 700; }
+.emr-pt-thai { font-size: 0.9rem; color: var(--gray-400); margin-top: 2px; }
+.emr-pt-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.emr-pt-meta-item { font-size: 0.78rem; color: var(--gray-400); }
+.emr-pt-meta-item strong { color: var(--text); font-weight: 600; }
+.emr-pt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-top: 8px;
+}
+.emr-pt-badge.dm { background: rgba(59,130,246,0.12); color: var(--blue); }
+.emr-pt-badge.ht { background: rgba(239,111,108,0.12); color: var(--coral); }
+
+/* Source Chip */
+.emr-source-chip {
+  font-size: 0.72rem;
+  opacity: 0.75;
+}
+
+/* Trend Charts */
+.emr-trend-chart {
+  padding: 8px 0;
+}
+.emr-trend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.emr-trend-label {
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  width: 80px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.emr-trend-bar-wrap {
+  flex: 1;
+  background: var(--bg);
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+}
+.emr-trend-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+.emr-trend-bar.emr-normal { background: var(--green); }
+.emr-trend-bar.emr-warn   { background: var(--amber); }
+.emr-trend-bar.emr-high   { background: var(--coral); }
+.emr-trend-bar.emr-blue   { background: var(--blue); }
+.emr-trend-val {
+  font-size: 0.78rem;
+  font-weight: 700;
+  min-width: 52px;
+  text-align: right;
+}
+.emr-trend-val.emr-normal { color: var(--green); }
+.emr-trend-val.emr-warn   { color: var(--amber); }
+.emr-trend-val.emr-high   { color: var(--coral); }
+
+/* Period Cards */
+.emr-period-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  padding: 4px 0 8px;
+}
+.emr-period-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 14px 12px;
+  background: var(--bg);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.emr-period-card.onset {
+  border-color: var(--blue);
+  background: rgba(59,130,246,0.04);
+}
+.emr-period-card.pre {
+  border-color: var(--border);
+  opacity: 0.9;
+}
+.emr-period-card:hover {
+  border-color: var(--blue-soft);
+  box-shadow: 0 2px 12px rgba(59,130,246,0.1);
+}
+.emr-period-badge {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--blue);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.emr-period-badge.pre  { background: var(--gray-400); }
+.emr-period-badge.post { background: var(--teal); }
+.emr-period-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+.emr-period-dates {
+  font-size: 0.68rem;
+  color: var(--gray-400);
+  margin-bottom: 10px;
+}
+.emr-period-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.76rem;
+}
+.emr-period-row:last-child { border-bottom: none; }
+.emr-period-row-label { color: var(--gray-400); font-weight: 500; }
+.emr-period-row-val {
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+.emr-period-row-val.emr-high   { color: var(--coral); }
+.emr-period-row-val.emr-warn   { color: var(--amber); }
+.emr-period-row-val.emr-normal { color: var(--green); }
+
+/* Period Legend */
+.emr-period-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--gray-400);
+}
+.emr-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 3px;
+}
+.emr-legend-dot.onset { background: var(--blue); }
+.emr-legend-dot.pre   { background: var(--gray-400); }
+.emr-legend-dot.post  { background: var(--teal); }
+
+/* Medications History */
+.emr-meds-history { padding: 4px 0; }
+.emr-meds-period {
+  margin-bottom: 14px;
+}
+.emr-meds-period-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gray-400);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.emr-meds-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.emr-med-tag {
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(59,130,246,0.1);
+  color: var(--blue);
+  font-size: 0.76rem;
+  font-weight: 600;
+  border: 1px solid rgba(59,130,246,0.2);
+}
+.emr-no-meds {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+  font-style: italic;
+}
+
+/* Comorbidities */
+.emr-comorbidities { padding: 4px 0; }
+.emr-comorb-period { margin-bottom: 14px; }
+.emr-comorb-period-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gray-400);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.emr-comorb-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.emr-comorb-tag {
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(239,111,108,0.1);
+  color: var(--coral);
+  font-size: 0.76rem;
+  font-weight: 600;
+  border: 1px solid rgba(239,111,108,0.2);
+}
+.emr-no-comorbs {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+  font-style: italic;
+}
+
+/* Disclaimer */
+.emr-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(251,191,36,0.06);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 10px;
+  margin-top: 16px;
+  font-size: 0.78rem;
+  color: var(--gray-400);
+  line-height: 1.5;
+}
+.emr-disclaimer svg {
+  width: 16px; height: 16px;
+  stroke: var(--amber);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── ICU Analysis ── */
+.icu-stay-timeline {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+.icu-day-pill {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--bg);
+  color: var(--gray-400);
+}
+.icu-day-pill.has-data {
+  border-color: var(--blue-soft);
+  color: var(--blue);
+  background: rgba(59,130,246,0.06);
+}
+.icu-day-pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.icu-day-pill-sub {
+  font-size: 0.65rem;
+  font-weight: 400;
+  display: block;
+  margin-top: 2px;
+  opacity: 0.7;
+}
+
+/* ICU Patient Info */
+.icu-info-list { padding: 4px 0; }
+.icu-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.icu-info-row:last-child { border-bottom: none; }
+.icu-info-label {
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.icu-info-val {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: right;
+}
+.icu-dx-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(239,111,108,0.1);
+  color: var(--coral);
+  font-size: 0.73rem;
+  font-weight: 600;
+  border: 1px solid rgba(239,111,108,0.2);
+  margin: 2px 2px 0 0;
+}
+
+/* ICU Wave Cards */
+.icu-wave-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 8px 0;
+}
+.icu-wave-card {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--bg);
+}
+.icu-wave-card.warn { border-color: var(--amber); background: rgba(251,191,36,0.04); }
+.icu-wave-card.alert { border-color: var(--coral); background: rgba(239,111,108,0.04); }
+.icu-wave-signal {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--gray-400);
+  margin-bottom: 8px;
+}
+.icu-wave-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 10px;
+  margin-bottom: 10px;
+}
+.icu-stat-item {}
+.icu-stat-label {
+  font-size: 0.66rem;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.icu-stat-val {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.icu-stat-val.emr-high   { color: var(--coral); }
+.icu-stat-val.emr-warn   { color: var(--amber); }
+.icu-stat-val.emr-normal { color: var(--green); }
+.icu-wave-unit {
+  font-size: 0.68rem;
+  color: var(--gray-400);
+  margin-bottom: 6px;
+}
+.icu-wave-sparkline {
+  height: 40px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--bg-panel);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+.icu-sparkline-svg { width: 100%; height: 32px; }
+.icu-wave-note {
+  font-size: 0.74rem;
+  color: var(--gray-400);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.icu-wave-note.warn  { color: var(--amber); }
+.icu-wave-note.alert { color: var(--coral); }
+
+/* ICU Capture Log */
+.icu-capture-log { padding: 4px 0; }
+.icu-capture-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  gap: 8px;
+}
+.icu-capture-time {
+  font-weight: 700;
+  color: var(--blue);
+  font-family: monospace;
+  min-width: 70px;
+}
+.icu-capture-file {
+  flex: 1;
+  font-size: 0.7rem;
+  color: var(--gray-400);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.icu-capture-status {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.icu-capture-status.has-data { background: rgba(74,222,128,0.12); color: var(--green); }
+.icu-capture-status.no-data  { background: var(--bg-panel); color: var(--gray-400); }
+.icu-no-captures {
+  font-size: 0.82rem;
+  color: var(--gray-400);
+  padding: 16px 0;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ICU Assessment */
+.icu-assessment { padding: 4px 0; }
+.icu-assess-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+}
+.icu-assess-item.ok    { border-color: rgba(74,222,128,0.25); background: rgba(74,222,128,0.05); }
+.icu-assess-item.warn  { border-color: rgba(251,191,36,0.3);  background: rgba(251,191,36,0.05); }
+.icu-assess-item.alert { border-color: rgba(239,111,108,0.3); background: rgba(239,111,108,0.05); }
+.icu-assess-icon { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+.icu-assess-title { font-weight: 700; margin-bottom: 2px; }
+.icu-assess-item.ok    .icu-assess-title { color: var(--green); }
+.icu-assess-item.warn  .icu-assess-title { color: var(--amber); }
+.icu-assess-item.alert .icu-assess-title { color: var(--coral); }
+.icu-assess-body { color: var(--gray-400); line-height: 1.4; font-size: 0.76rem; }
+.icu-no-assess {
+  font-size: 0.82rem;
+  color: var(--gray-400);
+  padding: 16px 0;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ICU Dx/Op */
+.icu-dx-op {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 8px 0;
+}
+.icu-dx-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gray-400);
+  margin-bottom: 8px;
+}
+.icu-dx-value {
+  font-size: 0.84rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .icu-wave-cards { grid-template-columns: 1fr; }
+  .emr-period-grid { grid-template-columns: repeat(2, 1fr); }
+  .emr-selector-bar { flex-wrap: wrap; }
+}
