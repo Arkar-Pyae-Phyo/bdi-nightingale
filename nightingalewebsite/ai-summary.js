@@ -973,7 +973,7 @@ const aiShowError = (message) => {
       <div>
         <strong>API Error</strong>
         <p>${aiEscape(message)}</p>
-        <p class="ai-error-hint">Check your API key in ⚙ API Settings. The default key may have expired. Get a new key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a>.</p>
+        <p class="ai-error-hint">Check your API key in ⚙ API Settings. This project does not include a default key in source code. Get a key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a>.</p>
       </div>
     </div>`;
 };
