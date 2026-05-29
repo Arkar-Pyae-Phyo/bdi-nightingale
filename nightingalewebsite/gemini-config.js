@@ -25,8 +25,8 @@
  *   gemini-2.0-flash        — previous generation
  */
 const GEMINI_CONFIG = {
-  apiKey:          "",   // ← Paste your Gemini API key here (do not commit this file with a real key)
-  model:           "gemini-2.5-pro",
+  apiKey:          "AIzaSyDhZMQeGaUd3X8WSq3f6kLcdTGRcBG80YQ",   // ← Paste your Gemini API key here (do not commit this file with a real key)
+  model:           "gemini-2.5-flash",
   endpoint:        "https://generativelanguage.googleapis.com/v1beta/models",
   temperature:     0.3,
   maxOutputTokens: 2048,

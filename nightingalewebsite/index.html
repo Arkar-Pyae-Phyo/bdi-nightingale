@@ -90,16 +90,6 @@
             </span>
             <span data-i18n="navIcuAnalysis">ICU Ventilator Analysis</span>
           </button>
-          <button class="nav-item" type="button" data-page="standards">
-            <span class="nav-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <ellipse cx="12" cy="5" rx="7" ry="3" />
-                <path d="M5 5v10c0 1.7 3.1 3 7 3s7-1.3 7-3V5" />
-                <path d="M5 10c0 1.7 3.1 3 7 3s7-1.3 7-3" />
-              </svg>
-            </span>
-            <span data-i18n="navStandards">Data Localization &amp; Standards</span>
-          </button>
           <button class="nav-item" type="button" data-page="admin">
             <span class="nav-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -111,44 +101,117 @@
             </span>
             <span data-i18n="navAdmin">Admin Settings</span>
           </button>
+          <!-- Audit Log — Admin only -->
+          <button class="nav-item" type="button" data-page="audit-log">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                <rect x="9" y="3" width="6" height="4" rx="1"/>
+                <path d="M9 12h6M9 16h4"/>
+              </svg>
+            </span>
+            <span data-i18n="navAuditLog">Audit Log</span>
+          </button>
         </nav>
 
         <div class="sidebar-footer">
           <div class="badge" data-i18n="staffOnly">Staff-only</div>
           <div class="status" data-i18n="statusBadge">Live Queue</div>
+          <div class="session-info" id="sessionInfo">
+            <div class="session-staff-id" id="sessionStaffId">—</div>
+            <span class="role-badge" id="sessionRoleBadge" data-role="registration">Registration Staff</span>
+          </div>
         </div>
       </aside>
 
       <main class="main">
         <header class="topbar">
           <div class="topbar-title">
-            <h1 data-i18n="platformTitle">Nightingale Hospital Staff Console</h1>
+            <h1 data-i18n="platformTitle">Hospital Staff Console</h1>
             <p data-i18n="platformSubtitle">
               Operational intelligence for registration, clinics, ICU, and admin teams.
             </p>
           </div>
           <div class="topbar-actions">
-            <button class="ghost" id="langToggle" type="button" data-lang-toggle>EN / TH</button>
-            <button class="primary" type="button" data-page-target="id-scan" data-i18n="newScan">
+            <span class="session-topbar-chip" id="topbarSessionChip" hidden></span>
+            <button class="lang-toggle-btn" id="langToggle" type="button" data-lang-toggle aria-label="Switch language / เปลี่ยนภาษา">
+              <span class="lang-seg" data-lang-seg="en">EN</span>
+              <span class="lang-div" aria-hidden="true">|</span>
+              <span class="lang-seg" data-lang-seg="th">ภาษาไทย</span>
+            </button>
+            <button class="ghost" id="topbarLogoutBtn" type="button" data-i18n="logoutBtn" hidden>
+              Log out
+            </button>
+            <button class="primary" id="topbarNewScanBtn" type="button" data-page-target="id-scan" data-i18n="newScan">
               New Scan
             </button>
           </div>
         </header>
 
-        <section class="pages">
+        <section class="pages" style="position:relative;">
+          <!-- Access Denied Overlay -->
+          <div id="accessDeniedOverlay" class="access-denied-overlay" hidden>
+            <div class="access-denied-card">
+              <div class="access-denied-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M15 9l-6 6M9 9l6 6"/>
+                </svg>
+              </div>
+              <h3 data-i18n="accessDeniedTitle">Access Restricted</h3>
+              <p data-i18n="accessDeniedDesc">Your current role does not have permission to view this section.</p>
+              <div class="access-denied-meta">
+                <div>
+                  <span class="access-denied-label" data-i18n="accessDeniedRoleLabel">Your role:</span>
+                  <span id="accessDeniedCurrentRole" class="role-badge"></span>
+                </div>
+                <div>
+                  <span class="access-denied-label" data-i18n="accessDeniedRequired">Required:</span>
+                  <span id="accessDeniedRequiredRoles"></span>
+                </div>
+              </div>
+              <button class="primary" id="accessDeniedBackBtn" data-i18n="accessDeniedBackBtn">Return to Dashboard</button>
+            </div>
+          </div>
+
           <section class="page active" data-page="dashboard">
             <div class="page-header">
               <div>
                 <h2 data-i18n="dashboardTitle">Main Dashboard</h2>
                 <p data-i18n="dashboardSubtitle">Operational overview for today's patient flow.</p>
               </div>
+          <div class="clinical-disclaimer warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span data-i18n="labelAiNotReplace">AI does not replace doctors. Clinical staff review is mandatory.</span>
+          </div>
               <div class="chip-group">
                 <span class="chip" data-i18n="shiftLive">Shift Live</span>
                 <span class="chip soft" data-i18n="updatedNow">Updated now</span>
               </div>
             </div>
             <div class="page-grid">
-              <div class="panel span-12 stats-grid" data-reveal style="--delay: 0.05s">
+              <!-- Demo Guide Panel -->
+              <div class="panel span-12" data-reveal style="--delay: 0.1s; border: 1.5px solid var(--blue); background: rgba(59, 130, 246, 0.02);">
+                <div class="panel-head" style="margin-bottom: 8px;">
+                  <div>
+                    <h3 style="color: var(--blue); font-size: 1.1rem; display:flex; align-items:center; gap:8px;">
+                      <span data-i18n="demoGuideTitle">Hospital Workflow Demo Guide</span>
+                    </h3>
+                    <p data-i18n="demoGuideSubtitle" style="color:var(--gray-500); margin-top:2px;">Follow these steps to experience the complete Nightingale platform workflow.</p>
+                  </div>
+                </div>
+                <div style="font-size: 0.88rem; line-height: 1.6; color: var(--navy); display: flex; flex-direction: column; gap: 6px;">
+                  <div data-i18n="demoStep1" style="background:#fff; padding:10px 14px; border:1px solid var(--border); border-radius:6px;"><strong>1. Sign In:</strong> Log in as Registration Staff on the <a href='#' onclick='setActivePage("login"); return false;'>Login page</a>.</div>
+                  <div data-i18n="demoStep2" style="background:#fff; padding:10px 14px; border:1px solid var(--border); border-radius:6px;"><strong>2. Patient ID Extraction:</strong> Go to <a href='#' onclick='setActivePage("id-scan"); return false;'>Thai ID Scan</a> and upload a mock ID or use a camera to extract identity via OCR to auto-fill registration.</div>
+                  <div data-i18n="demoStep3" style="background:#fff; padding:10px 14px; border:1px solid var(--border); border-radius:6px;"><strong>3. Verify Data:</strong> Admins or Registration staff review extracted data in the <a href='#' onclick='setActivePage("verification"); return false;'>Verification Queue</a> to securely match or create a profile.</div>
+                  <div data-i18n="demoStep4" style="background:#fff; padding:10px 14px; border:1px solid var(--border); border-radius:6px;"><strong>4. AI Summarization:</strong> Log in as a Doctor or Nurse, access <a href='#' onclick='setActivePage("department-summary"); return false;'>Department Summary</a> or <a href='#' onclick='setActivePage("icu-analysis"); return false;'>ICU Analysis</a>. Click <em>Generate Summary</em> for instant, bilingual clinical insights.</div>
+                  <div data-i18n="demoStep5" style="background:#fff; padding:10px 14px; border:1px solid var(--border); border-radius:6px;"><strong>5. Evidence Traceback:</strong> Inside AI summaries, click data points to reveal the transparent evidence traceback from original CSV/JSON sources.</div>
+                  <div data-i18n="demoStep6" style="background:#fff; padding:10px 14px; border:1px solid var(--border); border-radius:6px;"><strong>6. Longitudinal Timeline:</strong> Open the <a href='#' onclick='setActivePage("longitudinal"); return false;'>Medical Timeline</a> to trace long-term chronic conditions seamlessly across visits.</div>
+                  <div data-i18n="demoStep7" style="background:#fff; padding:10px 14px; border:1px solid var(--border); border-radius:6px;"><strong>7. System Audit:</strong> Log in as Admin to review the <a href='#' onclick='setActivePage("audit-log"); return false;'>Audit Log</a> trails.</div>
+                </div>
+              </div>
+
+              <div class="panel span-12 stats-grid" data-reveal style="--delay: 0.15s">
                 <div class="stat-card">
                   <div class="stat-label" data-i18n="statsTotalPatients">Total patients today</div>
                   <div class="stat-value">342</div>
@@ -347,40 +410,42 @@
                 <form class="form-stack">
                   <label class="field">
                     <span data-i18n="loginStaffId">Staff ID</span>
-                    <input type="text" data-i18n-placeholder="loginStaffIdPlaceholder" placeholder="STA-20491" />
+                    <input type="text" id="loginStaffIdInput" data-i18n-placeholder="loginStaffIdPlaceholder" placeholder="STA-20491" />
                   </label>
                   <label class="field">
                     <span data-i18n="loginPassword">Password</span>
                     <input
                       type="password"
+                      id="loginPasswordInput"
                       data-i18n-placeholder="loginPasswordPlaceholder"
                       placeholder="••••••••"
                     />
                   </label>
                   <label class="field">
                     <span data-i18n="loginRole">Role</span>
-                    <select>
-                      <option data-i18n="loginRoleRegistration">Registration Staff</option>
-                      <option data-i18n="loginRoleDoctor">Doctor</option>
-                      <option data-i18n="loginRoleNurse">Nurse</option>
-                      <option data-i18n="loginRoleIcu">ICU Staff</option>
-                      <option data-i18n="loginRoleAdmin">Admin</option>
+                    <select id="loginRoleSelect">
+                      <option value="registration" data-i18n="loginRoleRegistration">Registration Staff</option>
+                      <option value="doctor" data-i18n="loginRoleDoctor">Doctor</option>
+                      <option value="nurse" data-i18n="loginRoleNurse">Nurse</option>
+                      <option value="icu" data-i18n="loginRoleIcu">ICU Staff</option>
+                      <option value="admin" data-i18n="loginRoleAdmin">Admin</option>
                     </select>
                   </label>
                   <label class="field">
                     <span data-i18n="loginStation">Station</span>
                     <input
                       type="text"
+                      id="loginStationInput"
                       data-i18n-placeholder="loginStationPlaceholder"
                       placeholder="Registration Desk 2"
                     />
                   </label>
                   <label class="field">
                     <span data-i18n="loginShift">Shift</span>
-                    <select>
-                      <option data-i18n="loginShiftMorning">Morning (07:00 - 15:00)</option>
-                      <option data-i18n="loginShiftEvening">Evening (15:00 - 23:00)</option>
-                      <option data-i18n="loginShiftNight">Night (23:00 - 07:00)</option>
+                    <select id="loginShiftSelect">
+                      <option value="morning" data-i18n="loginShiftMorning">Morning (07:00 - 15:00)</option>
+                      <option value="evening" data-i18n="loginShiftEvening">Evening (15:00 - 23:00)</option>
+                      <option value="night" data-i18n="loginShiftNight">Night (23:00 - 07:00)</option>
                     </select>
                   </label>
                   <label class="checkbox">
@@ -388,7 +453,7 @@
                     <span data-i18n="loginRemember">Remember this device</span>
                   </label>
                   <div class="button-row">
-                    <button class="primary" type="button" data-i18n="loginPrimary">Sign In</button>
+                    <button class="primary" type="button" id="loginSubmitBtn" data-i18n="loginPrimary">Sign In</button>
                     <button class="ghost" type="button" data-i18n="loginSecondary">Request Access</button>
                   </div>
                 </form>
@@ -444,9 +509,13 @@
           <section class="page" data-page="id-scan">
             <div class="page-header">
               <div>
-                <h2 data-i18n="idScanTitle">Thai National ID Scanning</h2>
+                <h2 data-i18n="idScanTitle">ID Scanning</h2>
                 <p data-i18n="idScanSubtitle">Capture with camera or upload image, then review OCR extraction.</p>
               </div>
+          <div class="clinical-disclaimer warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span data-i18n="labelOcrConfirmation">OCR data requires staff confirmation.</span>
+          </div>
               <div class="chip-group">
                 <span class="chip" data-i18n="staffOnly">Staff-only</span>
                 <span class="chip soft" data-i18n="statusBadge">Live Queue</span>
@@ -484,24 +553,24 @@
                 </div>
                 <div class="upload-drop">
                   <div class="upload-icon"></div>
-                  <p data-i18n="uploadHint">Drag &amp; drop or choose a file.</p>
+                  <p id="uploadHintText" data-i18n="uploadHint">Drag &amp; drop or choose a file.</p>
                   <label class="secondary upload-label" for="uploadInput" data-i18n="uploadBtn">
                     Upload ID Image
                   </label>
                   <input id="uploadInput" class="upload-input" type="file" accept="image/*" />
                 </div>
                 <div class="button-row">
-                  <button class="ghost" type="button" data-i18n="uploadAnother">Upload another image</button>
+                  <button id="uploadAnotherBtn" class="ghost" type="button" data-i18n="uploadAnother">Upload another image</button>
                 </div>
               </div>
 
-              <div class="panel span-12" data-reveal style="--delay: 0.15s">
+              <div id="ocrResultsPanel" class="panel span-12" data-reveal style="--delay: 0.15s">
                 <div class="panel-head">
                   <div>
                     <h3 data-i18n="ocrProcessingTitle">OCR processing results / ผลลัพธ์ OCR</h3>
                     <p data-i18n="ocrProcessingDesc">Fields extracted from the ID card. Review and edit if needed.</p>
                   </div>
-                  <span class="pill success" data-i18n="ocrProcessingStatus">Completed</span>
+                  <span id="ocrProcessingStatusPill" class="pill success" data-i18n="ocrProcessingStatus">Completed</span>
                 </div>
                 <div class="ocr-fields">
                   <div class="ocr-field">
@@ -509,49 +578,49 @@
                       <span data-i18n="ocrThaiIdLabel">Thai national ID (เลขบัตรประชาชน)</span>
                       <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
                     </div>
-                    <strong>1101700234567</strong>
+                    <strong id="ocrThaiIdValue">-</strong>
                   </div>
                   <div class="ocr-field">
                     <div class="ocr-field-label">
                       <span data-i18n="ocrThaiNameLabel">Thai full name (ชื่อ-นามสกุลภาษาไทย)</span>
                       <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
                     </div>
-                    <strong>ปราณี กิตติกุล</strong>
+                    <strong id="ocrThaiNameValue">-</strong>
                   </div>
                   <div class="ocr-field">
                     <div class="ocr-field-label">
                       <span data-i18n="ocrEnglishNameLabel">English full name (ชื่อ-นามสกุลภาษาอังกฤษ)</span>
                       <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
                     </div>
-                    <strong>Pranee Kittikul</strong>
+                    <strong id="ocrEnglishNameValue">-</strong>
                   </div>
                   <div class="ocr-field">
                     <div class="ocr-field-label">
                       <span data-i18n="ocrDobLabel">Date of birth (วันเกิด)</span>
                       <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
                     </div>
-                    <strong>1991-09-23</strong>
+                    <strong id="ocrDobValue">-</strong>
                   </div>
                   <div class="ocr-field">
                     <div class="ocr-field-label">
                       <span data-i18n="ocrGenderLabel">Gender (เพศ)</span>
                       <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
                     </div>
-                    <strong data-i18n="genderFemale">Female</strong>
+                    <strong id="ocrGenderValue">-</strong>
                   </div>
                   <div class="ocr-field">
                     <div class="ocr-field-label">
                       <span data-i18n="ocrNationalityLabel">Nationality (สัญชาติ)</span>
                       <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
                     </div>
-                    <strong data-i18n="nationalityThai">Thai</strong>
+                    <strong id="ocrNationalityValue">-</strong>
                   </div>
                   <div class="ocr-field needs-review">
                     <div class="ocr-field-label">
                       <span data-i18n="ocrAddressLabel">Address (ที่อยู่)</span>
                       <span class="confidence-chip low" data-i18n="confidenceLow">Low / ต่ำ</span>
                     </div>
-                    <strong>Bang Kapi, Bangkok</strong>
+                    <strong id="ocrAddressValue">-</strong>
                     <span class="review-hint" data-i18n="reviewHint">Please review this field.</span>
                   </div>
                   <div class="ocr-field">
@@ -559,14 +628,14 @@
                       <span data-i18n="ocrIssueDateLabel">Issue date (วันออกบัตร)</span>
                       <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
                     </div>
-                    <strong>2019-02-16</strong>
+                    <strong id="ocrIssueDateValue">-</strong>
                   </div>
                   <div class="ocr-field needs-review">
                     <div class="ocr-field-label">
                       <span data-i18n="ocrExpiryDateLabel">Expiry date (วันหมดอายุ)</span>
                       <span class="confidence-chip low" data-i18n="confidenceLow">Low / ต่ำ</span>
                     </div>
-                    <strong>2029-02-15</strong>
+                    <strong id="ocrExpiryDateValue">-</strong>
                     <span class="review-hint" data-i18n="reviewHint">Please review this field.</span>
                   </div>
                   <div class="ocr-field photo">
@@ -576,13 +645,14 @@
                     </div>
                     <div class="photo-frame">
                       <div class="photo-placeholder"></div>
+                      <img id="ocrPhotoImg" class="ocr-photo-img" alt="Extracted card image" hidden />
                       <div class="photo-meta" data-i18n="photoExtracted">Photo extracted from ID card</div>
                     </div>
                   </div>
                 </div>
                 <div class="button-row">
                   <button class="ghost" type="button" data-i18n="editDataBtn">Edit data</button>
-                  <button class="primary" type="button" data-i18n="sendQueue">
+                  <button id="sendQueueBtn" class="primary" type="button" data-i18n="sendQueue">
                     Send to Verification Queue
                   </button>
                 </div>
@@ -630,7 +700,7 @@
                           <span data-i18n="regFullName">Full name / ชื่อเต็ม</span>
                           <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
                         </div>
-                        <input type="text" value="Pranee Kittikul" data-required />
+                        <input id="regFullNameInput" type="text" value="" data-required />
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
                       <label class="field">
@@ -638,7 +708,7 @@
                           <span data-i18n="regThaiName">Thai name / ชื่อภาษาไทย</span>
                           <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
                         </div>
-                        <input type="text" value="ปราณี กิตติกุล" data-required />
+                        <input id="regThaiNameInput" type="text" value="" data-required />
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
                       <label class="field">
@@ -646,14 +716,14 @@
                           <span data-i18n="regEnglishName">English name / ชื่อภาษาอังกฤษ</span>
                           <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
                         </div>
-                        <input type="text" value="Pranee Kittikul" />
+                        <input id="regEnglishNameInput" type="text" value="" />
                       </label>
                       <label class="field">
                         <div class="field-label-row">
                           <span data-i18n="regDob">Date of birth / วันเกิด</span>
                           <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
                         </div>
-                        <input type="text" value="1991-09-23" data-required />
+                        <input id="regDobInput" type="text" value="" data-required />
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
                       <label class="field">
@@ -661,11 +731,11 @@
                           <span data-i18n="regGender">Gender / เพศ</span>
                           <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
                         </div>
-                        <select data-required>
+                        <select id="regGenderSelect" data-required>
                           <option value="" selected disabled data-i18n="regSelectOption">Select</option>
-                          <option data-i18n="genderFemale">Female</option>
-                          <option data-i18n="genderMale">Male</option>
-                          <option data-i18n="genderOther">Other</option>
+                          <option value="female" data-i18n="genderFemale">Female</option>
+                          <option value="male" data-i18n="genderMale">Male</option>
+                          <option value="other" data-i18n="genderOther">Other</option>
                         </select>
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
@@ -674,27 +744,12 @@
                           <span data-i18n="regNationality">Nationality / สัญชาติ</span>
                           <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
                         </div>
-                        <select data-required>
+                        <select id="regNationalitySelect" data-required>
                           <option value="" selected disabled data-i18n="regSelectOption">Select</option>
-                          <option data-i18n="nationalityThai">Thai</option>
-                          <option data-i18n="nationalityOther">Other</option>
+                          <option value="thai" data-i18n="nationalityThai">Thai</option>
+                          <option value="other" data-i18n="nationalityOther">Other</option>
                         </select>
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
-                      </label>
-                      <label class="field span-2">
-                        <div class="field-label-row">
-                          <span data-i18n="regProfilePhoto">Profile photo / รูปโปรไฟล์</span>
-                          <span class="confidence-chip medium" data-i18n="confidenceMedium">Medium / กลาง</span>
-                        </div>
-                        <div class="photo-input">
-                          <div class="photo-frame small">
-                            <div class="photo-placeholder"></div>
-                          </div>
-                          <label class="ghost small upload-label" for="profilePhoto" data-i18n="replacePhoto">
-                            Replace photo
-                          </label>
-                          <input id="profilePhoto" class="upload-input" type="file" accept="image/*" />
-                        </div>
                       </label>
                     </div>
                   </div>
@@ -716,7 +771,7 @@
                           <span data-i18n="regThaiIdNumber">Thai national ID / เลขบัตรประชาชน</span>
                           <span class="confidence-chip high" data-i18n="confidenceHigh">High / สูง</span>
                         </div>
-                        <input type="text" value="1101700234567" data-required />
+                        <input id="regThaiIdInput" type="text" value="" data-required />
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
                       <label class="field">
@@ -742,7 +797,7 @@
                         <div class="field-label-row">
                           <span data-i18n="regOcrScore">OCR confidence score / คะแนน OCR</span>
                         </div>
-                        <input type="text" value="92% (overall)" readonly />
+                        <input id="regOcrScoreInput" type="text" value="-" readonly />
                       </label>
                       <label class="field">
                         <div class="field-label-row">
@@ -775,7 +830,7 @@
                         <div class="field-label-row">
                           <span data-i18n="regPhone">Phone number / เบอร์โทรศัพท์</span>
                         </div>
-                        <input type="text" value="086-321-3342" data-required />
+                        <input type="text" value="" data-required />
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
                       <label class="field">
@@ -789,7 +844,7 @@
                           <span data-i18n="regAddress">Home address / ที่อยู่บ้าน</span>
                           <span class="confidence-chip low" data-i18n="confidenceLow">Low / ต่ำ</span>
                         </div>
-                        <input type="text" value="Bang Kapi, Bangkok" data-required />
+                        <input id="regAddressInput" type="text" value="" data-required />
                         <span class="review-hint" data-i18n="reviewHint">Please review this field.</span>
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
@@ -797,14 +852,14 @@
                         <div class="field-label-row">
                           <span data-i18n="regEmergencyName">Emergency contact name / ผู้ติดต่อฉุกเฉิน</span>
                         </div>
-                        <input type="text" value="Anan Kittikul" data-required />
+                        <input type="text" value="" data-required />
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
                       <label class="field">
                         <div class="field-label-row">
                           <span data-i18n="regEmergencyPhone">Emergency contact phone / เบอร์ติดต่อฉุกเฉิน</span>
                         </div>
-                        <input type="text" value="089-555-2301" data-required />
+                        <input type="text" value="" data-required />
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
                     </div>
@@ -870,7 +925,7 @@
                         <div class="field-label-row">
                           <span data-i18n="regVerifiedBy">Staff who verified / ผู้ตรวจสอบ</span>
                         </div>
-                        <input type="text" value="N. Warin" data-required />
+                        <input type="text" value="" data-required />
                         <span class="field-error" data-i18n="regFieldRequired">Required</span>
                       </label>
                     </div>
@@ -919,6 +974,10 @@
           </section>
 
           <section class="page" data-page="verification">
+          <div class="clinical-disclaimer warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span data-i18n="labelAiSummaryReview">AI summaries require staff review.</span>
+          </div>
 
             <!-- ── Safety Banner ─────────────────────────────────────── -->
             <div class="vq-safety-banner" role="alert">
@@ -930,7 +989,7 @@
                 </svg>
               </div>
               <div class="vq-safety-text">
-                <span class="vq-safety-label">⚠ Human Review Required / ต้องมีการตรวจสอบโดยบุคลากร</span>
+                <span class="vq-safety-label">Human Review Required / ต้องมีการตรวจสอบโดยบุคลากร</span>
                 <p class="vq-safety-en" data-i18n="vqSafetyEn">AI extracted data must be reviewed and approved by authorized hospital staff before becoming part of the official EMR.</p>
                 <p class="vq-safety-th" data-i18n="vqSafetyTh">ข้อมูลที่ AI/OCR ดึงออกมาต้องได้รับการตรวจสอบและอนุมัติจากบุคลากรโรงพยาบาลที่ได้รับอนุญาตก่อน จึงจะถือเป็นส่วนหนึ่งของเวชระเบียนอย่างเป็นทางการ</p>
               </div>
@@ -1088,11 +1147,24 @@
                 <h2 data-i18n="profileTitle">Patient Profile</h2>
                 <p data-i18n="profileSubtitle">Identity, demographics, and linked EMR summary.</p>
               </div>
+          <div class="clinical-disclaimer warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span data-i18n="labelAiNotReplace">AI does not replace doctors. Clinical staff review is mandatory.</span>
+          </div>
               <div class="chip-group">
-                <span class="chip" data-i18n="deptIcu">ICU</span>
-                <span class="chip soft">HN-2026-01983</span>
+                <span class="chip" id="profileChipDept">-</span>
+                <span class="chip soft" id="profileChipHn">-</span>
               </div>
             </div>
+
+            <div class="emr-selector-bar" id="profileApprovedSelectorBar">
+              <div class="emr-selector-label">Approved Patients / ผู้ป่วยที่อนุมัติแล้ว</div>
+              <select id="profileApprovedPatientSelect" class="emr-select" style="min-width:300px;max-width:460px;">
+                <option value="">Select approved patient / เลือกผู้ป่วยที่อนุมัติแล้ว</option>
+              </select>
+              <span class="chip soft" id="profileApprovedHint">No approved patients yet / ยังไม่มีผู้ป่วยที่อนุมัติ</span>
+            </div>
+
             <div class="page-grid">
               <div class="panel span-4" data-reveal style="--delay: 0.05s">
                 <div class="panel-head">
@@ -1102,10 +1174,10 @@
                   </div>
                 </div>
                 <ul class="info-list">
-                  <li><span data-i18n="labelFullName">Full Name</span><strong>Pranee Kittikul</strong></li>
-                  <li><span data-i18n="labelThaiId">Thai ID</span><strong>1101700234567</strong></li>
-                  <li><span data-i18n="labelDob">DOB</span><strong>1991-09-23</strong></li>
-                  <li><span data-i18n="labelGender">Gender</span><strong data-i18n="genderFemale">Female</strong></li>
+                  <li><span data-i18n="labelFullName">Full Name</span><strong id="profileFieldFullName">-</strong></li>
+                  <li><span data-i18n="labelThaiId">Thai ID</span><strong id="profileFieldThaiId">-</strong></li>
+                  <li><span data-i18n="labelDob">DOB</span><strong id="profileFieldDob">-</strong></li>
+                  <li><span data-i18n="labelGender">Gender</span><strong id="profileFieldGender">-</strong></li>
                 </ul>
               </div>
               <div class="panel span-4" data-reveal style="--delay: 0.1s">
@@ -1116,10 +1188,10 @@
                   </div>
                 </div>
                 <ul class="info-list">
-                  <li><span data-i18n="labelAge">Age</span><strong>34</strong></li>
-                  <li><span data-i18n="labelPhone">Phone</span><strong>086-321-3342</strong></li>
-                  <li><span data-i18n="labelAddress">Address</span><strong>Bang Kapi, Bangkok</strong></li>
-                  <li><span data-i18n="labelInsurance">Insurance</span><strong>UCS</strong></li>
+                  <li><span data-i18n="labelAge">Age</span><strong id="profileFieldAge">-</strong></li>
+                  <li><span data-i18n="labelPhone">Phone</span><strong id="profileFieldPhone">-</strong></li>
+                  <li><span data-i18n="labelAddress">Address</span><strong id="profileFieldAddress">-</strong></li>
+                  <li><span data-i18n="labelInsurance">Insurance</span><strong id="profileFieldInsurance">-</strong></li>
                 </ul>
               </div>
               <div class="panel span-4" data-reveal style="--delay: 0.15s">
@@ -1130,9 +1202,9 @@
                   </div>
                 </div>
                 <ul class="info-list">
-                  <li><span data-i18n="labelHospitalNumber">HN</span><strong>HN-2026-01983</strong></li>
-                  <li><span data-i18n="labelPrimaryDept">Primary Dept</span><strong data-i18n="deptIcu">ICU</strong></li>
-                  <li><span data-i18n="labelCareTeam">Care Team</span><strong>Ward A • Team 3</strong></li>
+                  <li><span data-i18n="labelHospitalNumber">HN</span><strong id="profileFieldHn">-</strong></li>
+                  <li><span data-i18n="labelPrimaryDept">Primary Dept</span><strong id="profileFieldPrimaryDept">-</strong></li>
+                  <li><span data-i18n="labelCareTeam">Care Team</span><strong id="profileFieldCareTeam">-</strong></li>
                 </ul>
                 <div class="tag-group">
                   <span class="tag">EMR Core</span>
@@ -1226,6 +1298,10 @@
           </section>
 
           <section class="page" data-page="department-summary">
+          <div class="clinical-disclaimer warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span data-i18n="labelAiSummaryReview">AI summaries require staff review.</span>
+          </div>
 
             <!-- Page Header -->
             <div class="page-header">
@@ -1268,13 +1344,13 @@
               <div class="emr-selector-label">Department</div>
               <select id="aiDeptSelect" class="emr-select" style="min-width:220px">
                 <option value="">— Select department —</option>
-                <option value="registration">🪪 Registration Department</option>
-                <option value="opd">🩺 OPD / General Clinic</option>
-                <option value="diabetes">🩸 Diabetes Clinic</option>
-                <option value="hypertension">❤️ Hypertension Clinic</option>
-                <option value="icu">📈 ICU Department</option>
-                <option value="ward">🛏️ Ward Department</option>
-                <option value="admin">📊 Admin Department</option>
+                <option value="registration">Registration Department</option>
+                <option value="opd">OPD / General Clinic</option>
+                <option value="diabetes">Diabetes Clinic</option>
+                <option value="hypertension">Hypertension Clinic</option>
+                <option value="icu">ICU Department</option>
+                <option value="ward">Ward Department</option>
+                <option value="admin">Admin Department</option>
               </select>
               <div id="aiPatientWrap" style="display:none;align-items:center;gap:8px;">
                 <div class="emr-selector-label">Patient</div>
@@ -1308,13 +1384,13 @@
               <p>Select a department, then click <strong>Generate Summary</strong>.</p>
               <p class="emr-empty-sub">Gemini will analyse the relevant EMR data and produce bilingual summaries for staff review.</p>
               <div class="ai-dept-preview">
-                <div class="ai-dept-chip">🪪 Registration</div>
-                <div class="ai-dept-chip">🩺 OPD</div>
-                <div class="ai-dept-chip">🩸 Diabetes</div>
-                <div class="ai-dept-chip">❤️ Hypertension</div>
-                <div class="ai-dept-chip">📈 ICU</div>
-                <div class="ai-dept-chip">🛏️ Ward</div>
-                <div class="ai-dept-chip">📊 Admin</div>
+                <div class="ai-dept-chip">Registration</div>
+                <div class="ai-dept-chip">OPD</div>
+                <div class="ai-dept-chip">Diabetes</div>
+                <div class="ai-dept-chip">Hypertension</div>
+                <div class="ai-dept-chip">ICU</div>
+                <div class="ai-dept-chip">Ward</div>
+                <div class="ai-dept-chip">Admin</div>
               </div>
             </div>
 
@@ -1371,6 +1447,26 @@
                 </div>
               </div>
 
+              <!-- Evidence Traceback Panel -->
+              <div class="page-grid" style="margin-top:0" id="aiEvidenceTracebackPanel" hidden>
+                <div class="panel span-12" data-reveal style="--delay:0.3s">
+                  <div class="panel-head">
+                    <div>
+                      <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;vertical-align:-2px;margin-right:6px;stroke:var(--blue)"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        Evidence Traceback / หลักฐานอ้างอิง
+                      </h3>
+                      <p>Original data behind every AI statement — field name, period values, and reasoning note</p>
+                    </div>
+                    <span class="chip soft etb-verified-chip">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:11px;height:11px;stroke:var(--green)"><path d="M20 6L9 17l-5-5"/></svg>
+                      Verified from EMR
+                    </span>
+                  </div>
+                  <div id="aiEvidenceTraceback" class="etb-grid"></div>
+                </div>
+              </div>
+
               <!-- Disclaimer + Timestamp -->
               <div class="emr-disclaimer">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -1382,6 +1478,10 @@
           </section>
 
           <section class="page" data-page="longitudinal">
+          <div class="clinical-disclaimer success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span data-i18n="labelEvidenceTraceback">Evidence traceback reduces hallucination.</span>
+          </div>
             <!-- Page Header -->
             <div class="page-header">
               <div>
@@ -1395,6 +1495,21 @@
               </div>
             </div>
 
+            <!-- Filter Bar -->
+            <div class="lt-filter-bar" id="ltFilterBar">
+              <span class="lt-filter-label">Filter / กรอง:</span>
+              <button class="lt-filter-btn active" data-lt-filter="all" data-i18n="ltFilterAll">All Records</button>
+              <button class="lt-filter-btn" data-lt-filter="dm" data-i18n="ltFilterDm">Diabetes</button>
+              <button class="lt-filter-btn" data-lt-filter="ht" data-i18n="ltFilterHt">Hypertension</button>
+              <button class="lt-filter-btn" data-lt-filter="icu" data-i18n="ltFilterIcu">ICU Events</button>
+            </div>
+            <!-- Risk Indicator Legend -->
+            <div class="lt-risk-legend">
+              <span class="lt-risk-legend-item normal"><span class="lt-legend-dot normal"></span><span data-i18n="ltIndicatorNormal">Normal</span></span>
+              <span class="lt-risk-legend-item warn"><span class="lt-legend-dot warn"></span><span data-i18n="ltIndicatorWarn">Warning</span></span>
+              <span class="lt-risk-legend-item high"><span class="lt-legend-dot high"></span><span data-i18n="ltIndicatorHigh">High Risk</span></span>
+              <span class="lt-risk-legend-item missing"><span class="lt-legend-dot missing"></span><span data-i18n="ltIndicatorMissing">Missing Data</span></span>
+            </div>
             <!-- Patient Selector -->
             <div class="emr-selector-bar" id="ltSelectorBar">
               <div class="emr-selector-label" data-i18n="ltSelectPatient">Select Patient</div>
@@ -1421,6 +1536,24 @@
             <div id="ltContent" hidden>
               <!-- Patient Summary Header -->
               <div id="ltPatientHeader" class="emr-patient-header"></div>
+
+              <!-- Vertical Narrative Timeline -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-12" data-reveal style="--delay:0.06s">
+                  <div class="panel-head">
+                    <div>
+                      <h3 data-i18n="ltVerticalTimelineTitle">Patient Story Timeline</h3>
+                      <p data-i18n="ltVerticalTimelineDesc">Period-by-period narrative: diagnosis, vitals, labs, medications, and risk highlights.</p>
+                    </div>
+                    <div class="emr-period-legend">
+                      <span class="emr-legend-dot onset"></span>Onset
+                      <span class="emr-legend-dot pre"></span>Pre
+                      <span class="emr-legend-dot post"></span>Post
+                    </div>
+                  </div>
+                  <div id="ltVerticalTimeline" class="lt-vertical-timeline"></div>
+                </div>
+              </div>
 
               <!-- Trend Charts Row -->
               <div class="page-grid" style="margin-top:0">
@@ -1470,6 +1603,21 @@
           </section>
 
           <section class="page" data-page="icu-analysis">
+          <div class="clinical-disclaimer warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span data-i18n="labelAiNotReplace">AI does not replace doctors. Clinical staff review is mandatory.</span>
+          </div>
+            <!-- Safety Warning Banner — always visible -->
+            <div class="icu-safety-banner">
+              <div class="icu-safety-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <div class="icu-safety-text">
+                <div class="icu-safety-en">This feature supports ICU staff review and does not replace real-time clinical monitoring.</div>
+                <div class="icu-safety-th">ระบบนี้สนับสนุนการทบทวนของเจ้าหน้าที่ ICU และไม่ใช่การตรวจติดตามผู้ป่วยแบบ Real-time — กรุณาปรึกษาแพทย์ผู้ดูแลสำหรับการตัดสินใจทางคลินิก</div>
+              </div>
+            </div>
+
             <!-- Page Header -->
             <div class="page-header">
               <div>
@@ -1485,12 +1633,12 @@
 
             <!-- Patient Selector -->
             <div class="emr-selector-bar" id="icuSelectorBar">
-              <div class="emr-selector-label">Select ICU Patient</div>
+              <div class="emr-selector-label" data-i18n="icuSelectPatientLabel">Select ICU Patient</div>
               <select id="icuPatientSelect" class="emr-select">
-                <option value="">— Select ICU patient —</option>
+                <option value="" data-i18n="icuSelectOption">— Select ICU patient —</option>
               </select>
               <div id="icuDaySelectorWrap" hidden style="display:flex;align-items:center;gap:8px;">
-                <div class="emr-selector-label">Day</div>
+                <div class="emr-selector-label" data-i18n="icuDayLabel">Day</div>
                 <select id="icuDaySelect" class="emr-select" style="width:auto;min-width:100px;"></select>
               </div>
             </div>
@@ -1500,20 +1648,21 @@
               <div class="emr-empty-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
               </div>
-              <p>Select an ICU patient to view ventilator waveform analysis.</p>
-              <p class="emr-empty-sub">SmartICU dataset — Flow, Pressure, Volume signals at 25 Hz — Srinagarind Hospital KKU</p>
+              <p data-i18n="icuEmptyMain">Select an ICU patient to view ventilator waveform analysis.</p>
+              <p class="emr-empty-sub" data-i18n="icuEmptySub">SmartICU dataset — Flow, Pressure, Volume signals at 25 Hz — Srinagarind Hospital KKU</p>
             </div>
 
             <!-- ICU Content -->
             <div id="icuContent" hidden>
+
               <!-- Patient Info + Day Summary -->
               <div class="page-grid" style="margin-top:0">
                 <div class="panel span-4" data-reveal style="--delay:0.05s" id="icuPatientInfoPanel">
-                  <div class="panel-head"><div><h3>Patient Demographics</h3><p>From SmartICU JSON dataset.</p></div></div>
+                  <div class="panel-head"><div><h3 data-i18n="icuPatientDemoTitle">Patient Demographics</h3><p data-i18n="icuPatientDemoDesc">From SmartICU JSON dataset.</p></div></div>
                   <div id="icuPatientInfo"></div>
                 </div>
                 <div class="panel span-8" data-reveal style="--delay:0.1s">
-                  <div class="panel-head"><div><h3>ICU Stay Timeline</h3><p>Recorded days and capture count.</p></div></div>
+                  <div class="panel-head"><div><h3 data-i18n="icuStayTitle">ICU Stay Timeline</h3><p data-i18n="icuStayDesc">Recorded days and capture count.</p></div></div>
                   <div id="icuStayTimeline" class="icu-stay-timeline"></div>
                 </div>
               </div>
@@ -1522,152 +1671,147 @@
               <div class="page-grid" style="margin-top:0">
                 <div class="panel span-12" data-reveal style="--delay:0.15s">
                   <div class="panel-head">
-                    <div><h3>Waveform Signal Summary</h3><p>Statistical overview of Flow, Pressure, and Volume per capture. Source: CSV waveform exports.</p></div>
+                    <div><h3 data-i18n="icuWaveSignalTitle">Waveform Signal Summary</h3><p data-i18n="icuWaveSignalDesc">Statistical overview of Flow, Pressure, and Volume per capture. Source: CSV waveform exports.</p></div>
                     <div id="icuCaptureBadge" class="chip soft" style="white-space:nowrap;"></div>
                   </div>
                   <div id="icuWaveCards" class="icu-wave-cards"></div>
-                  <div id="icuNoWaveNote" hidden class="emr-no-data-note" style="margin:16px 0;">No waveform CSV data available for captures on this day.</div>
+                  <div id="icuNoWaveNote" hidden class="emr-no-data-note" style="margin:16px 0;" data-i18n="icuNoWaveNote">No waveform CSV data available for captures on this day.</div>
                 </div>
               </div>
 
-              <!-- Captures Table + Clinical Assessment -->
+              <!-- Waveform Charts -->
+              <div class="page-grid" style="margin-top:0" id="icuChartsSection" hidden>
+                <div class="panel span-12" data-reveal style="--delay:0.18s">
+                  <div class="panel-head">
+                    <div>
+                      <h3 data-i18n="icuWaveChartsTitle">Waveform Charts</h3>
+                      <p data-i18n="icuWaveChartsDesc">Flow, Pressure, and Volume time series from loaded capture(s). X-axis: sample index at 25 Hz (1 sample = 40 ms).</p>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <label class="icu-chart-capture-label" for="icuChartCaptureSelect" data-i18n="icuCaptureLabel">Capture</label>
+                      <select id="icuChartCaptureSelect" class="emr-select" style="width:auto;min-width:160px;"></select>
+                    </div>
+                  </div>
+                  <div class="icu-charts-grid" id="icuChartsGrid"></div>
+                </div>
+              </div>
+
+              <!-- Abnormal Pattern Detection + Capture Log -->
               <div class="page-grid" style="margin-top:0">
                 <div class="panel span-6" data-reveal style="--delay:0.2s">
-                  <div class="panel-head"><div><h3>Capture Log</h3><p>Hourly ventilator recordings for selected day.</p></div></div>
+                  <div class="panel-head"><div><h3 data-i18n="icuCaptureLogTitle">Capture Log</h3><p data-i18n="icuCaptureLogDesc">Hourly ventilator recordings for selected day.</p></div></div>
                   <div id="icuCaptureLog" class="icu-capture-log"></div>
                 </div>
                 <div class="panel span-6" data-reveal style="--delay:0.25s">
-                  <div class="panel-head"><div><h3>Clinical Signal Assessment</h3><p>Pattern notes from waveform statistics. For staff review only — not a clinical diagnosis.</p></div></div>
+                  <div class="panel-head">
+                    <div><h3 data-i18n="icuPatternTitle">Abnormal Pattern Detection</h3><p data-i18n="icuPatternDesc">Waveform pattern analysis from signal statistics. For staff review only — not a clinical diagnosis.</p></div>
+                    <span class="chip soft" style="color:var(--amber);border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.08);white-space:nowrap;font-size:0.68rem;" data-i18n="icuStaffReviewOnly">Staff Review Only</span>
+                  </div>
                   <div id="icuAssessment" class="icu-assessment"></div>
                 </div>
               </div>
 
               <!-- Diagnosis + Operation Info -->
               <div class="page-grid" style="margin-top:0">
-                <div class="panel span-12" data-reveal style="--delay:0.3s">
-                  <div class="panel-head"><div><h3>Diagnosis &amp; Operation Record</h3><p>As documented in the ICU JSON file for selected day.</p></div></div>
+                <div class="panel span-12" data-reveal style="--delay:0.28s">
+                  <div class="panel-head"><div><h3 data-i18n="icuDxOpTitle">Diagnosis &amp; Operation Record</h3><p data-i18n="icuDxOpDesc">As documented in the ICU JSON file for selected day.</p></div></div>
                   <div id="icuDxOp" class="icu-dx-op"></div>
+                </div>
+              </div>
+
+              <!-- AI ICU Summary -->
+              <div class="page-grid" style="margin-top:0">
+                <div class="panel span-12" data-reveal style="--delay:0.32s">
+                  <div class="panel-head">
+                    <div>
+                      <h3 data-i18n="icuAiPanelTitle">AI Ventilator Summary</h3>
+                      <p data-i18n="icuAiPanelDesc">AI-generated analysis from waveform statistics and clinical context. Powered by Gemini.</p>
+                    </div>
+                    <button class="btn-primary" id="icuAiGenBtn" type="button">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:-2px;margin-right:5px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                      <span data-i18n="icuAiGenBtnText">Generate AI Summary</span>
+                    </button>
+                  </div>
+
+                  <!-- ICU AI Safety Warning (inline) -->
+                  <div class="icu-ai-safety-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0;stroke:var(--amber)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span data-i18n="icuAiSafetyNote">This feature supports ICU staff review and does not replace real-time clinical monitoring.</span>
+                  </div>
+
+                  <!-- AI Loading -->
+                  <div id="icuAiLoading" class="icu-ai-loading" hidden>
+                    <div class="ai-loading-spinner"></div>
+                    <span data-i18n="icuAiLoadingText">Analysing waveform data with Gemini AI…</span>
+                  </div>
+
+                  <!-- AI Empty State -->
+                  <div id="icuAiEmpty" class="icu-ai-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:28px;height:28px;stroke:var(--gray-400)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <p data-i18n="icuAiEmptyText">Select a patient with waveform data, then click Generate AI Summary.</p>
+                  </div>
+
+                  <!-- AI Output -->
+                  <div id="icuAiOutput" hidden>
+                    <!-- Bilingual Summary -->
+                    <div class="icu-ai-summary-grid">
+                      <div class="icu-ai-summary-block">
+                        <div class="icu-ai-summary-lang">EN</div>
+                        <div id="icuAiSummaryEN" class="icu-ai-summary-body"></div>
+                      </div>
+                      <div class="icu-ai-summary-block">
+                        <div class="icu-ai-summary-lang">TH</div>
+                        <div id="icuAiSummaryTH" class="icu-ai-summary-body ai-thai-text"></div>
+                      </div>
+                    </div>
+
+                    <!-- Key Findings -->
+                    <div style="padding:14px 0 0;">
+                      <div class="icu-ai-section-title" data-i18n="icuKeyFindingsLabel">Key Findings</div>
+                      <div id="icuAiFindings" class="icu-ai-findings-grid"></div>
+                    </div>
+
+                    <!-- Abnormal Breathing Patterns (from AI) -->
+                    <div style="padding:14px 0 0;">
+                      <div class="icu-ai-section-title" data-i18n="icuAbnPatternsLabel">Abnormal Breathing Pattern Notes</div>
+                      <div id="icuAiPatterns" class="icu-ai-patterns"></div>
+                    </div>
+
+                    <!-- Staff Review Recommendations -->
+                    <div style="padding:14px 0 0;">
+                      <div class="icu-ai-section-title" data-i18n="icuStaffReviewLabel">Staff Review Recommendations</div>
+                      <div id="icuAiReview" class="icu-ai-review"></div>
+                    </div>
+
+                    <div id="icuAiTimestamp" class="ai-timestamp"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Evidence Traceback -->
+              <div class="page-grid" style="margin-top:0" id="icuEtbPanel" hidden>
+                <div class="panel span-12" data-reveal style="--delay:0.36s">
+                  <div class="panel-head">
+                    <div>
+                      <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;vertical-align:-2px;margin-right:6px;stroke:var(--blue)"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        <span data-i18n="icuEtbTitle">Evidence Traceback</span>
+                      </h3>
+                      <p data-i18n="icuEtbDesc">Original raw signal data behind the AI analysis — field name, per-day values, and reasoning note.</p>
+                    </div>
+                    <span class="chip soft etb-verified-chip">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:11px;height:11px;stroke:var(--green)"><path d="M20 6L9 17l-5-5"/></svg>
+                      <span data-i18n="icuEtbVerified">Verified from ICU CSV/JSON</span>
+                    </span>
+                  </div>
+                  <div id="icuEtbGrid" class="etb-grid"></div>
                 </div>
               </div>
 
               <!-- Disclaimer -->
               <div class="emr-disclaimer">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                <span>Waveform statistics are computed from raw CSV exports (SmartICU dataset, Srinagarind Hospital KKU). Signal analysis supports staff review only — not a standalone clinical diagnosis. Consult the attending physician for all clinical decisions.</span>
-              </div>
-            </div>
-          </section>
-
-          <section class="page" data-page="standards">
-            <div class="page-header">
-              <div>
-                <h2 data-i18n="standardsTitle">Data Localization &amp; Standards</h2>
-                <p data-i18n="standardsSubtitle">Mapping ICD-10, HL7, and FHIR to local fields.</p>
-              </div>
-              <div class="chip-group">
-                <span class="chip" data-i18n="staffOnly">Staff-only</span>
-                <span class="chip soft">FHIR R4</span>
-              </div>
-            </div>
-            <div class="page-grid">
-              <div class="panel span-12" data-reveal style="--delay: 0.05s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="standardsConceptTitle">Standards Concept Map</h3>
-                    <p data-i18n="standardsConceptDesc">How local data maps into global standards.</p>
-                  </div>
-                </div>
-                <div class="interop-grid">
-                  <div class="interop-card">
-                    <h3 data-i18n="standardsIcdTitle">ICD-10</h3>
-                    <p data-i18n="standardsIcdDesc">Local diagnosis text mapped to ICD-10 codes.</p>
-                  </div>
-                  <div class="interop-card">
-                    <h3 data-i18n="standardsHl7Title">HL7</h3>
-                    <p data-i18n="standardsHl7Desc">ADT/ORM/ORU feeds normalized for EMR sync.</p>
-                  </div>
-                  <div class="interop-card">
-                    <h3 data-i18n="standardsFhirTitle">FHIR</h3>
-                    <p data-i18n="standardsFhirDesc">Patient, Observation, Medication resources.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="panel span-7" data-reveal style="--delay: 0.1s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="localMappingTitle">Local Field Mapping</h3>
-                    <p data-i18n="localMappingDesc">Hospital data dictionary to standards.</p>
-                  </div>
-                </div>
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th data-i18n="mapTableLocalField">Local Field</th>
-                        <th data-i18n="mapTableStandard">Standard Mapping</th>
-                        <th data-i18n="mapTableNotes">Notes</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>local_dx_text</td>
-                        <td>ICD-10.code</td>
-                        <td>Text normalization + ICD lookup</td>
-                      </tr>
-                      <tr>
-                        <td>hn</td>
-                        <td>FHIR.Patient.identifier</td>
-                        <td>Hospital number mapping</td>
-                      </tr>
-                      <tr>
-                        <td>vital_bp</td>
-                        <td>FHIR.Observation</td>
-                        <td>LOINC 85354-9</td>
-                      </tr>
-                      <tr>
-                        <td>med_order</td>
-                        <td>FHIR.MedicationRequest</td>
-                        <td>Route + dose normalized</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="panel span-5" data-reveal style="--delay: 0.15s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="mappingExampleTitle">Example: Local → ICD-10</h3>
-                    <p data-i18n="mappingExampleDesc">Diagnosis text converted to standard code.</p>
-                  </div>
-                </div>
-                <ul class="detail-list">
-                  <li><span data-i18n="mappingExampleLocal">Local</span><strong>"เบาหวานชนิดที่ 2"</strong></li>
-                  <li><span data-i18n="mappingExampleIcd">ICD-10</span><strong>E11.9</strong></li>
-                </ul>
-              </div>
-              <div class="panel span-12" data-reveal style="--delay: 0.2s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="fhirExampleTitle">Example: Local EMR → FHIR</h3>
-                    <p data-i18n="fhirExampleDesc">Patient + Observation + Medication resources.</p>
-                  </div>
-                </div>
-                <pre class="code-block"><code>{
-  "resourceType": "Patient",
-  "identifier": [{ "system": "hospital-hn", "value": "HN-2026-01983" }],
-  "name": [{ "text": "Pranee Kittikul" }]
-}
-
-{
-  "resourceType": "Observation",
-  "code": { "text": "Blood Pressure" },
-  "valueString": "128/82"
-}
-
-{
-  "resourceType": "MedicationRequest",
-  "medicationCodeableConcept": { "text": "Metformin 500mg" }
-}</code></pre>
+                <span data-i18n="icuDisclaimerText">Waveform statistics are computed from raw CSV exports (SmartICU dataset, Srinagarind Hospital KKU). This feature supports ICU staff review and does not replace real-time clinical monitoring. Consult the attending physician for all clinical decisions.</span>
               </div>
             </div>
           </section>
@@ -1684,56 +1828,6 @@
               </div>
             </div>
             <div class="page-grid">
-              <div class="panel span-4" data-reveal style="--delay: 0.05s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="adminDeptTitle">Manage Departments</h3>
-                    <p data-i18n="adminDeptDesc">Enable, rename, or reorder departments.</p>
-                  </div>
-                </div>
-                <ul class="detail-list">
-                  <li>Registration</li>
-                  <li>OPD</li>
-                  <li>Diabetes Clinic</li>
-                  <li>Hypertension Clinic</li>
-                  <li>ICU</li>
-                </ul>
-                <button class="ghost small" type="button" data-i18n="adminActionAddDept">Add Department</button>
-              </div>
-              <div class="panel span-4" data-reveal style="--delay: 0.1s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="adminRoleTitle">Manage User Roles</h3>
-                    <p data-i18n="adminRoleDesc">Configure access levels and permissions.</p>
-                  </div>
-                </div>
-                <ul class="detail-list">
-                  <li>Registration Staff</li>
-                  <li>Doctor</li>
-                  <li>Nurse</li>
-                  <li>ICU Staff</li>
-                  <li>Admin</li>
-                </ul>
-                <button class="ghost small" type="button" data-i18n="adminActionAddRole">Add Role</button>
-              </div>
-              <div class="panel span-4" data-reveal style="--delay: 0.15s">
-                <div class="panel-head">
-                  <div>
-                    <h3 data-i18n="adminLangTitle">Manage Language</h3>
-                    <p data-i18n="adminLangDesc">Default UI language and terminology.</p>
-                  </div>
-                </div>
-                <div class="form-stack">
-                  <label class="field">
-                    <span data-i18n="adminLangLabel">Default Language</span>
-                    <select>
-                      <option>English</option>
-                      <option>ไทย</option>
-                    </select>
-                  </label>
-                  <button class="primary" type="button" data-i18n="adminActionSaveLang">Save Language</button>
-                </div>
-              </div>
               <div class="panel span-12" data-reveal style="--delay: 0.2s">
                 <div class="panel-head">
                   <div>
@@ -1776,6 +1870,100 @@
               </div>
             </div>
           </section>
+
+          <!-- ══ AUDIT LOG PAGE ══════════════════════════════════════════ -->
+          <section class="page" data-page="audit-log">
+            <div class="page-header">
+              <div>
+                <h2 data-i18n="auditLogTitle">Audit Log</h2>
+                <p data-i18n="auditLogSubtitle">Complete trail of all staff actions on patient records.</p>
+              </div>
+          <div class="clinical-disclaimer success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span data-i18n="labelEvidenceTraceback">Evidence traceback reduces hallucination.</span>
+          </div>
+              <div class="chip-group">
+                <span class="chip" data-i18n="staffOnly">Staff-only</span>
+                <span class="chip soft">Admin</span>
+              </div>
+            </div>
+
+            <!-- Privacy notice -->
+            <div class="audit-privacy-note">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0;color:var(--blue);">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <span data-i18n="auditPrivacyNote">All actions on patient data are logged with staff ID, role, station, and timestamp.</span>
+            </div>
+
+            <!-- Stats row -->
+            <div class="page-grid">
+              <div class="panel span-12" data-reveal>
+                <div class="audit-stats-row">
+                  <div class="audit-stat">
+                    <div class="audit-stat-value" id="auditStatTotal">0</div>
+                    <div class="audit-stat-label" data-i18n="auditStatTotal">Total Entries</div>
+                  </div>
+                  <div class="audit-stat">
+                    <div class="audit-stat-value" id="auditStatToday">0</div>
+                    <div class="audit-stat-label" data-i18n="auditStatToday">Today</div>
+                  </div>
+                  <div class="audit-stat audit-stat-approved">
+                    <div class="audit-stat-value" id="auditStatApproved">0</div>
+                    <div class="audit-stat-label" data-i18n="auditStatApproved">Approved</div>
+                  </div>
+                  <div class="audit-stat audit-stat-rejected">
+                    <div class="audit-stat-value" id="auditStatRejected">0</div>
+                    <div class="audit-stat-label" data-i18n="auditStatRejected">Rejected</div>
+                  </div>
+                  <div class="audit-stat audit-stat-denied">
+                    <div class="audit-stat-value" id="auditStatDenied">0</div>
+                    <div class="audit-stat-label" data-i18n="auditStatDenied">Access Denied</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="page-grid">
+              <div class="panel span-12" data-reveal style="--delay: 0.05s">
+                <div class="panel-head">
+                  <div>
+                    <h3 data-i18n="auditLogTitle">Audit Entries</h3>
+                  </div>
+                  <button class="ghost small" id="auditExportBtn" type="button" data-i18n="auditExportBtn">Export CSV</button>
+                </div>
+                <div class="audit-filter-row" id="auditFilterRow">
+                  <button class="audit-filter active" type="button" data-filter="all"          data-i18n="auditFilterAll">All Actions</button>
+                  <button class="audit-filter"        type="button" data-filter="scan_id"      data-i18n="auditFilterScan">ID Scan</button>
+                  <button class="audit-filter"        type="button" data-filter="send_queue"   data-i18n="auditFilterQueue">Queue</button>
+                  <button class="audit-filter"        type="button" data-filter="approve"      data-i18n="auditFilterApprove">Approved</button>
+                  <button class="audit-filter"        type="button" data-filter="reject"       data-i18n="auditFilterReject">Rejected</button>
+                  <button class="audit-filter"        type="button" data-filter="edit_field"   data-i18n="auditFilterEdit">Edited</button>
+                  <button class="audit-filter"        type="button" data-filter="access_denied" data-i18n="auditFilterDeny">Denied</button>
+                </div>
+                <div class="audit-table-wrap">
+                  <table class="audit-table">
+                    <thead>
+                      <tr>
+                        <th data-i18n="auditColEntry">Entry ID</th>
+                        <th data-i18n="auditColAction">Action</th>
+                        <th data-i18n="auditColStaff">Staff</th>
+                        <th data-i18n="auditColPatient">Patient</th>
+                        <th data-i18n="auditColDetails">Details</th>
+                        <th data-i18n="auditColTime">Timestamp</th>
+                      </tr>
+                    </thead>
+                    <tbody id="auditTableBody"></tbody>
+                  </table>
+                  <div id="auditEmpty" class="audit-empty">
+                    <p data-i18n="auditEmpty">No audit entries recorded in this session.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
         </section>
       </main>
     </div>
@@ -1783,6 +1971,7 @@
     <script src="data-emr.js"></script>
     <script src="gemini-config.js"></script>
     <script src="ai-summary.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
